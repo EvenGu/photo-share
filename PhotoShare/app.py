@@ -216,12 +216,35 @@ def upload_file():
 #bwen's query functions
 def getUsersLike(uid,pid):
     cursor= conn.cursor()
-    cursor.execute("SELECT uid, pid from like where uid='{0}' and pid='{1}'".format(uid))
+    cursor.execute("SELECT uid, pid from ulike where uid='{0}' and pid='{1}'".format(uid))
     if cursor.fetchall()!='':
         return 1
     else:
         return 0
 
+def getUsersclosefriends(uid):
+    cursor=conn.cursor()
+    cursor.execute("select u1 from "
+                   "(select uid as u1,count(uid)as u1c1 from isfriend a,isfriend b"
+                   "group by uid)"
+                   "(select u2,count(u2)as u1c from isfriend a1, isfriend b1"
+                   "(select c.fuid as u1 from isfriend a, isfriend b, isfriend c"
+                   "where a.uid='{0}' and b.uid=a.fuid and b.fuid=c.uid and c.uid<>'{0}')"
+                   "where a1.uid=u2 and b1.uid=a1.fuid and b1.fuid<>'{0}' group by u2)"  
+                   "where u1=u2 order by u1c/u1c1 DESC ".format(uid))
+    return cursor.fetchall()
+
+
+def getRecommandPhoto(uid):
+    cursor=conn.cursor()
+    cursor.execute("select pid from"
+                   "(select pid as p1, count (pid) as cp1 from tags group by pid),"
+                   "(select pid as p2, count (pid) as cp2 from tags,"
+                   "(select DISTINCT c.tname as tagn from tags c,album b,photos a "
+                   "where b.uid='{0}' and a.aid=b.aid and c.pid=a.pid))"
+                   "where tags.tname in tagn"
+                   "group by pid".format(uid))
+    return cursor.fetchall()
 
 
 
