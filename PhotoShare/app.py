@@ -59,6 +59,7 @@ class User(flask_login.UserMixin):
 def user_loader(email):
     users = getUserList()
     if not (email) or email not in str(users):
+
         return
     user = User()
     user.id = email
@@ -76,7 +77,8 @@ def request_loader(request):
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email))
     data = cursor.fetchall()
-    pwd = str(data[0][0])
+    pwd = str(data[0][0]) #why?
+    print(data)
     user.is_authenticated = request.form['password'] == pwd
     return user
 
@@ -93,12 +95,12 @@ def new_page_function():
 def login():
     if flask.request.method == 'GET':
         return '''
-			   <form action='login' method='POST'>
+		    <form action='login' method='POST'>
 				<input type='text' name='email' id='email' placeholder='email'></input>
 				<input type='password' name='password' id='password' placeholder='password'></input>
 				<input type='submit' name='submit'></input>
 			   </form></br>
-		   <a href='/'>Home</a>
+		    <a href='/'>Home</a>
 			   '''
     # The request method is POST (page is recieving data)
     email = flask.request.form['email']
@@ -119,7 +121,7 @@ def login():
 
 @app.route("/showPhotos", methods=['GET'])
 def showPhotos():
-    # get photopath from the database: SELECT photopath FROM PHOTOS WHERE USER_ID = .....
+    # get photopath from the database: SELECT path FROM PHOTOS WHERE uid = .....
     photopath = "upload/1.jpg"
     return render_template('testShowPhoto.html', photopath = photopath)
 
@@ -143,29 +145,30 @@ def register():
 @app.route("/register", methods=['POST'])
 def register_user():
     try:
+        fname = request.form.get('fname')
+        lname = request.form.get('lname')
         email = request.form.get('email')
-        password = request.form.get('password')
+        dob = request.form.get('dob')
+        hometown = request.form.get('hometown')
         gender = request.form.get('gender')
-        dob=request.form.get('dob')
-        uname= request.form.get('nickname')
-        hometown=request.form.get('hometown')
+        password = request.form.get('password')
     except:
-        print(
-            "couldn't find all tokens")  # this prints to shell, end users will not see this (all print statements go to shell)
+        print("register failed: couldn't find all tokens")
+        # this prints to shell, end users will not see this (all print statements go to shell)
         return flask.redirect(flask.url_for('register'))
     cursor = conn.cursor()
     test = isEmailUnique(email)
     if test:
-        print(cursor.execute("INSERT INTO Users (email,password,gender,dob,uname,hometown) "
-                             "VALUES ('{0}', '{1}','{2}','{3}','{4}','{5}')".format(email, password,gender,dob,uname,hometown)))
+        print(cursor.execute("INSERT INTO Users (fname,lname,email,dob,hometown,gender,password) "
+                             "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')".format(fname,lname,email,dob,hometown,gender,password)))
         conn.commit()
         # log user in
         user = User()
         user.id = email
         flask_login.login_user(user)
-        return render_template('hello.html', name=uname, message='Account Created!')
+        return render_template('hello.html', name=fname, message='Account Created!')
     else:
-        print("couldn't find all tokens")
+        print("register failed: email already useds")
         return flask.redirect(flask.url_for('register'))
 
 
@@ -212,8 +215,10 @@ def allowed_file(filename):
 def upload_file():
     if request.method == 'POST':
         uid = getUserIdFromEmail(flask_login.current_user.id)
+        aid = getAlbumIdFromUser(flask_login.current_user.id) # TO DO
         imgfile = request.files['photo']
         caption = request.form.get('caption')
+<<<<<<< HEAD
         imgtype=imgfile.mimetype.split("/")
         print (imgtype[1])
 #       photo_data = base64.standard_b64encode(imgfile.read())
@@ -224,6 +229,16 @@ def upload_file():
             conn.commit()
             imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(uid)+"-"+caption+'.'+imgtype[1]))
             return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
+=======
+        print(caption)
+ #       photo_data = base64.standard_b64encode(imgfile.read())
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO Photos (caption,path,aid) VALUES (%s, %s, %d)",
+                       (caption, photopath, aid))
+        conn.commit()
+        imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], caption+".jpg"))
+        return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
+>>>>>>> master
                                photos=getUsersPhotos(uid))
         else:
             print("not image")
