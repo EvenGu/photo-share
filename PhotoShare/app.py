@@ -214,15 +214,20 @@ def upload_file():
         uid = getUserIdFromEmail(flask_login.current_user.id)
         imgfile = request.files['photo']
         caption = request.form.get('caption')
-        print(caption)
- #       photo_data = base64.standard_b64encode(imgfile.read())
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO Pictures (imgdata, user_id, caption) VALUES (%s, %s, %s)",
-                       (1, uid, caption))
-        conn.commit()
-        imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], caption+".jpg"))
-        return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
+        imgtype=imgfile.mimetype.split("/")
+        print (imgtype[1])
+#       photo_data = base64.standard_b64encode(imgfile.read())
+        if imgtype[0]=='image':
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO Pictures (imgdata, user_id, caption) VALUES (%s, %s, %s)",
+                           (1, uid, caption))
+            conn.commit()
+            imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(uid)+"-"+caption+'.'+imgtype[1]))
+            return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
                                photos=getUsersPhotos(uid))
+        else:
+            print("not image")
+            return render_template('hello.html')
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('upload.html')
@@ -231,6 +236,8 @@ def upload_file():
 # end photo uploading code
 
 #bwen's query functions
+
+
 def getUsersLike(uid,pid):
     cursor= conn.cursor()
     cursor.execute("SELECT uid, pid from ulike where uid='{0}' and pid='{1}'".format(uid))
@@ -238,6 +245,18 @@ def getUsersLike(uid,pid):
         return 1
     else:
         return 0
+'''
+def search(key,type):
+#type 1 for tags,2 for users,3 for albums
+    cursor=conn.cursor()
+    if (type==1):
+        key.split(",")
+    elif(type==2):
+        key.split(",")
+    elif(type==3):
+
+        cursor
+'''
 
 def getUsersclosefriends(uid):
     cursor=conn.cursor()
