@@ -24,8 +24,9 @@
    <ul>
    {% for photo in photos %}
        <li><a href = '/albums?photo_id={{photo[2]}}'>caption: {{photo[1]}} photo id: {{photo[2]}}</a></li>
-       <li><img src='data:image/jpg;base64, {{photo[0]}}'/></li>
+       <li><img src="upload/1.jpg"/></li>
    {% endfor %}
+   <img src="http://img.mukewang.com/52da54ed0001ecfa04120172.jpg">
    </ul>
 {% endif %}
 
@@ -36,7 +37,7 @@
 {% endif %}
 
 <ul>
-<li><a href='/upload'>Upload a photo</a> </li> 
+<li><a href='/upload'>Upload a photo</a> </li>
 <li><a href='/logout'>Logout</a></li>
 <li><a href='/'>Home</a></li>
 </ul>
