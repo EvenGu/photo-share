@@ -14,7 +14,7 @@ CREATE TABLE Users(
    PRIMARY KEY  (uid)
    );
 
-CREATE TABLE Album(
+CREATE TABLE Albums(
    aid  INTEGER NOT NULL AUTO_INCREMENT,
    aname  VARCHAR(20) NOT NULL,
    doc  TIMESTAMP DEFAULT current_timestamp,
@@ -34,7 +34,7 @@ CREATE TABLE Photos(
    path VARCHAR(200) NOT NULL,
    aid INTEGER NOT NULL,
    PRIMARY KEY  (pid),
-   FOREIGN KEY (aid) REFERENCES Album(aid)
+   FOREIGN KEY (aid) REFERENCES Albums(aid)
   	ON DELETE CASCADE
    );
 /* Assumption:
@@ -43,10 +43,16 @@ CREATE TABLE Photos(
   own (different) pid. */
 
 CREATE TABLE Tags(
-   tname  VARCHAR(50),
-   pid INTEGER,
-   PRIMARY KEY  (tname),
-   FOREIGN KEY (pid) REFERENCES Photos(pid)
+   hashtag  VARCHAR(50),
+   PRIMARY KEY (hashtag)
+   );
+
+CREATE TABLE photoTag(
+	 pid INTEGER NOT NULL,
+	 hashtag VARCHAR(50) NOT NULL,
+   PRIMARY KEY (pid, hashtag),
+	 FOREIGN KEY (hashtag) REFERENCES Tags(hashtag) ON DELETE CASCADE,
+	 FOREIGN KEY (pid) REFERENCES Photos(pid) ON DELETE CASCADE
    );
 
 CREATE TABLE isFriend(

@@ -283,21 +283,13 @@ def upload_file():
 
 # end photo uploading code
 
-<<<<<<< Updated upstream
+
 # bwen's query functions
 def getUsersLike(uid,pid):
     cursor= conn.cursor()
-    cursor.execute("SELECT uid, pid from likePhoto where uid='{0}' and pid='{1}'".format(uid, pid))
-=======
-#bwen's query functions
-
-
-def getUsersLike(uid,pid):
-    cursor= conn.cursor()
     cursor.execute("SELECT * from likephoto where uid='{0}' and pid='{1}'".format(uid,pid))
->>>>>>> Stashed changes
-    if cursor.fetchall()!='':
-        return 1
+    if cursor.fetchall()!='': # or NULL?
+        return 1 # tuple exists (user likes the photo)
     else:
         return 0
 '''
@@ -313,7 +305,7 @@ def search(key,type):
         cursor
 '''
 
-def getUsersclosefriends(uid):
+def suggestFriends(uid):
     cursor=conn.cursor()
     cursor.execute("select u1 from "
                    "(select uid as u1,count(uid)as u1c1 from isfriend a,isfriend b"
@@ -325,8 +317,7 @@ def getUsersclosefriends(uid):
                    "where u1=u2 order by u1c/u1c1 DESC ".format(uid))
     return cursor.fetchall()
 
-
-def getRecommandPhoto(uid):
+def suggestPhotos(uid):
     cursor=conn.cursor()
     cursor.execute("select pid from"
                    "(select pid as p1, count (pid) as cp1 from tags group by pid),"
@@ -340,14 +331,37 @@ def getRecommandPhoto(uid):
 
 # Yiwen
 def getFriendsList(uid):
-    query = "SELECT u1.uid, u1.fname, u1.lname " \
-            "FROM Users AS u1, isFriend AS f" \
-            "WHERE u1.uid = f.fuid AND f.uid = '{0}'" \
-            "ORDER BY u1.fname"
+    query = "SELECT u1.uid AS ID, u1.fname AS FirstName, u1.lname AS LastName " \
+            "FROM Users AS u1" \
+            "WHERE u1.uid = (SELECT f.fuid FROM isFriend AS f WHERE f.uid = '{0}')" \
+            "ORDER BY u1.fname, u1.lname"
     print(query)  # optional printing out in your terminal
     cursor = conn.cursor()
     cursor.execute(query.format(uid))
     return cursor.fetchall()
+
+'''
+Alternatively, 
+
+suggestFriends: RIGHT
+SELECT u2.uid, u2.fname, u2.lname
+FROM Users AS u2, isFriend f2
+WHERE f2.uid IN (SELECT f1.fuid FROM isFriend AS f1 WHERE f1.uid = '{0}')
+    AND u2.uid = f2.fuid
+GROUP BY f2.fuid
+ORDER BY COUNT(*) DESC
+
+suggestPhotos: WRONG
+SELECT p2.pid FROM Photos p2
+WHERE p2.pid = pt2.pid AND
+    pt2.hashtag IN (SELECT t.hashtag
+                FROM Albums a, Photos p, photoTag pt, Tags t
+                WHERE a.uid = '{0}' 
+                AND a.aid = p.aid AND p.pid = pt.pid AND pt.hashtag = t.hashtag
+                GROUP BY t.hashtag
+                ORDER BY COUNT(*)
+                LIMIT 5)
+'''
 
 def createDefaultAlbum(uid):
     query = "INSERT INTO Albums(aname, uid) VALUES ('default','{0}')"
