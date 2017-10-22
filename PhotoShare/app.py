@@ -165,11 +165,11 @@ def register_user():
         user = User()
         user.id = email
         flask_login.login_user(user)
-<<<<<<< Updated upstream
+
         createDefaultAlbum(uid) # TODO
-=======
+
         cursor.execute("INSERT INTO Albums(aname,)")
->>>>>>> Stashed changes
+
         return render_template('hello.html', name=fname, message='Account Created!')
     else:
         print("register failed: email already used")
@@ -223,23 +223,7 @@ def allowed_file(filename):
 @flask_login.login_required
 def upload_file():
     if request.method == 'POST':
-<<<<<<< Updated upstream
-        uid = getUserIdFromEmail(flask_login.current_user.id)
-        aid = getAlbumIdFromUser(flask_login.current_user.id) # TODO
-        imgfile = request.files['photo']
-        caption = request.form.get('caption')
-        print(caption)
- #       photo_data = base64.standard_b64encode(imgfile.read())
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO Photos (caption,path,aid) VALUES (%s, %s, %d)",# TODO
-                       (caption, photopath, aid))
-        conn.commit()
-        imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], caption+".jpg"))
-        return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
-                               photos=getUsersPhotos(uid))
-=======
-    #    uid = getUserIdFromEmail(flask_login.current_user.id)
-    #   aid = getAlbumIdFromUser(flask_login.current_user.id) # TO DO
+
         imgfile = request.files['photo']
         caption = request.form.get('caption')
         aid=2
@@ -264,7 +248,7 @@ def upload_file():
         else:
             print("not image")
             return render_template('hello.html')
->>>>>>> Stashed changes
+
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('upload.html')
@@ -283,11 +267,10 @@ def upload_file():
 
 # end photo uploading code
 
-
 # bwen's query functions
 def getUsersLike(uid,pid):
     cursor= conn.cursor()
-    cursor.execute("SELECT * from likephoto where uid='{0}' and pid='{1}'".format(uid,pid))
+    cursor.execute("SELECT uid, pid from likePhoto where uid='{0}' and pid='{1}'".format(uid, pid))
     if cursor.fetchall()!='': # or NULL?
         return 1 # tuple exists (user likes the photo)
     else:
@@ -333,12 +316,18 @@ def suggestPhotos(uid):
 def getFriendsList(uid):
     query = "SELECT u1.uid AS ID, u1.fname AS FirstName, u1.lname AS LastName " \
             "FROM Users AS u1" \
-            "WHERE u1.uid = (SELECT f.fuid FROM isFriend AS f WHERE f.uid = '{0}')" \
+            "WHERE u1.uid IN (SELECT f.fuid FROM isFriend AS f WHERE f.uid = '{0}')" \
             "ORDER BY u1.fname, u1.lname"
-    print(query)  # optional printing out in your terminal
+
+    query2 = "SELECT u1.uid, u1.fname, u1.lname "\
+            "FROM Users AS u1, isFriend AS f"\
+            "WHERE u1.uid = f.fuid AND f.uid = '{0}'"\
+            "ORDER BY u1.fname"
+    print(query.format(uid))  # optional printing out in your terminal
     cursor = conn.cursor()
     cursor.execute(query.format(uid))
     return cursor.fetchall()
+
 
 '''
 Alternatively, 
