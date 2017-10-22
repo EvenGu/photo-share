@@ -165,7 +165,11 @@ def register_user():
         user = User()
         user.id = email
         flask_login.login_user(user)
+<<<<<<< Updated upstream
         createDefaultAlbum(uid) # TODO
+=======
+        cursor.execute("INSERT INTO Albums(aname,)")
+>>>>>>> Stashed changes
         return render_template('hello.html', name=fname, message='Account Created!')
     else:
         print("register failed: email already used")
@@ -174,12 +178,17 @@ def register_user():
 
 def getUsersPhotos(uid):
     cursor = conn.cursor()
-    cursor.execute("SELECT imgdata, picture_id, caption FROM Pictures WHERE user_id = '{0}'".format(uid))
+    cursor.execute("SELECT * FROM photos WHERE uid = '{0}'".format(uid))
     return cursor.fetchall()  # NOTE list of tuples, [(imgdata, pid), ...]
+
+def getAlbumPhotos(aid):
+    cursor = conn.cursor()
+    cursor.execute("select * from photos WHERE aid='{0}'".format(aid))
+    return cursor.fetchall()
 
 def getUserIdFromEmail(email):
     cursor = conn.cursor()
-    cursor.execute("SELECT user_id  FROM Users WHERE email = '{0}'".format(email))
+    cursor.execute("SELECT uid  FROM Users WHERE email = '{0}'".format(email))
     return cursor.fetchone()[0]
 
 
@@ -214,6 +223,7 @@ def allowed_file(filename):
 @flask_login.login_required
 def upload_file():
     if request.method == 'POST':
+<<<<<<< Updated upstream
         uid = getUserIdFromEmail(flask_login.current_user.id)
         aid = getAlbumIdFromUser(flask_login.current_user.id) # TODO
         imgfile = request.files['photo']
@@ -227,21 +237,81 @@ def upload_file():
         imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], caption+".jpg"))
         return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
                                photos=getUsersPhotos(uid))
+=======
+    #    uid = getUserIdFromEmail(flask_login.current_user.id)
+    #   aid = getAlbumIdFromUser(flask_login.current_user.id) # TO DO
+        imgfile = request.files['photo']
+        caption = request.form.get('caption')
+        aid=2
+
+
+        imgtype=imgfile.mimetype.split("/")
+        print (imgtype[1])
+#       photo_data = base64.standard_b64encode(imgfile.read())
+        if imgtype[0]=='image':
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO photos (path, aid, caption) VALUES (%s, %s, %s)",
+                           ('path', aid, caption))
+            cursor.execute("select pid from photos where path='path'")
+            pid=cursor.fetchone()[0]
+            cursor.execute("UPDATE photos set path=%s where pid=%s",
+                           (str(pid)+'.'+imgtype[1],pid))
+            conn.commit()
+            print(pid)
+            imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(pid)+'.'+imgtype[1]))
+            return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
+                               photos=getAlbumPhotos(aid))
+        else:
+            print("not image")
+            return render_template('hello.html')
+>>>>>>> Stashed changes
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('upload.html')
 
+    '''       
+            print(caption)
+    #       photo_data = base64.standard_b64encode(imgfile.read())
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO Photos (caption,path,aid) VALUES (%s, %s, %d)",
+                           (caption, path, aid))
+            conn.commit()
+            imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], caption+".jpg"))
+            return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
+    '''
+
 
 # end photo uploading code
 
+<<<<<<< Updated upstream
 # bwen's query functions
 def getUsersLike(uid,pid):
     cursor= conn.cursor()
     cursor.execute("SELECT uid, pid from likePhoto where uid='{0}' and pid='{1}'".format(uid, pid))
+=======
+#bwen's query functions
+
+
+def getUsersLike(uid,pid):
+    cursor= conn.cursor()
+    cursor.execute("SELECT * from likephoto where uid='{0}' and pid='{1}'".format(uid,pid))
+>>>>>>> Stashed changes
     if cursor.fetchall()!='':
         return 1
     else:
         return 0
+'''
+def search(key,type):
+#type 1 for tags,2 for users,3 for albums
+    cursor=conn.cursor()
+    if (type==1):
+        key.split(",")
+    elif(type==2):
+        key.split(",")
+    elif(type==3):
+
+        cursor
+'''
 
 def getUsersclosefriends(uid):
     cursor=conn.cursor()

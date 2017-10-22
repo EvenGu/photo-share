@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="df90874d-f01e-40d5-b0e6-2aae0aaa262d" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/albums.html" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/testShowPhoto.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,7 +15,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/PhotoShare$PhotoShare.coverage" NAME="PhotoShare Coverage Results" MODIFIED="1507951475956" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/PhotoShare$app.coverage" NAME="app Coverage Results" MODIFIED="1508609044022" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PhotoShare$app.coverage" NAME="app Coverage Results" MODIFIED="1508634006152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -29,52 +30,54 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PhotoShare.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PhotoShare.py">
+      <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="14" lean-forward="false" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
+            <state relative-caret-position="2791">
+              <caret line="276" column="3" lean-forward="false" selection-start-line="276" selection-start-column="3" selection-end-line="276" selection-end-column="3" />
+              <folding>
+                <element signature="e#573#585#0" expanded="true" />
+                <marker date="1508633896000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
+                <marker date="1508633896000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
+                <marker date="1508633896000" expanded="true" signature="2182:2228" ph="SELECT passw... Users" />
+                <marker date="1508633896000" expanded="true" signature="3123:3169" ph="SELECT passw... Users" />
+                <marker date="1508633896000" expanded="true" signature="5075:5224" ph="INSERT INTO Users... " />
+                <marker date="1508633896000" expanded="true" signature="5434:5460" ph="INSERT INTO Albums... " />
+                <marker date="1508633896000" expanded="true" signature="5743:5781" ph="SELECT * FRO... photos" />
+                <marker date="1508633896000" expanded="true" signature="5944:5980" ph="select * fro... photos" />
+                <marker date="1508633896000" expanded="true" signature="6103:6145" ph="SELECT uid F... Users" />
+                <marker date="1508633896000" expanded="true" signature="6335:6379" ph="SELECT email... Users" />
+                <marker date="1508633896000" expanded="true" signature="7532:7591" ph="INSERT INTO photos... " />
+                <marker date="1508633896000" expanded="true" signature="7673:7713" ph="select pid f... photos" />
+                <marker date="1508633896000" expanded="true" signature="7781:7819" ph="UPDATE photo... " />
+                <marker date="1508633896000" expanded="true" signature="9053:9106" ph="SELECT * fro... likephoto" />
+                <marker date="1508633896000" expanded="true" signature="9491:10022" ph="select u1 fr... uid" />
+                <marker date="1508633896000" expanded="true" signature="9529:9624" ph="select uid a... isfriend" />
+                <marker date="1508633896000" expanded="true" signature="10142:10548" ph="select pid f... pid" />
+                <marker date="1508633896000" expanded="true" signature="10180:10239" ph="select pid a... tags" />
+                <marker date="1508633896000" expanded="true" signature="10264:10467" ph="select pid a... tags" />
+                <marker date="1508633896000" expanded="true" signature="10334:10466" ph="select DISTI... tags" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="schema_ps.sql" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/schema_ps.sql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-564">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app.py">
+      <file leaf-file-name="ee.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/ee.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="194" column="22" lean-forward="true" selection-start-line="194" selection-start-column="22" selection-end-line="194" selection-end-column="22" />
-              <folding>
-                <element signature="e#573#585#0" expanded="true" />
-                <marker date="1508609173000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
-                <marker date="1508609173000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
-                <marker date="1508609173000" expanded="true" signature="2181:2227" ph="SELECT passw... Users" />
-                <marker date="1508609173000" expanded="true" signature="3099:3145" ph="SELECT passw... Users" />
-                <marker date="1508609173000" expanded="true" signature="5005:5143" ph="INSERT INTO Users... " />
-                <marker date="1508609173000" expanded="true" signature="5592:5663" ph="SELECT imgda... Pictures" />
-                <marker date="1508609173000" expanded="true" signature="5832:5878" ph="SELECT user_... Users" />
-                <marker date="1508609173000" expanded="true" signature="6068:6112" ph="SELECT email... Users" />
-                <marker date="1508609173000" expanded="true" signature="7091:7159" ph="INSERT INTO Pictures... " />
-                <marker date="1508609173000" expanded="true" signature="7727:7748" ph="SELECT uid, like" />
-                <marker date="1508609173000" expanded="true" signature="7727:7783" ph="SELECT uid, ulike" />
-                <marker date="1508609173000" expanded="true" signature="7949:8070" ph="select u1 fr... u1" />
-                <marker date="1508609173000" expanded="true" signature="7949:8446" ph="select u1 fr... fuid" />
-                <marker date="1508609173000" expanded="true" signature="7949:8480" ph="select u1 fr... fuid" />
-                <marker date="1508609173000" expanded="true" signature="7949:8495" ph="select u1 fr... fuid" />
-                <marker date="1508609173000" expanded="true" signature="7987:8070" ph="select u1,co... isfriend" />
-                <marker date="1508609173000" expanded="true" signature="8106:8421" ph="select u2,co... isfriend" />
-                <marker date="1508609173000" expanded="true" signature="8600:8699" ph="select pid f... pid" />
-                <marker date="1508609173000" expanded="true" signature="8600:8769" ph="select pid f... pid" />
-                <marker date="1508609173000" expanded="true" signature="8600:8845" ph="select pid f... pid" />
-                <marker date="1508609173000" expanded="true" signature="8600:8880" ph="select pid f... pid" />
-                <marker date="1508609173000" expanded="true" signature="8600:8926" ph="select pid f... pid" />
-                <marker date="1508609173000" expanded="true" signature="8600:8972" ph="select pid f... pid" />
-                <marker date="1508609173000" expanded="true" signature="8600:8994" ph="select pid f... pid" />
-                <marker date="1508609173000" expanded="true" signature="8600:9006" ph="select pid f... pid" />
-                <marker date="1508609173000" expanded="true" signature="8638:8697" ph="select pid, tags" />
-                <marker date="1508609173000" expanded="true" signature="8722:8769" ph="select pid, tags" />
-                <marker date="1508609173000" expanded="true" signature="8792:8845" ph="select DISTI... tags" />
-              </folding>
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -92,11 +95,9 @@
       <file leaf-file-name="hello.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/hello.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="11" lean-forward="true" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="36" />
-              <folding>
-                <marker date="1508609173000" expanded="false" signature="331:366" ph="data:" />
-              </folding>
+            <state relative-caret-position="377">
+              <caret line="28" column="65" lean-forward="true" selection-start-line="28" selection-start-column="65" selection-end-line="28" selection-end-column="65" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -104,8 +105,8 @@
       <file leaf-file-name="upload.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/upload.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="71" lean-forward="false" selection-start-line="8" selection-start-column="71" selection-end-line="8" selection-end-column="71" />
+            <state relative-caret-position="240">
+              <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -115,7 +116,7 @@
         <entry file="file://$PROJECT_DIR$/templates/register.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
-              <caret line="6" column="11" lean-forward="false" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+              <caret line="6" column="10" lean-forward="false" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -126,16 +127,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="105">
               <caret line="7" column="18" lean-forward="false" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="schema.sql" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/schema.sql">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -163,6 +154,11 @@
       <find>hello</find>
       <find>templat</find>
       <find>png</find>
+      <find>user_id</find>
+      <find>user_i</find>
+      <find>current_user.id</find>
+      <find>getalbum</find>
+      <find>getuser</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -175,9 +171,10 @@
         <option value="$PROJECT_DIR$/schema.sql" />
         <option value="$PROJECT_DIR$/templates/unauth.html" />
         <option value="$PROJECT_DIR$/templates/upload.html" />
-        <option value="$PROJECT_DIR$/templates/hello.html" />
         <option value="$PROJECT_DIR$/templates/testShowPhoto.html" />
+        <option value="$PROJECT_DIR$/schema_ps.sql" />
         <option value="$PROJECT_DIR$/app.py" />
+        <option value="$PROJECT_DIR$/templates/hello.html" />
       </list>
     </option>
   </component>
@@ -224,6 +221,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -246,8 +245,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -256,8 +253,12 @@
     <property name="SearchEverywhereHistoryKey" value="secure_filename&#9;null&#9;null" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/SQL Dialects" value="MySQL" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/templates/upload" />
       <recent name="$PROJECT_DIR$/static" />
@@ -347,16 +348,15 @@
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991204" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.328" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30666667" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33431086" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20234375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32933334" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33431086" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -365,6 +365,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32933334" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -381,63 +382,12 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/PhotoShare.py" />
     <entry file="file://$PROJECT_DIR$/templates/hello.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="25" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
-          <folding>
-            <marker date="1508609173000" expanded="false" signature="331:366" ph="data:" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/upload.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/unauth.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="5" lean-forward="false" selection-start-line="10" selection-start-column="5" selection-end-line="10" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/schema.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/register.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="11" lean-forward="false" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PhotoShare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="14" lean-forward="false" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/hello.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="25" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
-          <folding>
-            <marker date="1508609173000" expanded="false" signature="331:366" ph="data:" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -465,67 +415,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/schema.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/schema.sql" />
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2625">
           <caret line="182" column="30" lean-forward="false" selection-start-line="182" selection-start-column="30" selection-end-line="182" selection-end-column="30" />
           <folding>
             <element signature="e#573#585#0" expanded="true" />
-            <marker date="1508609173000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="2181:2227" ph="SELECT passw... Users" />
-            <marker date="1508609173000" expanded="true" signature="3099:3145" ph="SELECT passw... Users" />
-            <marker date="1508609173000" expanded="true" signature="5005:5143" ph="INSERT INTO Users... " />
-            <marker date="1508609173000" expanded="true" signature="5592:5663" ph="SELECT imgda... Pictures" />
-            <marker date="1508609173000" expanded="true" signature="5832:5878" ph="SELECT user_... Users" />
-            <marker date="1508609173000" expanded="true" signature="6068:6112" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="7091:7159" ph="INSERT INTO Pictures... " />
-            <marker date="1508609173000" expanded="true" signature="7727:7748" ph="SELECT uid, like" />
-            <marker date="1508609173000" expanded="true" signature="7727:7783" ph="SELECT uid, ulike" />
-            <marker date="1508609173000" expanded="true" signature="7949:8070" ph="select u1 fr... u1" />
-            <marker date="1508609173000" expanded="true" signature="7949:8446" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7949:8480" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7949:8495" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7987:8070" ph="select u1,co... isfriend" />
-            <marker date="1508609173000" expanded="true" signature="8106:8421" ph="select u2,co... isfriend" />
-            <marker date="1508609173000" expanded="true" signature="8600:8699" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8769" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8845" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8880" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8926" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8972" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8994" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:9006" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8638:8697" ph="select pid, tags" />
-            <marker date="1508609173000" expanded="true" signature="8722:8769" ph="select pid, tags" />
-            <marker date="1508609173000" expanded="true" signature="8792:8845" ph="select DISTI... tags" />
+            <marker date="1508633896000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="2182:2228" ph="SELECT passw... Users" />
+            <marker date="1508633896000" expanded="true" signature="3123:3169" ph="SELECT passw... Users" />
+            <marker date="1508633896000" expanded="true" signature="5075:5224" ph="INSERT INTO Users... " />
+            <marker date="1508633896000" expanded="true" signature="5434:5460" ph="INSERT INTO Albums... " />
+            <marker date="1508633896000" expanded="true" signature="5743:5781" ph="SELECT * FRO... photos" />
+            <marker date="1508633896000" expanded="true" signature="5944:5980" ph="select * fro... photos" />
+            <marker date="1508633896000" expanded="true" signature="6103:6145" ph="SELECT uid F... Users" />
+            <marker date="1508633896000" expanded="true" signature="6335:6379" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="7532:7591" ph="INSERT INTO photos... " />
+            <marker date="1508633896000" expanded="true" signature="7673:7713" ph="select pid f... photos" />
+            <marker date="1508633896000" expanded="true" signature="7781:7819" ph="UPDATE photo... " />
+            <marker date="1508633896000" expanded="true" signature="9053:9106" ph="SELECT * fro... likephoto" />
+            <marker date="1508633896000" expanded="true" signature="9491:10022" ph="select u1 fr... uid" />
+            <marker date="1508633896000" expanded="true" signature="9529:9624" ph="select uid a... isfriend" />
+            <marker date="1508633896000" expanded="true" signature="10142:10548" ph="select pid f... pid" />
+            <marker date="1508633896000" expanded="true" signature="10180:10239" ph="select pid a... tags" />
+            <marker date="1508633896000" expanded="true" signature="10264:10467" ph="select pid a... tags" />
+            <marker date="1508633896000" expanded="true" signature="10334:10466" ph="select DISTI... tags" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PhotoShare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="14" lean-forward="false" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/PhotoShare.py" />
     <entry file="file://$PROJECT_DIR$/templates/hello.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="25" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
-          <folding>
-            <marker date="1508609173000" expanded="false" signature="331:366" ph="data:" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -553,67 +479,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/schema.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/schema.sql" />
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2625">
           <caret line="182" column="30" lean-forward="false" selection-start-line="182" selection-start-column="30" selection-end-line="182" selection-end-column="30" />
           <folding>
             <element signature="e#573#585#0" expanded="true" />
-            <marker date="1508609173000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="2181:2227" ph="SELECT passw... Users" />
-            <marker date="1508609173000" expanded="true" signature="3099:3145" ph="SELECT passw... Users" />
-            <marker date="1508609173000" expanded="true" signature="5005:5143" ph="INSERT INTO Users... " />
-            <marker date="1508609173000" expanded="true" signature="5592:5663" ph="SELECT imgda... Pictures" />
-            <marker date="1508609173000" expanded="true" signature="5832:5878" ph="SELECT user_... Users" />
-            <marker date="1508609173000" expanded="true" signature="6068:6112" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="7091:7159" ph="INSERT INTO Pictures... " />
-            <marker date="1508609173000" expanded="true" signature="7727:7748" ph="SELECT uid, like" />
-            <marker date="1508609173000" expanded="true" signature="7727:7783" ph="SELECT uid, ulike" />
-            <marker date="1508609173000" expanded="true" signature="7949:8070" ph="select u1 fr... u1" />
-            <marker date="1508609173000" expanded="true" signature="7949:8446" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7949:8480" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7949:8495" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7987:8070" ph="select u1,co... isfriend" />
-            <marker date="1508609173000" expanded="true" signature="8106:8421" ph="select u2,co... isfriend" />
-            <marker date="1508609173000" expanded="true" signature="8600:8699" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8769" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8845" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8880" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8926" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8972" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8994" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:9006" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8638:8697" ph="select pid, tags" />
-            <marker date="1508609173000" expanded="true" signature="8722:8769" ph="select pid, tags" />
-            <marker date="1508609173000" expanded="true" signature="8792:8845" ph="select DISTI... tags" />
+            <marker date="1508633896000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="2182:2228" ph="SELECT passw... Users" />
+            <marker date="1508633896000" expanded="true" signature="3123:3169" ph="SELECT passw... Users" />
+            <marker date="1508633896000" expanded="true" signature="5075:5224" ph="INSERT INTO Users... " />
+            <marker date="1508633896000" expanded="true" signature="5434:5460" ph="INSERT INTO Albums... " />
+            <marker date="1508633896000" expanded="true" signature="5743:5781" ph="SELECT * FRO... photos" />
+            <marker date="1508633896000" expanded="true" signature="5944:5980" ph="select * fro... photos" />
+            <marker date="1508633896000" expanded="true" signature="6103:6145" ph="SELECT uid F... Users" />
+            <marker date="1508633896000" expanded="true" signature="6335:6379" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="7532:7591" ph="INSERT INTO photos... " />
+            <marker date="1508633896000" expanded="true" signature="7673:7713" ph="select pid f... photos" />
+            <marker date="1508633896000" expanded="true" signature="7781:7819" ph="UPDATE photo... " />
+            <marker date="1508633896000" expanded="true" signature="9053:9106" ph="SELECT * fro... likephoto" />
+            <marker date="1508633896000" expanded="true" signature="9491:10022" ph="select u1 fr... uid" />
+            <marker date="1508633896000" expanded="true" signature="9529:9624" ph="select uid a... isfriend" />
+            <marker date="1508633896000" expanded="true" signature="10142:10548" ph="select pid f... pid" />
+            <marker date="1508633896000" expanded="true" signature="10180:10239" ph="select pid a... tags" />
+            <marker date="1508633896000" expanded="true" signature="10264:10467" ph="select pid a... tags" />
+            <marker date="1508633896000" expanded="true" signature="10334:10466" ph="select DISTI... tags" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PhotoShare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="14" lean-forward="false" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/PhotoShare.py" />
     <entry file="file://$PROJECT_DIR$/templates/hello.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="5" column="25" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
-          <folding>
-            <marker date="1508609173000" expanded="false" signature="331:366" ph="data:" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -641,67 +543,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/schema.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/schema.sql" />
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3150">
           <caret line="182" column="30" lean-forward="false" selection-start-line="182" selection-start-column="30" selection-end-line="182" selection-end-column="30" />
           <folding>
             <element signature="e#573#585#0" expanded="true" />
-            <marker date="1508609173000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="2181:2227" ph="SELECT passw... Users" />
-            <marker date="1508609173000" expanded="true" signature="3099:3145" ph="SELECT passw... Users" />
-            <marker date="1508609173000" expanded="true" signature="5005:5143" ph="INSERT INTO Users... " />
-            <marker date="1508609173000" expanded="true" signature="5592:5663" ph="SELECT imgda... Pictures" />
-            <marker date="1508609173000" expanded="true" signature="5832:5878" ph="SELECT user_... Users" />
-            <marker date="1508609173000" expanded="true" signature="6068:6112" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="7091:7159" ph="INSERT INTO Pictures... " />
-            <marker date="1508609173000" expanded="true" signature="7727:7748" ph="SELECT uid, like" />
-            <marker date="1508609173000" expanded="true" signature="7727:7783" ph="SELECT uid, ulike" />
-            <marker date="1508609173000" expanded="true" signature="7949:8070" ph="select u1 fr... u1" />
-            <marker date="1508609173000" expanded="true" signature="7949:8446" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7949:8480" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7949:8495" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7987:8070" ph="select u1,co... isfriend" />
-            <marker date="1508609173000" expanded="true" signature="8106:8421" ph="select u2,co... isfriend" />
-            <marker date="1508609173000" expanded="true" signature="8600:8699" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8769" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8845" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8880" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8926" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8972" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8994" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:9006" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8638:8697" ph="select pid, tags" />
-            <marker date="1508609173000" expanded="true" signature="8722:8769" ph="select pid, tags" />
-            <marker date="1508609173000" expanded="true" signature="8792:8845" ph="select DISTI... tags" />
+            <marker date="1508633896000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="2182:2228" ph="SELECT passw... Users" />
+            <marker date="1508633896000" expanded="true" signature="3123:3169" ph="SELECT passw... Users" />
+            <marker date="1508633896000" expanded="true" signature="5075:5224" ph="INSERT INTO Users... " />
+            <marker date="1508633896000" expanded="true" signature="5434:5460" ph="INSERT INTO Albums... " />
+            <marker date="1508633896000" expanded="true" signature="5743:5781" ph="SELECT * FRO... photos" />
+            <marker date="1508633896000" expanded="true" signature="5944:5980" ph="select * fro... photos" />
+            <marker date="1508633896000" expanded="true" signature="6103:6145" ph="SELECT uid F... Users" />
+            <marker date="1508633896000" expanded="true" signature="6335:6379" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="7532:7591" ph="INSERT INTO photos... " />
+            <marker date="1508633896000" expanded="true" signature="7673:7713" ph="select pid f... photos" />
+            <marker date="1508633896000" expanded="true" signature="7781:7819" ph="UPDATE photo... " />
+            <marker date="1508633896000" expanded="true" signature="9053:9106" ph="SELECT * fro... likephoto" />
+            <marker date="1508633896000" expanded="true" signature="9491:10022" ph="select u1 fr... uid" />
+            <marker date="1508633896000" expanded="true" signature="9529:9624" ph="select uid a... isfriend" />
+            <marker date="1508633896000" expanded="true" signature="10142:10548" ph="select pid f... pid" />
+            <marker date="1508633896000" expanded="true" signature="10180:10239" ph="select pid a... tags" />
+            <marker date="1508633896000" expanded="true" signature="10264:10467" ph="select pid a... tags" />
+            <marker date="1508633896000" expanded="true" signature="10334:10466" ph="select DISTI... tags" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PhotoShare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="14" lean-forward="false" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/PhotoShare.py" />
     <entry file="file://$PROJECT_DIR$/templates/hello.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="5" column="25" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
-          <folding>
-            <marker date="1508609173000" expanded="false" signature="331:366" ph="data:" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -729,60 +607,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/schema.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/schema.sql" />
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3276">
           <caret line="182" column="30" lean-forward="true" selection-start-line="182" selection-start-column="30" selection-end-line="182" selection-end-column="30" />
           <folding>
             <element signature="e#573#585#0" expanded="true" />
-            <marker date="1508609173000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="2181:2227" ph="SELECT passw... Users" />
-            <marker date="1508609173000" expanded="true" signature="3099:3145" ph="SELECT passw... Users" />
-            <marker date="1508609173000" expanded="true" signature="5005:5143" ph="INSERT INTO Users... " />
-            <marker date="1508609173000" expanded="true" signature="5592:5663" ph="SELECT imgda... Pictures" />
-            <marker date="1508609173000" expanded="true" signature="5832:5878" ph="SELECT user_... Users" />
-            <marker date="1508609173000" expanded="true" signature="6068:6112" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="7091:7159" ph="INSERT INTO Pictures... " />
-            <marker date="1508609173000" expanded="true" signature="7727:7748" ph="SELECT uid, like" />
-            <marker date="1508609173000" expanded="true" signature="7727:7783" ph="SELECT uid, ulike" />
-            <marker date="1508609173000" expanded="true" signature="7949:8070" ph="select u1 fr... u1" />
-            <marker date="1508609173000" expanded="true" signature="7949:8446" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7949:8480" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7949:8495" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7987:8070" ph="select u1,co... isfriend" />
-            <marker date="1508609173000" expanded="true" signature="8106:8421" ph="select u2,co... isfriend" />
-            <marker date="1508609173000" expanded="true" signature="8600:8699" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8769" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8845" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8880" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8926" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8972" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8994" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:9006" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8638:8697" ph="select pid, tags" />
-            <marker date="1508609173000" expanded="true" signature="8722:8769" ph="select pid, tags" />
-            <marker date="1508609173000" expanded="true" signature="8792:8845" ph="select DISTI... tags" />
+            <marker date="1508633896000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="2182:2228" ph="SELECT passw... Users" />
+            <marker date="1508633896000" expanded="true" signature="3123:3169" ph="SELECT passw... Users" />
+            <marker date="1508633896000" expanded="true" signature="5075:5224" ph="INSERT INTO Users... " />
+            <marker date="1508633896000" expanded="true" signature="5434:5460" ph="INSERT INTO Albums... " />
+            <marker date="1508633896000" expanded="true" signature="5743:5781" ph="SELECT * FRO... photos" />
+            <marker date="1508633896000" expanded="true" signature="5944:5980" ph="select * fro... photos" />
+            <marker date="1508633896000" expanded="true" signature="6103:6145" ph="SELECT uid F... Users" />
+            <marker date="1508633896000" expanded="true" signature="6335:6379" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="7532:7591" ph="INSERT INTO photos... " />
+            <marker date="1508633896000" expanded="true" signature="7673:7713" ph="select pid f... photos" />
+            <marker date="1508633896000" expanded="true" signature="7781:7819" ph="UPDATE photo... " />
+            <marker date="1508633896000" expanded="true" signature="9053:9106" ph="SELECT * fro... likephoto" />
+            <marker date="1508633896000" expanded="true" signature="9491:10022" ph="select u1 fr... uid" />
+            <marker date="1508633896000" expanded="true" signature="9529:9624" ph="select uid a... isfriend" />
+            <marker date="1508633896000" expanded="true" signature="10142:10548" ph="select pid f... pid" />
+            <marker date="1508633896000" expanded="true" signature="10180:10239" ph="select pid a... tags" />
+            <marker date="1508633896000" expanded="true" signature="10264:10467" ph="select pid a... tags" />
+            <marker date="1508633896000" expanded="true" signature="10334:10466" ph="select DISTI... tags" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PhotoShare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="25" lean-forward="false" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/PhotoShare.py" />
     <entry file="file://$PROJECT_DIR$/templates/register.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
@@ -795,20 +651,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
           <caret line="25" column="11" lean-forward="true" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
-          <folding>
-            <marker date="1508609173000" expanded="false" signature="331:366" ph="data:" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PhotoShare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="25" lean-forward="true" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/PhotoShare.py" />
     <entry file="file://$PROJECT_DIR$/templates/register.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
@@ -821,55 +668,47 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
           <caret line="25" column="11" lean-forward="true" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
-          <folding>
-            <marker date="1508609173000" expanded="false" signature="331:366" ph="data:" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/readme.md" />
-    <entry file="file://$PROJECT_DIR$/templates/ee.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/upload/1.png">
+    <entry file="file://$PROJECT_DIR$/templates/upload/1.png" />
+    <entry file="file://$PROJECT_DIR$/PhotoShare.py" />
+    <entry file="file://$PROJECT_DIR$/templates/upload/3-333.jpg" />
+    <entry file="file://$PROJECT_DIR$/templates/upload/3-333.jpeg" />
+    <entry file="file://$PROJECT_DIR$/schema.sql" />
+    <entry file="file://$PROJECT_DIR$/templates/upload/1.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/hello.html">
+    <entry file="file://$PROJECT_DIR$/templates/albums.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="11" lean-forward="true" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="36" />
-          <folding>
-            <marker date="1508609173000" expanded="false" signature="331:366" ph="data:" />
-          </folding>
+        <state relative-caret-position="-296">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/testShowPhoto.html">
+    <entry file="file://$PROJECT_DIR$/templates/ee.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="4" lean-forward="false" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/schema.sql">
+    <entry file="file://$PROJECT_DIR$/schema_ps.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="20" lean-forward="true" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+        <state relative-caret-position="-564">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -885,61 +724,61 @@
     <entry file="file://$PROJECT_DIR$/templates/register.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
-          <caret line="6" column="11" lean-forward="false" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+          <caret line="6" column="10" lean-forward="false" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/upload.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="71" lean-forward="false" selection-start-line="8" selection-start-column="71" selection-end-line="8" selection-end-column="71" />
+        <state relative-caret-position="240">
+          <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PhotoShare.py">
+    <entry file="file://$PROJECT_DIR$/templates/hello.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="14" lean-forward="false" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
+        <state relative-caret-position="377">
+          <caret line="28" column="65" lean-forward="true" selection-start-line="28" selection-start-column="65" selection-end-line="28" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/testShowPhoto.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="4" lean-forward="false" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="194" column="22" lean-forward="true" selection-start-line="194" selection-start-column="22" selection-end-line="194" selection-end-column="22" />
+        <state relative-caret-position="2791">
+          <caret line="276" column="3" lean-forward="false" selection-start-line="276" selection-start-column="3" selection-end-line="276" selection-end-column="3" />
           <folding>
             <element signature="e#573#585#0" expanded="true" />
-            <marker date="1508609173000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="2181:2227" ph="SELECT passw... Users" />
-            <marker date="1508609173000" expanded="true" signature="3099:3145" ph="SELECT passw... Users" />
-            <marker date="1508609173000" expanded="true" signature="5005:5143" ph="INSERT INTO Users... " />
-            <marker date="1508609173000" expanded="true" signature="5592:5663" ph="SELECT imgda... Pictures" />
-            <marker date="1508609173000" expanded="true" signature="5832:5878" ph="SELECT user_... Users" />
-            <marker date="1508609173000" expanded="true" signature="6068:6112" ph="SELECT email... Users" />
-            <marker date="1508609173000" expanded="true" signature="7091:7159" ph="INSERT INTO Pictures... " />
-            <marker date="1508609173000" expanded="true" signature="7727:7748" ph="SELECT uid, like" />
-            <marker date="1508609173000" expanded="true" signature="7727:7783" ph="SELECT uid, ulike" />
-            <marker date="1508609173000" expanded="true" signature="7949:8070" ph="select u1 fr... u1" />
-            <marker date="1508609173000" expanded="true" signature="7949:8446" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7949:8480" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7949:8495" ph="select u1 fr... fuid" />
-            <marker date="1508609173000" expanded="true" signature="7987:8070" ph="select u1,co... isfriend" />
-            <marker date="1508609173000" expanded="true" signature="8106:8421" ph="select u2,co... isfriend" />
-            <marker date="1508609173000" expanded="true" signature="8600:8699" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8769" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8845" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8880" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8926" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8972" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:8994" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8600:9006" ph="select pid f... pid" />
-            <marker date="1508609173000" expanded="true" signature="8638:8697" ph="select pid, tags" />
-            <marker date="1508609173000" expanded="true" signature="8722:8769" ph="select pid, tags" />
-            <marker date="1508609173000" expanded="true" signature="8792:8845" ph="select DISTI... tags" />
+            <marker date="1508633896000" expanded="true" signature="1482:1505" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="1602:1625" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="2182:2228" ph="SELECT passw... Users" />
+            <marker date="1508633896000" expanded="true" signature="3123:3169" ph="SELECT passw... Users" />
+            <marker date="1508633896000" expanded="true" signature="5075:5224" ph="INSERT INTO Users... " />
+            <marker date="1508633896000" expanded="true" signature="5434:5460" ph="INSERT INTO Albums... " />
+            <marker date="1508633896000" expanded="true" signature="5743:5781" ph="SELECT * FRO... photos" />
+            <marker date="1508633896000" expanded="true" signature="5944:5980" ph="select * fro... photos" />
+            <marker date="1508633896000" expanded="true" signature="6103:6145" ph="SELECT uid F... Users" />
+            <marker date="1508633896000" expanded="true" signature="6335:6379" ph="SELECT email... Users" />
+            <marker date="1508633896000" expanded="true" signature="7532:7591" ph="INSERT INTO photos... " />
+            <marker date="1508633896000" expanded="true" signature="7673:7713" ph="select pid f... photos" />
+            <marker date="1508633896000" expanded="true" signature="7781:7819" ph="UPDATE photo... " />
+            <marker date="1508633896000" expanded="true" signature="9053:9106" ph="SELECT * fro... likephoto" />
+            <marker date="1508633896000" expanded="true" signature="9491:10022" ph="select u1 fr... uid" />
+            <marker date="1508633896000" expanded="true" signature="9529:9624" ph="select uid a... isfriend" />
+            <marker date="1508633896000" expanded="true" signature="10142:10548" ph="select pid f... pid" />
+            <marker date="1508633896000" expanded="true" signature="10180:10239" ph="select pid a... tags" />
+            <marker date="1508633896000" expanded="true" signature="10264:10467" ph="select pid a... tags" />
+            <marker date="1508633896000" expanded="true" signature="10334:10466" ph="select DISTI... tags" />
           </folding>
         </state>
       </provider>
