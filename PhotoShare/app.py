@@ -59,7 +59,6 @@ class User(flask_login.UserMixin):
 def user_loader(email):
     users = getUserList()
     if not (email) or email not in str(users):
-
         return
     user = User()
     user.id = email
@@ -166,9 +165,10 @@ def register_user():
         user = User()
         user.id = email
         flask_login.login_user(user)
+        createDefaultAlbum(uid) # TODO
         return render_template('hello.html', name=fname, message='Account Created!')
     else:
-        print("register failed: email already useds")
+        print("register failed: email already used")
         return flask.redirect(flask.url_for('register'))
 
 
@@ -215,13 +215,13 @@ def allowed_file(filename):
 def upload_file():
     if request.method == 'POST':
         uid = getUserIdFromEmail(flask_login.current_user.id)
-        aid = getAlbumIdFromUser(flask_login.current_user.id) # TO DO
+        aid = getAlbumIdFromUser(flask_login.current_user.id) # TODO
         imgfile = request.files['photo']
         caption = request.form.get('caption')
         print(caption)
  #       photo_data = base64.standard_b64encode(imgfile.read())
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO Photos (caption,path,aid) VALUES (%s, %s, %d)",
+        cursor.execute("INSERT INTO Photos (caption,path,aid) VALUES (%s, %s, %d)",# TODO
                        (caption, photopath, aid))
         conn.commit()
         imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], caption+".jpg"))
@@ -234,10 +234,10 @@ def upload_file():
 
 # end photo uploading code
 
-#bwen's query functions
+# bwen's query functions
 def getUsersLike(uid,pid):
     cursor= conn.cursor()
-    cursor.execute("SELECT uid, pid from ulike where uid='{0}' and pid='{1}'".format(uid))
+    cursor.execute("SELECT uid, pid from likePhoto where uid='{0}' and pid='{1}'".format(uid, pid))
     if cursor.fetchall()!='':
         return 1
     else:
@@ -268,7 +268,30 @@ def getRecommandPhoto(uid):
     return cursor.fetchall()
 
 
+# Yiwen
+def getFriendsList(uid):
+    query = "SELECT u1.uid, u1.fname, u1.lname " \
+            "FROM Users AS u1, isFriend AS f" \
+            "WHERE u1.uid = f.fuid AND f.uid = '{0}'" \
+            "ORDER BY u1.fname"
+    print(query)  # optional printing out in your terminal
+    cursor = conn.cursor()
+    cursor.execute(query.format(uid))
+    return cursor.fetchall()
 
+def createDefaultAlbum(uid):
+    query = "INSERT INTO Albums(aname, uid) VALUES ('default','{0}')"
+    print(query.format(uid))  # optional printing out in your terminal
+    cursor = conn.cursor()
+    cursor.execute(query.format(uid))
+    return
+
+def createAlbum(uid, aname):
+    query = "INSERT INTO Albums(aname, uid) VALUES ('{0}','{1}')"
+    print(query.format(uid))  # optional printing out in your terminal
+    cursor = conn.cursor()
+    cursor.execute(query.format(aname,uid))
+    return
 
 # default page
 @app.route("/", methods=['GET'])
