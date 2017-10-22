@@ -59,7 +59,6 @@ class User(flask_login.UserMixin):
 def user_loader(email):
     users = getUserList()
     if not (email) or email not in str(users):
-
         return
     user = User()
     user.id = email
@@ -166,9 +165,10 @@ def register_user():
         user = User()
         user.id = email
         flask_login.login_user(user)
+        createDefaultAlbum(uid) # TODO
         return render_template('hello.html', name=fname, message='Account Created!')
     else:
-        print("register failed: email already useds")
+        print("register failed: email already used")
         return flask.redirect(flask.url_for('register'))
 
 
@@ -278,6 +278,20 @@ def getFriendsList(uid):
     cursor = conn.cursor()
     cursor.execute(query.format(uid))
     return cursor.fetchall()
+
+def createDefaultAlbum(uid):
+    query = "INSERT INTO Albums(aname, uid) VALUES ('default','{0}')"
+    print(query.format(uid))  # optional printing out in your terminal
+    cursor = conn.cursor()
+    cursor.execute(query.format(uid))
+    return
+
+def createAlbum(uid, aname):
+    query = "INSERT INTO Albums(aname, uid) VALUES ('{0}','{1}')"
+    print(query.format(uid))  # optional printing out in your terminal
+    cursor = conn.cursor()
+    cursor.execute(query.format(aname,uid))
+    return
 
 # default page
 @app.route("/", methods=['GET'])
