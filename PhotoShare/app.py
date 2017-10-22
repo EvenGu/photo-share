@@ -174,12 +174,17 @@ def register_user():
 
 def getUsersPhotos(uid):
     cursor = conn.cursor()
-    cursor.execute("SELECT imgdata, picture_id, caption FROM Pictures WHERE user_id = '{0}'".format(uid))
+    cursor.execute("SELECT * FROM photos WHERE uid = '{0}'".format(uid))
     return cursor.fetchall()  # NOTE list of tuples, [(imgdata, pid), ...]
+
+def getAlbumPhotos(aid):
+    cursor = conn.cursor()
+    cursor.execute("select * from photos WHERE aid='{0}'".format(aid))
+    return cursor.fetchall()
 
 def getUserIdFromEmail(email):
     cursor = conn.cursor()
-    cursor.execute("SELECT user_id  FROM Users WHERE email = '{0}'".format(email))
+    cursor.execute("SELECT uid  FROM Users WHERE email = '{0}'".format(email))
     return cursor.fetchone()[0]
 
 
@@ -214,38 +219,46 @@ def allowed_file(filename):
 @flask_login.login_required
 def upload_file():
     if request.method == 'POST':
-        uid = getUserIdFromEmail(flask_login.current_user.id)
-        aid = getAlbumIdFromUser(flask_login.current_user.id) # TO DO
+    #    uid = getUserIdFromEmail(flask_login.current_user.id)
+    #   aid = getAlbumIdFromUser(flask_login.current_user.id) # TO DO
         imgfile = request.files['photo']
         caption = request.form.get('caption')
-<<<<<<< HEAD
+        aid=2
+
+
         imgtype=imgfile.mimetype.split("/")
         print (imgtype[1])
 #       photo_data = base64.standard_b64encode(imgfile.read())
         if imgtype[0]=='image':
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO Pictures (imgdata, user_id, caption) VALUES (%s, %s, %s)",
-                           (1, uid, caption))
+            cursor.execute("INSERT INTO photos (path, aid, caption) VALUES (%s, %s, %s)",
+                           ('path', aid, caption))
+            cursor.execute("select pid from photos where path='path'")
+            pid=cursor.fetchone()[0]
+            cursor.execute("UPDATE photos set path=%s where pid=%s",
+                           (str(pid)+'.'+imgtype[1],pid))
             conn.commit()
-            imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(uid)+"-"+caption+'.'+imgtype[1]))
+            print(pid)
+            imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(pid)+'.'+imgtype[1]))
             return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
-=======
-        print(caption)
- #       photo_data = base64.standard_b64encode(imgfile.read())
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO Photos (caption,path,aid) VALUES (%s, %s, %d)",
-                       (caption, photopath, aid))
-        conn.commit()
-        imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], caption+".jpg"))
-        return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
->>>>>>> master
-                               photos=getUsersPhotos(uid))
+                               photos=getAlbumPhotos(aid))
         else:
             print("not image")
             return render_template('hello.html')
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('upload.html')
+
+    '''       
+            print(caption)
+    #       photo_data = base64.standard_b64encode(imgfile.read())
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO Photos (caption,path,aid) VALUES (%s, %s, %d)",
+                           (caption, path, aid))
+            conn.commit()
+            imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], caption+".jpg"))
+            return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
+    '''
 
 
 # end photo uploading code
