@@ -22,7 +22,7 @@ mysql = MySQL()
 app = Flask(__name__)
 app.secret_key = 'super secret string'  # Change this!
 
-UPLOAD_FOLDER = 'templates/upload'
+UPLOAD_FOLDER = 'static/upload'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
