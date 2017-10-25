@@ -45,7 +45,7 @@ CREATE TABLE Photos(
 CREATE TABLE Tags(
    tname  VARCHAR(50),
    pid INTEGER,
-   PRIMARY KEY  (tname),
+   PRIMARY KEY  (tname,pid),
    FOREIGN KEY (pid) REFERENCES Photos(pid)
    );
 
