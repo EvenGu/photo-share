@@ -22,7 +22,7 @@ mysql = MySQL()
 app = Flask(__name__)
 app.secret_key = 'super secret string'  # Change this!
 
-UPLOAD_FOLDER = 'templates/upload'
+UPLOAD_FOLDER = 'static/upload'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -106,13 +106,14 @@ def login():
     cursor = conn.cursor()
     # check if email is registered
     if cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email)):
-        data = cursor.fetchall()
-        pwd = str(data[0][0])
+        data = cursor.fetchone()
+        print(data)
+        pwd = str(data[0])
         if flask.request.form['password'] == pwd:
             user = User()
             user.id = email
             flask_login.login_user(user)  # okay login in user
-            return flask.redirect(flask.url_for('protected'))  # protected is a function defined in this file
+            return flask.redirect(flask.url_for('findu',uid=user.id))  # protected is a function defined in this file
 
     # information did not match
     return "<a href='/login'>Try again</a>\
@@ -166,9 +167,9 @@ def register_user():
         user.id = email
         flask_login.login_user(user)
 
-        createDefaultAlbum(uid) # TODO
+   #     createDefaultAlbum(uid) # TODO
 
-        cursor.execute("INSERT INTO Albums(aname,)")
+   #     cursor.execute("INSERT INTO Albums(aname,)")
 
         return render_template('hello.html', name=fname, message='Account Created!')
     else:
@@ -204,10 +205,31 @@ def isEmailUnique(email):
 
 # end login code
 
-@app.route('/profile')
+#profile page
+@app.route('/profile/<uid>')
 @flask_login.login_required
-def protected():
-    return render_template('hello.html', name=flask_login.current_user.id, message="Here's your profile")
+def findu(uid):
+    return render_template('hello.html', name=uid, message="Here's your profile")
+
+#album page
+@app.route('/album/<aid>')
+@flask_login.login_required
+def finda(aid):
+    return render_template('album.html', name=aid, message="this is the album")
+
+#photo page
+@app.route('/photo/<pid>',methods='get')
+@flask_login.login_required
+def findp(pid):
+    cursor=conn.cursor()
+    cursor.execute("select count(*) from likephoto where pid='{0}'".format(pid))
+    pl=cursor.fetchone()[0]
+    return render_template('hello.html', name=pid, message="Here's photo",liken=pl)
+
+@app.route('/photo/<pid>',methods='post')
+@flask_login.login_required
+def getp(pid):
+    return render_template('hello.html', name=pid, message="Here's photo",liken=pl)
 
 
 # begin photo uploading code
@@ -267,8 +289,9 @@ def upload_file():
 
 # end photo uploading code
 
+#bwen's query functions
 
-# bwen's query functions
+
 def getUsersLike(uid,pid):
     cursor= conn.cursor()
     cursor.execute("SELECT uid, pid from likePhoto where uid='{0}' and pid='{1}'".format(uid, pid))
@@ -284,18 +307,56 @@ def getUsersLike(uid,pid):
         return 1
     else:
         return 0
-'''
+
+
 def search(key,type):
 #type 1 for tags,2 for users,3 for albums
     cursor=conn.cursor()
     if (type==1):
-        key.split(",")
+        tags=key.split(",")
+        for tag in tags:
+            cursor.execute("select * from Tags where tname='{0}'".format(tag))
+            result=result or cursor.fetchall()
+        return result
     elif(type==2):
-        key.split(",")
+        cursor.execute("select * from user where fname='{0}'".format(key))
+        return cursor.fetchall()
     elif(type==3):
-
-        cursor
+        cursor.execute("select * from album where aname='{0}'".format(key))
+        return cursor.fetchall()
 '''
+def deluser(uid):
+    cursor=conn.cursor()
+    cursor.execute("delete from users where uid='{0}'".format(uid))
+    return "deleted"
+'''
+
+#make comment
+
+def comment(uid,comt,pid):
+    cursor=conn.cursor()
+    cursor.execute("insert into comments(uid,comt,pid)")
+
+#delete functions
+def delalbum(aid,uid):
+    cursor=conn.cursor()
+    cursor.execute("select * from album where aid='{0}' and uid='{1}'".format(aid,uid))
+    if cursor.fetchone()[0]!='':
+        cursor.execute("delete from album where aid='{0}'".format(aid))
+        return "deleted"
+    else:
+        return "not your album"
+
+def delphoto(pid,uid):
+    cursor=conn.cursor()
+    cursor.execute("select * from photos where pid='{0}' "
+                   "and aid in (select aid from album where uid='{1}')".format(pid,uid))
+    if cursor.fetchone()[0]!='':
+        cursor.execute("delete from photos where pid='{0}'".format(pid))
+        return "deleted"
+    else:
+        return "not your photo"
+
 
 def getUsersclosefriends(uid):
     cursor=conn.cursor()
@@ -312,16 +373,18 @@ def getUsersclosefriends(uid):
 
 def getRecommandPhoto(uid):
     cursor=conn.cursor()
-    cursor.execute("select pid from"
+    cursor.execute("select p1 from"
                    "(select pid as p1, count (pid) as cp1 from tags group by pid),"
                    "(select pid as p2, count (pid) as cp2 from tags,"
                    "(select DISTINCT c.tname as tagn from tags c,album b,photos a "
-                   "where b.uid='{0}' and a.aid=b.aid and c.pid=a.pid))"
+                   "where b.uid='{0}' and a.aid=b.aid and c.pid=a.pid)"
                    "where tags.tname in tagn"
-                   "group by pid".format(uid))
+                   "group by pid)"
+                   "where p1=p2"
+                   "order by p1,cp2/cp1 desc".format(uid))
     return cursor.fetchall()
 
-
+'''
 # Yiwen
 def getFriendsList(uid):
     query = "SELECT u1.uid, u1.fname, u1.lname "
@@ -332,7 +395,7 @@ def getFriendsList(uid):
     cursor = conn.cursor()
     cursor.execute(query.format(uid))
     return cursor.fetchall()
-
+'''
 def createDefaultAlbum(uid):
     query = "INSERT INTO Albums(aname, uid) VALUES ('default','{0}')"
     print(query.format(uid))  # optional printing out in your terminal
