@@ -223,6 +223,7 @@ def findp(pid):
 @app.route('/photo/<pid>',methods='post')
 @flask_login.login_required
 def getp(pid):
+    return render_template('hello.html', name=pid, message="Here's photo",liken=pl)
 
 
 # begin photo uploading code
@@ -234,12 +235,9 @@ def getp(pid):
 @flask_login.login_required
 def upload_file():
     if request.method == 'POST':
-
         imgfile = request.files['photo']
         caption = request.form.get('caption')
         aid=2
-
-
         imgtype=imgfile.mimetype.split("/")
         print (imgtype[1])
 #       photo_data = base64.standard_b64encode(imgfile.read())
@@ -299,7 +297,48 @@ def search(key,type):
     elif(type==3):
         cursor.execute("select * from album where aname='{0}'".format(key))
         return cursor.fetchall()
+'''
+def deluser(uid):
+    cursor=conn.cursor()
+    cursor.execute("delete from users where uid='{0}'".format(uid))
+    return "deleted"
+'''
 
+#make comment
+
+def comment(uid,comt,pid):
+    cursor=conn.cursor()
+    cursor.execute("insert into comments(uid,comt,pid) values('{0}','{1}','{2}')".format(uid,comt,pid))
+    return "success"
+
+#delete functions
+def delalbum(aid,uid):
+    cursor=conn.cursor()
+    cursor.execute("select * from album where aid='{0}' and uid='{1}'".format(aid,uid))
+    if cursor.fetchone()[0]!='':
+        cursor.execute("delete from album where aid='{0}'".format(aid))
+        return "deleted"
+    else:
+        return "not your album"
+
+def delphoto(pid,uid):
+    cursor=conn.cursor()
+    cursor.execute("select * from photos where pid='{0}' "
+                   "and aid in (select aid from album where uid='{1}')".format(pid,uid))
+    if cursor.fetchone()[0]!='':
+        cursor.execute("delete from photos where pid='{0}'".format(pid))
+        return "deleted"
+    else:
+        return "not your photo"
+
+def delcom(cid,uid):
+    cursor=conn.cursor()
+    cursor.execute("select * from comments where cid='{0}' and uid='{1}'".format(cid,uid))
+    if cursor.fetchone()[0]!='':
+        cursor.execute("delete from comments where aid='{0}'".format(cid))
+        return "deleted"
+    else:
+        return "not your comment"
 
 def getUsersclosefriends(uid):
     cursor=conn.cursor()

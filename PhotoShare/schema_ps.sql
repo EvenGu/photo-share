@@ -65,7 +65,7 @@ CREATE TABLE isFriend(
 CREATE TABLE Comments(
    cid  INTEGER NOT NULL AUTO_INCREMENT,
    cdate  TIMESTAMP NOT NULL,
-   text  VARCHAR(255),
+   comt  VARCHAR(255),
    pid  INTEGER NOT NULL,
    uid  INTEGER NOT NULL, 
    PRIMARY KEY  (cid),
