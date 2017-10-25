@@ -1,3 +1,8 @@
+<!---
+Photo displays one photo with caption, tags, comment
+as well as the containing album and the owner
+--->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,16 +70,25 @@
 	
 	<ul>{
     	{% for photo in photos %}
-	    <li><a href="{{url_for('photo')}}?pid={{photo[1]}}&photouid={{photo[3]}}">
-        <img src="data:image/png;base64, {{photo[0]}}"/>
-        </a><br>{{photo[2]}}<br>
-	    <a href="{{url_for('delete')}}?pid={{photo[1]}}&photouid={{photo[3]}}&aid={{photo[4]}}">Delete {{photo[2]}}</a>
-		<br>
-	    </li>
+	        <li><a href="{{url_for('photo')}}?pid={{photos[1]}}&photouid={{photos[3]}}">
+                <img src="data:image/png;base64, {{photo[0]}}"/></a><br>{{photos[3]}}<br>
+                caption: {{photo[2]}} photo id: {{photo[2]}}
+	            <a href="{{url_for('delete')}}?pid={{photo[1]}}&photouid={{photo[3]}}&aid={{photo[4]}}">Delete {{photo[2]}}</a>
+		        <br>
+	        </li>
  	    {% endfor %}
 	</ul>
 	
-
+{% if photos %}
+<h2>Here's your photos</h2>
+   <ul>
+   {% for photo in photos %}
+       <li><a href = '/albums?photo_id={{photo[2]}}'>caption: {{photo[1]}} photo id: {{photo[2]}}</a></li>
+       <li><img src='/upload/{{ photo[2] }}' /></li>
+   {% endfor %}
+   <img src="http://img.mukewang.com/52da54ed0001ecfa04120172.jpg">
+   </ul>
+{% endif %}
 	<a href="{{url_for('albums')}}?aid={{photos[0][4]}}&userid={{photos[0][3]}}">Back to Album</a>
 	
 

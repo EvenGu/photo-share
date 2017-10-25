@@ -22,7 +22,7 @@ mysql = MySQL()
 app = Flask(__name__)
 app.secret_key = 'super secret string'  # Change this!
 
-UPLOAD_FOLDER = 'templates/upload'
+UPLOAD_FOLDER = 'upload'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -115,8 +115,8 @@ def login():
             return flask.redirect(flask.url_for('protected'))  # protected is a function defined in this file
 
     # information did not match
-    return "<a href='/login'>Try again</a>\
-			</br><a href='/register'>or make an account</a>"
+    return "<a href='/Login.html'>Try again</a>\
+			</br><a href='/Register.html'>or make an account</a>"
 
 @app.route("/showPhotos", methods=['GET'])
 def showPhotos():
@@ -128,7 +128,7 @@ def showPhotos():
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
-    return render_template('hello.html', message='Logged out')
+    return render_template('Home.html', message='You are logged out')
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -138,7 +138,7 @@ def unauthorized_handler():
 # you can specify specific methods (GET/POST) in function header instead of inside the functions as seen earlier
 @app.route("/register", methods=['GET'])
 def register():
-    return render_template('register.html', supress='True')
+    return render_template('Register.html', supress='True')
 
 
 @app.route("/register", methods=['POST'])
@@ -170,9 +170,8 @@ def register_user():
 
         cursor.execute("INSERT INTO Albums(aname,)")
 
-        return render_template('hello.html', name=fname, message='Account Created!')
+        return render_template('Home.html', name=fname, message='Account Created!')
     else:
-        print("register failed: email already used")
         return flask.redirect(flask.url_for('register'))
 
 
@@ -207,7 +206,7 @@ def isEmailUnique(email):
 @app.route('/profile')
 @flask_login.login_required
 def protected():
-    return render_template('hello.html', name=flask_login.current_user.id, message="Here's your profile")
+    return render_template('Home.html', name=flask_login.current_user.id, message="Here's your profile")
 
 
 # begin photo uploading code
@@ -243,15 +242,15 @@ def upload_file():
             conn.commit()
             print(pid)
             imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(pid)+'.'+imgtype[1]))
-            return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
+            return render_template('Home.html', name=flask_login.current_user.id, message='Photo uploaded!',
                                photos=getAlbumPhotos(aid))
         else:
             print("not image")
-            return render_template('hello.html')
+            return render_template('Home.html')
 
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
-        return render_template('upload.html')
+        return render_template('Upload.html')
 
     '''       
             print(caption)
@@ -261,7 +260,7 @@ def upload_file():
                            (caption, path, aid))
             conn.commit()
             imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], caption+".jpg"))
-            return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
+            return render_template('Home.html', name=flask_login.current_user.id, message='Photo uploaded!',
     '''
 
 
@@ -369,10 +368,10 @@ def createAlbum(uid, aname):
 # default page
 @app.route("/", methods=['GET'])
 def hello():
-    return render_template('hello.html', message='Welecome to Photoshare')
+    return render_template('Home.html', message='Welcome to PhotoShare')
 
 
 if __name__ == "__main__":
     # this is invoked when in the shell  you run
     # $ python app.py
-    app.run(port=5000, debug=True)
+    app.run(port=5000, debug=True, use_reloader=False)
