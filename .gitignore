@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 .idea/workspace.xml
 *.xml
@@ -7,3 +8,13 @@
 *.jpeg
 
 *.jpg
+=======
+
+PhotoShare/.idea/workspace.xml
+
+PhotoShare/static/upload/16.png
+
+PhotoShare/static/upload/17.png
+
+PhotoShare/.idea/workspace.xml
+>>>>>>> bwen

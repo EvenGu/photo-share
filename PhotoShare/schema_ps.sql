@@ -17,7 +17,11 @@ CREATE TABLE Users(
 CREATE TABLE Album(
    aid  INTEGER NOT NULL AUTO_INCREMENT,
    aname  VARCHAR(20) NOT NULL,
+<<<<<<< HEAD
    doc  TIMESTAMP DEFAULT current_timestamp,
+=======
+   doc  TIMESTAMP NOT NULL,
+>>>>>>> bwen
    uid INTEGER NOT NULL,
    PRIMARY KEY  (aid),
    FOREIGN KEY (uid) REFERENCES Users(uid)
@@ -31,7 +35,11 @@ CREATE TABLE Album(
 CREATE TABLE Photos(
    pid  INTEGER NOT NULL AUTO_INCREMENT,
    caption  VARCHAR(200),
+<<<<<<< HEAD
    path VARCHAR(200) NOT NULL,
+=======
+   path LONGBLOB NOT NULL,
+>>>>>>> bwen
    aid INTEGER NOT NULL,
    PRIMARY KEY  (pid),
    FOREIGN KEY (aid) REFERENCES Album(aid)
