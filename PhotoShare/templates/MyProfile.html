@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User</title>
+<link rel="stylesheet" href="css/home.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container"> 
+    <div class="navbar-header">
+      <ul class="nav navbar-nav">
+      	<li class="navbar-left"><a class="navbar-brand" href="home.html">Home</a></li>        
+        {% if not user %}
+        <li class="navbar-right active"><a class="navbar-default" href="register.html">Register</a></li>
+        <li class="navbar-right"><a class="navbar-default" href="login.html">Login</a></li>
+        {% else %}
+        <li class="navbar-right"><a class="navbar-default" href="{{ url_for('profile') }}">My Profile</a></li>
+        <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li> 
+        {% endif %}        
+      </ul> 
+	</div>
+  </div>
+</nav>
+
+{% if user %}
+<section>
+  <div class="jumbotron text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md12">
+        {% if name %}
+          <h1>Hello {{Name}}</h1>
+        {% endif %}
+        </div>
+      </div>
+      <div class="row">
+      	<div class="col-lg-12 text-center">
+        	<form role="search" action="/photoSearch" method = "POST">
+            	<div style="margin-bottom:10px">
+        		<input type="text" class="form-control " placeholder="Search">
+                </div>
+                <div class="row">
+            		<label style="width:20px">tag</label>
+  						<input type="radio" class="radio-inline" name="search" id="tag" value="t">
+  					<label style="width:30px" for="user">user</label>
+  						<input type="radio" class="radio-inline" name="search" id="user" value="u">
+          		</div>
+        		<button type="search" class="btn btn-primary btn-md">Search</button>       
+     		</form>	
+      	</div>      	
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if user %}
+<!---uploadPhoto--------->
+<section>
+  <div class="container">
+    <div class="row">
+    	<div class="col-xs-12 text-center">
+        	<a href="uploadnew.html">Upload your photo</a>
+      	</div>
+    </div>
+  </div>
+</section>
+
+<!---myAlbums--------->
+<section>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-3 text-center col-sm-6 col-xs-6"><img src="img/200x200.gif" alt=""></div>
+        <div class="col-md-3 text-center col-sm-6 col-xs-6"><img src="img/200x200.gif" alt=""></div>
+		<div class="col-md-3 text-center col-sm-6 col-xs-6 hidden-xs hidden-sm"><img src="img/200x200.gif" alt=""></div>
+        <div class="col-md-3 text-center col-sm-6 col-xs-6 hidden-xs hidden-sm"><img src="img/200x200.gif" alt=""></div>
+    </div>
+    {% if albums %}
+		<ul>
+			{% for album in albums %}
+				<h3><a href="{{url_for('albums')}}?aid={{album[0]}}">{{album[1]}}</a></h3>
+				<a href="{{url_for('delete')}}?photouid={{album[3]}}&aid={{album[0]}}">Delete album {{album[1]}}</a>
+				<br>
+			{% endfor %}
+		</ul>	
+	{% endif %}
+  </div>
+</section>
+
+<!---recommendations--->
+<section>
+  <div class="container">
+    <div class="row">
+
+	{% if users %}
+
+		{%for user in users %}
+			<a href="{{url_for('users')}}?uid={{user[0]}}">{{user[1]}}</a>
+			
+			{% if not friends %}
+				{% if useremail != user[1] %}
+					<a href="{{ url_for('users') }}?fid={{user[0]}}">Add to friends!</a>
+				{% endif %}
+
+			{% endif %}
+			<br>
+		{% endfor %}
+	{% endif %}
+
+    </div>
+  </div>
+</section>
+{% endif %}
+<footer class="text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <p></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

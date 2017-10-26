@@ -2,12 +2,16 @@
 
 .idea/workspace.xml
 *.xml
+<<<<<<< HEAD
+
+=======
 *.xml
 *.xml
 
 *.jpeg
 
 *.jpg
+<<<<<<< HEAD
 =======
 
 PhotoShare/.idea/workspace.xml
@@ -18,3 +22,9 @@ PhotoShare/static/upload/17.png
 
 PhotoShare/.idea/workspace.xml
 >>>>>>> bwen
+=======
+>>>>>>> 55a2673b09d07df5ee8a16a141991e713f011260
+.DS_Store
+.idea/workspace.xml
+.idea/workspace.xml
+>>>>>>> origin/master

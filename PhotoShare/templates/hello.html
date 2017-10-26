@@ -23,8 +23,8 @@
 <h2>Here's your photos</h2>
    <ul>
    {% for photo in photos %}
-       <li><a href = '/albums?photo_id={{photo[2]}}'>caption: {{photo[1]}} photo id: {{photo[2]}}</a></li>
-       <li><img src='../static/upload/{{ photo[2] }}' /></li>
+       <li>caption: {{photo[1]}} photo id: {{photo[2]}}</li>
+       <li><img src='../static/upload/{{ photo[2]}}' /></li>
    {% endfor %}
    </ul>
 {% endif %}
