@@ -5,8 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>login</title>
-<link type="text/css" rel="stylesheet" href="styleSheet.scss"/>
-<link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='home.css') }}">
+    <link rel="stylesheet" type="text/css" href= "{{ url_for('assets',filename='styleSheet.scss') }}"/>
 </head>
 <body>
 <!---LOGIN---
@@ -38,7 +38,7 @@
 <!---LOGIN--->
 <section>
 {%if not supress%}
-<h2 style="text-align:center;">Email or password incorrect! Please check or <a href="/register">register</a></h2>
+<h2 style="text-align:center;">Email or password incorrect! Please check or <a href="register">register</a></h2>
 {% endif %}
 <div class="regform">
         

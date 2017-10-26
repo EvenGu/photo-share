@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>home</title>
-<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="../static/home.css">
 </head>
 
 <body>
@@ -14,9 +14,9 @@
   <div class="container"> 
     <div class="navbar-header">
       <ul class="nav navbar-nav">
-      	<li class="navbar-left"><a class="navbar-brand" href="Home.html">Home</a></li>
-        <li class="navbar-right active"><a class="navbar-default" href="Register.html">Register</a></li>
-        <li class="navbar-right"><a class="navbar-default" href="Login.html">Login</a></li>
+      	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
+        <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>
+        <li class="navbar-right"><a class="navbar-default" href="/login">Login</a></li>
       </ul> 
 	</div>
   </div>
@@ -27,12 +27,16 @@
     <div class="container">
       <div class="row">
         <div class="col-md12">
-          <h1>Hello there</h1>
-          <h2 style="margin-top:-5pt">Bonjour</h2>
-          <h3 style="margin-top:-5pt">你好</h3>          
-          <h4 style="margin-top:-6pt">Hola</h4>
-          <h5 style="margin-top:-6pt">Hallo</h5>
-          <h6 style="margin-top:-7pt">Ciao</h6>
+            {% if user %}
+            <h1 style="margin-top:-5pt">Hello {{ user }}</h1>
+            {% else %}
+            <h1>Hello there</h1>
+            {% endif %}
+            <h2 style="margin-top:-5pt">Bonjour</h2>
+            <h3 style="margin-top:-5pt">你好</h3>
+            <h4 style="margin-top:-6pt">Hola</h4>
+            <h5 style="margin-top:-6pt">Hallo</h5>
+            <h6 style="margin-top:-7pt">Ciao</h6>
         </div>
       </div>
 

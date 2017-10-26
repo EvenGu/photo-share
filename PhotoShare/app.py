@@ -30,7 +30,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # These will need to be changed according to your creditionals
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = '123456'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'even'
 app.config['MYSQL_DATABASE_DB'] = 'photoshare'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -89,18 +89,10 @@ def new_page_function():
 	return new_page_html
 '''
 
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET','POST'])
 def login():
     if flask.request.method == 'GET':
-        return '''
-		    <form action='login' method='POST'>
-				<input type='text' name='email' id='email' placeholder='email'></input>
-				<input type='password' name='password' id='password' placeholder='password'></input>
-				<input type='submit' name='submit'></input>
-			   </form></br>
-		    <a href='/'>Home</a>
-			   '''
+        return render_template('Login.html', supress='True')
     # The request method is POST (page is recieving data)
     email = flask.request.form['email']
     cursor = conn.cursor()
@@ -124,7 +116,6 @@ def showPhotos():
     photopath = "upload/1.jpg"
     return render_template('testShowPhoto.html', photopath = photopath)
 
-
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
@@ -139,7 +130,6 @@ def unauthorized_handler():
 @app.route("/register", methods=['GET'])
 def register():
     return render_template('Register.html', supress='True')
-
 
 @app.route("/register", methods=['POST'])
 def register_user():

@@ -1,4 +1,4 @@
-DROP DATABASE photoshare;
+#DROP DATABASE photoshare;
 CREATE DATABASE photoshare;
 USE photoshare;
 

@@ -912,7 +912,7 @@ output {
 }
 .form-control {
   display: inline-block;
-  margin-bottom: 10;
+  margin-bottom: 10px;
   vertical-align: middle;
   width: 75%;
   height: 34px;
@@ -2928,4 +2928,63 @@ button.close {
 .hidden-xs, 
 .hidden-sm {
 	display: none !important;
+}
+
+
+／*--------------------------*／
+form.regform {
+  position: relative;
+  vertical-align: middle;
+  text-align:center;
+  padding: 40px;
+  max-width:600px;
+  margin:40px auto;
+}
+
+form.regform label{
+  text-align: left;
+  width: 100%;
+  pointer-events: none;
+  font-size: 20px;
+}
+
+.regform .gender {
+  font-size:32px;
+  width:100%;
+  height:100%;
+  padding:5px 10px;
+  border:1px solid gray;
+  color:white;
+  border-radius:0;
+}
+
+form.regform highlight {
+	color:white;
+}
+
+form.regform field-wrap {
+  text-align: center;
+  position:relative;
+  margin-bottom:30px;
+}
+
+.regform input[type="text"],
+.regform input[type="date"],
+.regform input[type="email"],
+.regform input[type="password"]{
+  font-size: 22px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 5px 10px;
+  background: none;
+  border: 1px solid gray;
+  color: white;
+  border-radius: 0;
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+
+.regform textarea {
+  border:2px solid gray;
+  resize: vertical;
 }
