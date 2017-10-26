@@ -23,10 +23,6 @@ app = Flask(__name__)
 app.secret_key = 'super secret string'  # Change this!
 
 UPLOAD_FOLDER = 'static/upload'
-<<<<<<< HEAD
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-=======
->>>>>>> bwen
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -94,19 +90,13 @@ def new_page_function():
 '''
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/Login', methods=['GET', 'POST'])
 def login():
     if flask.request.method == 'GET':
-        return '''
-		    <form action='login' method='POST'>
-				<input type='text' name='email' id='email' placeholder='email'></input>
-				<input type='password' name='password' id='password' placeholder='password'></input>
-				<input type='submit' name='submit'></input>
-			   </form></br>
-		    <a href='/'>Home</a>
-			   '''
+        return render_template('login.html',supress=True)
     # The request method is POST (page is recieving data)
-    email = flask.request.form['email']
+    email = request.form.get('email')
+    print (email)
     cursor = conn.cursor()
     # check if email is registered
     print (getUserList() or getUserList())
@@ -121,19 +111,8 @@ def login():
             return flask.redirect(flask.url_for('findu',uid=user.id))  # protected is a function defined in this file
 
     # information did not match
-    return "<a href='/login'>Try again</a>\
-			</br><a href='/register'>or make an account</a>"
+    return render_template('Login.html',supress=False)
 
-<<<<<<< HEAD
-@app.route("/showPhotos", methods=['GET'])
-def showPhotos():
-    # get photopath from the database: SELECT path FROM PHOTOS WHERE uid = .....
-    photopath = "upload/1.jpg"
-    return render_template('testShowPhoto.html', photopath = photopath)
-
-
-=======
->>>>>>> bwen
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
@@ -215,7 +194,6 @@ def isEmailUnique(email):
 
 #profile page
 @app.route('/profile/<uid>')
-<<<<<<< HEAD
 @flask_login.login_required
 def findu(uid):
     return render_template('hello.html', name=uid, message="Here's your profile")
@@ -227,44 +205,19 @@ def finda(aid):
     return render_template('album.html', name=aid, message="this is the album")
 
 #photo page
-@app.route('/photo/<pid>',methods='get')
+@app.route('/photo/<pid>')
 @flask_login.login_required
 def findp(pid):
     cursor=conn.cursor()
     cursor.execute("select count(*) from likephoto where pid='{0}'".format(pid))
     pl=cursor.fetchone()[0]
     return render_template('hello.html', name=pid, message="Here's photo",liken=pl)
-
+'''
 @app.route('/photo/<pid>',methods='post')
 @flask_login.login_required
 def getp(pid):
-    return render_template('hello.html', name=pid, message="Here's photo",liken=pl)
-=======
-@flask_login.login_required
-def findu(uid):
-    return render_template('hello.html', name=uid, message="Here's your profile")
->>>>>>> bwen
-
-#album page
-@app.route('/album/<aid>')
-@flask_login.login_required
-def finda(aid):
-    return render_template('album.html', name=aid, message="this is the album")
-
-#photo page
-@app.route('/photo/<pid>',methods='get')
-@flask_login.login_required
-def findp(pid):
-    cursor=conn.cursor()
-    cursor.execute("select count(*) from likephoto where pid='{0}'".format(pid))
-    pl=cursor.fetchone()[0]
-    return render_template('hello.html', name=pid, message="Here's photo",liken=pl)
-
-@app.route('/photo/<pid>',methods='post')
-@flask_login.login_required
-def getp(pid):
-    return render_template('hello.html', name=pid, message="Here's photo",liken=pl)
-
+    return render_template('hello.html', name=pid, message="Here's photo")
+'''
 
 # begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML 
@@ -275,21 +228,15 @@ def getp(pid):
 @flask_login.login_required
 def upload_file():
     if request.method == 'POST':
-<<<<<<< HEAD
-
         imgfile = request.files['photo']
         caption = request.form.get('caption')
-        aid=2
 
+        aid=1  #todo
 
-=======
-        imgfile = request.files['photo']
-        caption = request.form.get('caption')
-        aid=2
->>>>>>> bwen
         imgtype=imgfile.mimetype.split("/")
         print (imgtype[1])
-#       photo_data = base64.standard_b64encode(imgfile.read())
+
+
         if imgtype[0]=='image':
             cursor = conn.cursor()
             cursor.execute("INSERT INTO photos (path, aid, caption) VALUES (%s, %s, %s)",
@@ -299,57 +246,27 @@ def upload_file():
             cursor.execute("UPDATE photos set path=%s where pid=%s",
                            (str(pid)+'.'+imgtype[1],pid))
             conn.commit()
-            print(pid)
+            print(str(pid)+'.'+imgtype[1])
             imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(pid)+'.'+imgtype[1]))
-            return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
+            return render_template('album.html', name=flask_login.current_user.id, album=getAlbum(aid),
                                photos=getAlbumPhotos(aid))
         else:
             print("not image")
             return render_template('hello.html')
-<<<<<<< HEAD
-
-=======
->>>>>>> bwen
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('upload.html')
 
-<<<<<<< HEAD
-    '''       
-            print(caption)
-    #       photo_data = base64.standard_b64encode(imgfile.read())
-            cursor = conn.cursor()
-            cursor.execute("INSERT INTO Photos (caption,path,aid) VALUES (%s, %s, %d)",
-                           (caption, path, aid))
-            conn.commit()
-            imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], caption+".jpg"))
-            return render_template('hello.html', name=flask_login.current_user.id, message='Photo uploaded!',
-    '''
 
-
-=======
->>>>>>> bwen
 # end photo uploading code
 
 #bwen's query functions
 
-
 def getUsersLike(uid,pid):
     cursor= conn.cursor()
-    cursor.execute("SELECT uid, pid from likePhoto where uid='{0}' and pid='{1}'".format(uid, pid))
-
-#bwen's query functions
-
-
-def getUsersLike(uid,pid):
-    cursor= conn.cursor()
-    cursor.execute("SELECT * from likephoto where uid='{0}' and pid='{1}'".format(uid,pid))
-<<<<<<< HEAD
-
-=======
->>>>>>> bwen
-    if cursor.fetchall()!='':
-        return 1
+    cursor.execute("SELECT pid from likePhoto where uid='{0}' and pid='{1}'".format(uid, pid))
+    if cursor.fetchone()[0]!='': # or NULL?
+        return 1 # tuple exists (user likes the photo)
     else:
         return 0
 
@@ -380,12 +297,10 @@ def deluser(uid):
 
 def comment(uid,comt,pid):
     cursor=conn.cursor()
-<<<<<<< HEAD
-    cursor.execute("insert into comments(uid,comt,pid)")
-=======
+
     cursor.execute("insert into comments(uid,comt,pid) values('{0}','{1}','{2}')".format(uid,comt,pid))
     return "success"
->>>>>>> bwen
+
 
 #delete functions
 def delalbum(aid,uid):
@@ -407,8 +322,6 @@ def delphoto(pid,uid):
     else:
         return "not your photo"
 
-<<<<<<< HEAD
-=======
 def delcom(cid,uid):
     cursor=conn.cursor()
     cursor.execute("select * from comments where cid='{0}' and uid='{1}'".format(cid,uid))
@@ -417,9 +330,8 @@ def delcom(cid,uid):
         return "deleted"
     else:
         return "not your comment"
->>>>>>> bwen
 
-def getUsersclosefriends(uid):
+def suggestFriends(uid):
     cursor=conn.cursor()
     cursor.execute("select u1 from "
                    "(select uid as u1,count(uid)as u1c1 from isfriend a,isfriend b"
@@ -431,8 +343,7 @@ def getUsersclosefriends(uid):
                    "where u1=u2 order by u1c/u1c1 DESC ".format(uid))
     return cursor.fetchall()
 
-
-def getRecommandPhoto(uid):
+def suggestPhotos(uid):
     cursor=conn.cursor()
     cursor.execute("select p1 from"
                    "(select pid as p1, count (pid) as cp1 from tags group by pid),"
@@ -448,15 +359,44 @@ def getRecommandPhoto(uid):
 '''
 # Yiwen
 def getFriendsList(uid):
-    query = "SELECT u1.uid, u1.fname, u1.lname "
-            "FROM Users AS u1, isFriend AS f"
-            "WHERE u1.uid = f.fuid AND f.uid = '{0}'"
+    query = "SELECT u1.uid AS ID, u1.fname AS FirstName, u1.lname AS LastName " \
+            "FROM Users AS u1" \
+            "WHERE u1.uid IN (SELECT f.fuid FROM isFriend AS f WHERE f.uid = '{0}')" \
+            "ORDER BY u1.fname, u1.lname"
+
+    query2 = "SELECT u1.uid, u1.fname, u1.lname "\
+            "FROM Users AS u1, isFriend AS f"\
+            "WHERE u1.uid = f.fuid AND f.uid = '{0}'"\
             "ORDER BY u1.fname"
-    print(query)  # optional printing out in your terminal
+    print(query.format(uid))  # optional printing out in your terminal
     cursor = conn.cursor()
     cursor.execute(query.format(uid))
     return cursor.fetchall()
 '''
+
+'''
+Alternatively, 
+
+suggestFriends: RIGHT
+SELECT u2.uid, u2.fname, u2.lname
+FROM Users AS u2, isFriend f2
+WHERE f2.uid IN (SELECT f1.fuid FROM isFriend AS f1 WHERE f1.uid = '{0}')
+    AND u2.uid = f2.fuid
+GROUP BY f2.fuid
+ORDER BY COUNT(*) DESC
+
+suggestPhotos: WRONG
+SELECT p2.pid FROM Photos p2
+WHERE p2.pid = pt2.pid AND
+    pt2.hashtag IN (SELECT t.hashtag
+                FROM Albums a, Photos p, photoTag pt, Tags t
+                WHERE a.uid = '{0}' 
+                AND a.aid = p.aid AND p.pid = pt.pid AND pt.hashtag = t.hashtag
+                GROUP BY t.hashtag
+                ORDER BY COUNT(*)
+                LIMIT 5)
+'''
+
 def createDefaultAlbum(uid):
     query = "INSERT INTO Albums(aname, uid) VALUES ('default','{0}')"
     print(query.format(uid))  # optional printing out in your terminal
