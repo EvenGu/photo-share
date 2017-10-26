@@ -92,27 +92,25 @@ def new_page_function():
 
 @app.route('/Login', methods=['GET', 'POST'])
 def login():
-    if flask.request.method == 'GET':
-        return render_template('login.html',supress=True)
-    # The request method is POST (page is recieving data)
-    email = request.form.get('email')
-    print (email)
-    cursor = conn.cursor()
-    # check if email is registered
-    print (getUserList() or getUserList())
-    if cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email)):
-        data = cursor.fetchone()
-        print(data)
-        pwd = str(data[0])
-        if flask.request.form['password'] == pwd:
-            user = User()
-            user.id = email
-            flask_login.login_user(user)  # okay login in user
-            return flask.redirect(flask.url_for('findu',uid=user.id))  # protected is a function defined in this file
-
-    # information did not match
-    return render_template('Login.html',supress=False)
-
+    if flask.request.method == 'POST':
+        # The request method is POST (page is recieving data)
+        email = request.form.get('email')
+        print ("e=",email)
+        cursor = conn.cursor()
+       # check if email is registered
+        print (getUserList() or getUserList())
+        if cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email)):
+            data = cursor.fetchone()
+            print(data)
+            pwd = str(data[0])
+            if flask.request.form['password'] == pwd:
+                user = User()
+                user.id = email
+                flask_login.login_user(user)  # okay login in user
+                return flask.redirect(flask.url_for('findu',uid=user.id))  # protected is a function defined in this file
+        # information did not match
+        return render_template('Login.html',supress=False)
+    return render_template('login.html',supress=True)
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
