@@ -1,4 +1,4 @@
-DROP DATABASE photoshare;
+#DROP DATABASE photoshare;
 CREATE DATABASE photoshare;
 USE photoshare;
 
@@ -14,14 +14,12 @@ CREATE TABLE Users(
    PRIMARY KEY  (uid)
    );
 
-CREATE TABLE Album(
+CREATE TABLE Albums(
    aid  INTEGER NOT NULL AUTO_INCREMENT,
    aname  VARCHAR(20) NOT NULL,
-<<<<<<< HEAD
+
    doc  TIMESTAMP DEFAULT current_timestamp,
-=======
-   doc  TIMESTAMP NOT NULL,
->>>>>>> bwen
+
    uid INTEGER NOT NULL,
    PRIMARY KEY  (aid),
    FOREIGN KEY (uid) REFERENCES Users(uid)
@@ -35,14 +33,12 @@ CREATE TABLE Album(
 CREATE TABLE Photos(
    pid  INTEGER NOT NULL AUTO_INCREMENT,
    caption  VARCHAR(200),
-<<<<<<< HEAD
+
    path VARCHAR(200) NOT NULL,
-=======
-   path LONGBLOB NOT NULL,
->>>>>>> bwen
+
    aid INTEGER NOT NULL,
    PRIMARY KEY  (pid),
-   FOREIGN KEY (aid) REFERENCES Album(aid)
+   FOREIGN KEY (aid) REFERENCES Albums(aid)
   	ON DELETE CASCADE
    );
 /* Assumption:
@@ -51,6 +47,7 @@ CREATE TABLE Photos(
   own (different) pid. */
 
 CREATE TABLE Tags(
+
    tname  VARCHAR(50),
    pid INTEGER,
    PRIMARY KEY  (tname,pid),
