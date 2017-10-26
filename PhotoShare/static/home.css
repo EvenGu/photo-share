@@ -2958,11 +2958,7 @@ form.regform label{
   border-radius:0;
 }
 
-form.regform highlight {
-	color:white;
-}
-
-form.regform field-wrap {
+.field-wrap {
   text-align: center;
   position:relative;
   margin-bottom:30px;
