@@ -2062,6 +2062,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     right: 0;
     left: auto;
 }
+
 .navbar-left {
 	float: left !important;
     margin-left: 50px;
@@ -2932,30 +2933,30 @@ button.close {
 
 
 ／*--------------------------*／
-div.regform {
+form.regform {
   position: relative;
   vertical-align: middle;
   text-align:center;
-  padding: 40px;
-  max-width:450px;
+  padding: 20px;
+  width:500px;
   margin:40px auto;
 }
 
 form.regform label{
+  display: inline-block;
   text-align: left;
-  width: 100%;
+  width: 60%;
   pointer-events: none;
   font-size: 20px;
 }
 
-.regform .gender {
-  font-size:32px;
-  width:100%;
-  height:100%;
-  padding:5px 10px;
-  border:1px solid gray;
-  color:white;
-  border-radius:0;
+form.regform label.gender {
+    width: auto;
+    height: 100%;
+    padding: 5px 10px 5px 50px;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 22px;
 }
 
 .field-wrap {
@@ -2970,9 +2971,11 @@ form.regform label{
 .regform input[type="password"]{
   font-size: 22px;
   display: block;
-  width: 100%;
+  width: 60%;
   height: 100%;
   padding: 5px 10px;
+  margin-left: auto;
+  margin-right: auto;
   background: none;
   border: 1px solid gray;
   color: black;
@@ -2980,6 +2983,10 @@ form.regform label{
   transition: border-color .25s ease, box-shadow .25s ease;
 }
 
+.regform input[type="radio"]{
+  display: inline-block;
+  size: 10px;
+}
 .regform textarea {
   border:2px solid gray;
   resize: vertical;
