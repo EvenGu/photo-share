@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>register</title>
+    <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='home.css') }}">
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+  <div class="container"> 
+    <div class="navbar-header">
+      <ul class="nav navbar-nav">
+      	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
+        <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>
+        <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
+      </ul> 
+	</div>
+  </div>
+</nav>
+
+<section>
+{% if not supress %}
+<h2 style="text-align:center;"> Email already in use! Use another one or <a href="/login">login</a></h2>
+{% endif %}
+<div class="regform" style="text-align:center;">
+      <div id="signup">
+          <h2>Sign Up for Free</h2>
+          
+          <form class="regform" action="/" method="post">
+         
+          <div class="field-wrap">
+            <label style="text-align:left" for="fname">First Name<span class="req">*</span></label>
+            <input type="text" required autocomplete="off" id="fname" placeholder="First Name"/>
+          </div>
+        
+          <div class="field-wrap">
+            <label style="text-align:left" for="lname">Last Name<span class="req">*</span></label>
+            <input type="text" required autocomplete="off" id="lname" placeholder="Last Name"/>
+          </div>
+
+          <div class="field-wrap">
+            <label style="text-align:left; display: block" for="email">Email Address<span class="req">*</span></label>
+            <input type="email" required autocomplete="off" id="email" placeholder="Email Address"/>
+          </div>
+          
+          <div class="field-wrap">
+            <label style="text-align:left" for="dob">Date of Birth</label>
+            <input type="date" required autocomplete="off" id="dob"/>
+		  </div>
+          
+          <div class="field-wrap">
+            <label style="text-align:left" for="hometown">Hometown</label>
+            <input type="text" required autocomplete="off" id="hometown" placeholder="Hometown"/>
+          </div>
+          
+          <div class="field-wrap">
+            <label style="text-align:left" for="password">Set Password<span class="req">*</span></label>
+            <input type="password" required autocomplete="off" id="password" placeholder="Set Password"/>
+		  </div>
+          
+          <div class="field-wrap">
+            <label style="text-align:left" for="gender">Gender</label><br/>
+            <label class="gender" for="male">Male</label>
+			<input type="radio" class="gender" name="gender" id="male" value="M">
+  			<label class="gender" for="female">Female</label>
+  			<input type="radio" class="gender" name="gender" id="female" value="F">
+          </div>
+          
+          <div class="field-wrap" style="text-align:center">
+          	<button type="submit" class="btn btn-primary btn-lg">Get Started</button>
+          </div>
+          </form>
+
+      </div>
+        
+</div><!-- tab-content -->
+</section>     
+</body>
+</html>
