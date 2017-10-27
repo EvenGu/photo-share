@@ -103,11 +103,10 @@ def Login():
             pwd = str(data[0])
             if request.form['password'] == pwd:
                 user = User()
+                cursor.execute("SELECT uid FROM Users WHERE email = '{0}'".format(email))
                 user.id = email
                 flask_login.login_user(user)  # okay login in user
-                cursor.execute("select uid from users where email='{0}'".format(email))
-                id=cursor.fetchone()[0]
-                return flask.redirect(flask.url_for('findu',uid=id))
+                return flask.redirect(flask.url_for('findu',uid=cursor.fetchone()[0]))
                 # protected is a function defined in this file
         # information did not match
         return render_template('Login.html',supress=False)
@@ -119,6 +118,7 @@ def Login():
 def logout():
     flask_login.logout_user()
     return render_template('Hello.html', message='You are logged out')
+
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -139,35 +139,41 @@ def register():
         print("e",email)
         dob = request.values.get('dob')
         print("d",dob)
-        hometown = request.form['hometown']
+        hometown = request.values.get('hometown')
         print("h",hometown)
         password = request.form['password']
         print("p",password)
-        gender = request.form['gender']
+        gender = request.values.get('gender')
         print("g",gender)
 
         cursor = conn.cursor()
         test = isEmailUnique(email)
         if test:
-            print(cursor.execute("INSERT INTO Users (fname,lname,email,dob,hometown,gender,password) "
-                                 "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')".format(fname,lname,email,dob,hometown,gender,password)))
+            if hometown is None: hometown1='NULL'
+            else: hometown1=hometown
+            if gender is None: gender1='/'
+            else: gender1=gender
+            cursor.execute("INSERT INTO Users (fname,lname,email,dob,hometown,gender,password) "
+                            "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')"
+                            .format(fname,lname,email,dob,hometown1,gender1,password))
             conn.commit()
             # log user in
+            cursor.execute("SELECT uid FROM Users WHERE email = '{0}'".format(email))
+            uid = cursor.fetchone()[0]
             user = User()
-            user.id = email
+            user.id=email
+
             flask_login.login_user(user)
 
-        #     createDefaultAlbum(uid) # TODO
-
+            createDefaultAlbum(uid) # TODO
         #     cursor.execute("INSERT INTO Albums(aname,)")
 
-            return render_template('Hello.html', name=fname, message='Account Created!')
+            return flask.redirect(flask.url_for('findu',uid=uid))
         else:
             print("register failed: email already used")
-            return flask.redirect(flask.url_for('register'))
+            return render_template('Register.html', supress='True',message="register failed: email already used")
     elif request.method == 'GET':
-        print ("///")
-        return render_template('Register.html', supress='True')
+        return render_template('Register.html', supress='True',message="free to register!")
 
 
 
@@ -213,10 +219,11 @@ def findu(uid):
     album=cursor.fetchone()
     return render_template('MyProfile.html', user=user, album=album)
     '''
+    print("here")
     cursor=conn.cursor()
     cursor.execute("select fname from users where uid='{0}'".format(uid))
 
-    return render_template('Hello.html',message="damn it",name=cursor.fetchone()[0])
+    return render_template('Hello.html',name=cursor.fetchone()[0],message="Login success!")
 
 #album page
 @app.route('/album/<aid>')
