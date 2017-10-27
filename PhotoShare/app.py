@@ -90,10 +90,10 @@ def new_page_function():
 
 
 @app.route('/Login', methods=['POST','GET'])
-def loginp():
+def Login():
     if request.method=='POST':
         # The request method is POST (page is recieving data)
-        email = flask.request.form['email']
+        email = request.form['email']
         print (email)
         cursor = conn.cursor()
         # check if email is registered
@@ -102,20 +102,24 @@ def loginp():
             data = cursor.fetchone()
             print(data)
             pwd = str(data[0])
-            if flask.request.form['password'] == pwd:
+            if request.form['password'] == pwd:
                 user = User()
                 user.id = email
                 flask_login.login_user(user)  # okay login in user
-                return flask.redirect(flask.url_for('findu',uid=user.id))  # protected is a function defined in this file
+                cursor.execute("select uid from users where email='{0}'".format(email))
+                id=cursor.fetchone()[0]
+                return flask.redirect(flask.url_for('findu',uid=id))
+                # protected is a function defined in this file
         # information did not match
         return render_template('Login.html',supress=False)
-    elif request.method=='GET':
+
+    if request.method=='GET':
         return render_template('Login.html', supress=True)
 
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
-    return render_template('Home.html', message='You are logged out')
+    return render_template('Hello.html', message='You are logged out')
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -124,47 +128,45 @@ def unauthorized_handler():
 
 # you can specify specific methods (GET/POST) in function header instead of inside the functions as seen earlier
 
-@app.route("/register", methods=['POST'])
-def registerp():
+@app.route("/register", methods=['POST','GET'])
+def register():
 
-
-    '''
-    print("register failed: couldn't find all tokens")
-    # this prints to shell, end users will not see this (all print statements go to shell)
-    return flask.redirect(flask.url_for('register'))
-    '''
-
-    fname = request.form['fname']
-    lname = request.form['lname']
-    email = request.form['email']
-    dob = request.form['dob']
-    hometown = request.form['hometown']
-    gender = request.form['gender']
-    password = request.form['password']
-    print(email)
-
-    cursor = conn.cursor()
-    test = isEmailUnique(email)
-    if test:
-        print(cursor.execute("INSERT INTO Users (fname,lname,email,dob,hometown,gender,password) "
-                             "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')".format(fname,lname,email,dob,hometown,gender,password)))
-        conn.commit()
-        # log user in
-        user = User()
-        user.id = email
-        flask_login.login_user(user)
-
-   #     createDefaultAlbum(uid) # TODO
-
-   #     cursor.execute("INSERT INTO Albums(aname,)")
-
-        return render_template('Home.html', name=fname, message='Account Created!')
-    else:
-        print("register failed: email already used")
+    if request.method==['POST']:
+        '''
+        print("register failed: couldn't find all tokens")
+        # this prints to shell, end users will not see this (all print statements go to shell)
         return flask.redirect(flask.url_for('register'))
+        '''
 
-@app.route("/register", methods=['GET'])
-def registerg():
+        fname = request.form['fname']
+        lname = request.form['lname']
+        email = request.form['email']
+        dob = request.form['dob']
+        hometown = request.form['hometown']
+        gender = request.form['gender']
+        password = request.form['password']
+        print(email)
+
+        cursor = conn.cursor()
+        test = isEmailUnique(email)
+        if test:
+            print(cursor.execute("INSERT INTO Users (fname,lname,email,dob,hometown,gender,password) "
+                                 "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')".format(fname,lname,email,dob,hometown,gender,password)))
+            conn.commit()
+            # log user in
+            user = User()
+            user.id = email
+            flask_login.login_user(user)
+
+        #     createDefaultAlbum(uid) # TODO
+
+        #     cursor.execute("INSERT INTO Albums(aname,)")
+
+            return render_template('Hello.html', name=fname, message='Account Created!')
+        else:
+            print("register failed: email already used")
+            return flask.redirect(flask.url_for('register'))
+
     return render_template('Register.html', supress='True')
 
 
@@ -201,12 +203,19 @@ def isEmailUnique(email):
 @app.route('/profile/<uid>')
 @flask_login.login_required
 def findu(uid):
+
+    '''
     cursor=conn.cursor()
     cursor.execute("select * from users where uid='{0}'".format(uid))
     user=cursor.fetchone()
     cursor.execute("select * from albums where uid='{0}'".format(uid))
     album=cursor.fetchone()
     return render_template('MyProfile.html', user=user, album=album)
+    '''
+    cursor=conn.cursor()
+    cursor.execute("select fname from users where uid='{0}'".format(uid))
+
+    return render_template('Hello.html',message="damn it",name=cursor.fetchone()[0])
 
 #album page
 @app.route('/album/<aid>')
@@ -259,7 +268,7 @@ def upload_file():
                                photos=getAlbumPhotos(aid))
         else:
             print("not image")
-            return render_template('Home.html')
+            return render_template('Hello.html')
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('Upload.html')
@@ -450,10 +459,10 @@ def createAlbum(uid, aname):
 # default page
 @app.route("/", methods=['GET','POST'])
 def hello():
-    return render_template('Home.html', message='Welcome to PhotoShare')
+    return render_template('Hello.html', message='Welcome to PhotoShare')
 
 
 if __name__ == "__main__":
     # this is invoked when in the shell  you run
     # $ python app.py
-    app.run(port=5000, debug=True)
+    app.run(port=8080, debug=True)
