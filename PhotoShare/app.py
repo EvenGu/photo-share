@@ -29,7 +29,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # These will need to be changed according to your creditionals
 app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'even'  #change!
+app.config['MYSQL_DATABASE_PASSWORD'] = 'even'
 app.config['MYSQL_DATABASE_DB'] = 'photoshare'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
@@ -58,7 +58,6 @@ class User(flask_login.UserMixin):
 def user_loader(email):
     users = getUserList()
     if not (email) or email not in str(users):
-
         return
     user = User()
     user.id = email
@@ -89,39 +88,15 @@ def new_page_function():
 	return new_page_html
 '''
 
-@app.route('/Login', methods=['POST'])
+
+@app.route('/Login', methods=['POST','GET'])
 def loginp():
-    # The request method is POST (page is recieving data)
-    email = flask.request.values['email']
-    print (email)
-    cursor = conn.cursor()
-   # check if email is registered
-    print (getUserList() or getUserList())
-    if cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email)):
-        data = cursor.fetchone()
-        print(data)
-        pwd = str(data[0])
-        if flask.request.values['password'] == pwd:
-            user = User()
-            user.id = email
-            flask_login.login_user(user)  # okay login in user
-            return flask.redirect(flask.url_for('findu',uid=user.id))  # protected is a function defined in this file
-    # information did not match
-    return render_template('Login.html',supress=True)
-
-@app.route('/Login', methods=['GET'])
-def loging():
-    return render_template('Login.html',supress=True)
-
-'''
-@app.route('/Login', methods=['GET', 'POST'])
-def login():
-    if flask.request.method == 'POST':
+    if request.method=='POST':
         # The request method is POST (page is recieving data)
-        email = request.form.get('email')
-        print ("e=",email)
+        email = flask.request.form['email']
+        print (email)
         cursor = conn.cursor()
-       # check if email is registered
+        # check if email is registered
         print (getUserList() or getUserList())
         if cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email)):
             data = cursor.fetchone()
@@ -134,13 +109,13 @@ def login():
                 return flask.redirect(flask.url_for('findu',uid=user.id))  # protected is a function defined in this file
         # information did not match
         return render_template('Login.html',supress=False)
-    return render_template('login.html',supress=True)
-'''
+    elif request.method=='GET':
+        return render_template('Login.html', supress=True)
 
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
-    return render_template('hello.html', message='Logged out')
+    return render_template('Home.html', message='You are logged out')
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -151,6 +126,8 @@ def unauthorized_handler():
 
 @app.route("/register", methods=['POST'])
 def registerp():
+
+
     '''
     print("register failed: couldn't find all tokens")
     # this prints to shell, end users will not see this (all print statements go to shell)
@@ -174,15 +151,14 @@ def registerp():
         conn.commit()
         # log user in
         user = User()
-        #user.id = email
-        user.id = fname #TODO not sure
+        user.id = email
         flask_login.login_user(user)
 
    #     createDefaultAlbum(uid) # TODO
 
    #     cursor.execute("INSERT INTO Albums(aname,)")
 
-        return render_template('hello.html', name=fname, message='Account Created!')
+        return render_template('Home.html', name=fname, message='Account Created!')
     else:
         print("register failed: email already used")
         return flask.redirect(flask.url_for('register'))
@@ -208,6 +184,7 @@ def getUserIdFromEmail(email):
     cursor.execute("SELECT uid  FROM Users WHERE email = '{0}'".format(email))
     return cursor.fetchone()[0]
 
+
 def isEmailUnique(email):
     # use this to check if a email has already been registered
     cursor = conn.cursor()
@@ -217,23 +194,25 @@ def isEmailUnique(email):
     else:
         return True
 
+
 # end login code
 
 #profile page
 @app.route('/profile/<uid>')
 @flask_login.login_required
 def findu(uid):
-    cursor = conn.cursor()
-    cursor.execute("select fname from Users where uid='{0}'".format(uid))
-    fname = cursor.fetchone()[0]
-    return render_template('hello.html', name=fname, message="Here's your profile")
+    cursor=conn.cursor()
+    cursor.execute("select * from users where uid='{0}'".format(uid))
+    user=cursor.fetchone()
+    cursor.execute("select * from albums where uid='{0}'".format(uid))
+    album=cursor.fetchone()
+    return render_template('MyProfile.html', user=user, album=album)
 
 #album page
 @app.route('/album/<aid>')
 @flask_login.login_required
 def finda(aid):
     return render_template('album.html', name=aid, message="this is the album")
-
 
 #photo page
 @app.route('/photo/<pid>')
@@ -253,6 +232,8 @@ def getp(pid):
 # begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
 
+
+
 @app.route('/upload', methods=['GET', 'POST'])
 @flask_login.login_required
 def upload_file():
@@ -262,6 +243,7 @@ def upload_file():
         aid=1  #todo
         imgtype=imgfile.mimetype.split("/")
         print (imgtype[1])
+
         if imgtype[0]=='image':
             cursor = conn.cursor()
             cursor.execute("INSERT INTO photos (path, aid, caption) VALUES (%s, %s, %s)",
@@ -277,7 +259,7 @@ def upload_file():
                                photos=getAlbumPhotos(aid))
         else:
             print("not image")
-            return render_template('Hello.html')
+            return render_template('Home.html')
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('Upload.html')
@@ -295,8 +277,9 @@ def getUsersLike(uid,pid):
         return 1
 
 #search function
+
 def search(key,type):
-#type 1 for tags,2 for users,3 for albums
+#type 1 for tags,2 for users,3 for comments
     cursor=conn.cursor()
     if (type==1):
         tags=key.split(",")
@@ -305,10 +288,10 @@ def search(key,type):
             result=result or cursor.fetchall()
         return result
     elif(type==2):
-        cursor.execute("select * from user where fname='{0}'".format(key))
+        cursor.execute("select * from users where fname='{0}'".format(key))
         return cursor.fetchall()
     elif(type==3):
-        cursor.execute("select * from album where aname='{0}'".format(key))
+        cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
         return cursor.fetchall()
 '''
 def deluser(uid):
@@ -355,7 +338,7 @@ def delphoto(pid,uid):
     cursor=conn.cursor()
     cursor.execute("select * from photos where pid='{0}' "
                    "and aid in (select aid from album where uid='{1}')".format(pid,uid))
-    if cursor.fetchone() is not None:
+    if cursor.fetchone()is not None:
         cursor.execute("delete from photos where pid='{0}'".format(pid))
         return "deleted"
     else:
@@ -364,11 +347,12 @@ def delphoto(pid,uid):
 def delcom(cid,uid):
     cursor=conn.cursor()
     cursor.execute("select * from comments where cid='{0}' and uid='{1}'".format(cid,uid))
-    if cursor.fetchone() is not None:
+    if cursor.fetchone()[0]is not None:
         cursor.execute("delete from comments where aid='{0}'".format(cid))
         return "deleted"
     else:
         return "not your comment"
+
 
 def suggestFriends(uid):
     cursor=conn.cursor()
@@ -393,6 +377,19 @@ def suggestPhotos(uid):
                    "group by pid)"
                    "where p1=p2"
                    "order by p1,cp2/cp1 desc".format(uid))
+    return cursor.fetchall()
+
+#contribution function
+def contribution():
+    cursor=conn.cursor()
+    cursor.execute("select up from"
+                   "(select uid as up, count(pid) as cp from photos, users, albums "
+                   "where albums.aid=photos.aid and users.uid=albums.uid "
+                   "group by uid),"
+                   "(select uid as uc, count(cid) as cc from comments "
+                   "group by uid) "
+                   "where uc=up "
+                   "order by cc+cp desc")
     return cursor.fetchall()
 
 '''
@@ -436,15 +433,13 @@ WHERE p2.pid = pt2.pid AND
                 LIMIT 5)
 '''
 
-@flask_login.login_required
 def createDefaultAlbum(uid):
-    query = "INSERT INTO Albums(aname, uid) VALUES ('Default','{0}')"
+    query = "INSERT INTO Albums(aname, uid) VALUES ('default','{0}')"
     print(query.format(uid))  # optional printing out in your terminal
     cursor = conn.cursor()
     cursor.execute(query.format(uid))
     return
 
-@flask_login.login_required
 def createAlbum(uid, aname):
     query = "INSERT INTO Albums(aname, uid) VALUES ('{0}','{1}')"
     print(query.format(uid))  # optional printing out in your terminal
@@ -453,10 +448,12 @@ def createAlbum(uid, aname):
     return
 
 # default page
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET','POST'])
 def hello():
-    return render_template('hello.html', message='Welcome to PhotoShare')
+    return render_template('Home.html', message='Welcome to PhotoShare')
 
 
 if __name__ == "__main__":
+    # this is invoked when in the shell  you run
+    # $ python app.py
     app.run(port=5000, debug=True)
