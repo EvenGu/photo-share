@@ -19,10 +19,10 @@ as well as the containing album and the owner
   <div class="container"> 
     <div class="navbar-header">
       <ul class="nav navbar-nav">
-      	<li class="navbar-left"><a class="navbar-brand" href="home.html">Home</a></li>        
+      	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
         {% if not user %}
-        <li class="navbar-right active"><a class="navbar-default" href="register.html">Register</a></li>
-        <li class="navbar-right"><a class="navbar-default" href="login.html">Login</a></li>
+        <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>
+        <li class="navbar-right"><a class="navbar-default" href="/login">Login</a></li>
         {% else %}
         <li class="navbar-right"><a class="navbar-default" href="{{ url_for('profile') }}">My Profile</a></li>
         <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li>
