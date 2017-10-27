@@ -2983,11 +2983,17 @@ form.regform label.gender {
   transition: border-color .25s ease, box-shadow .25s ease;
 }
 
-.regform input[type="radio"]{
-  display: inline-block;
-  size: 10px;
-}
 .regform textarea {
   border:2px solid gray;
   resize: vertical;
+}
+
+label.search-type{
+  text-align: center;
+  width:auto;
+}
+input.search-type,
+.regform input[type="radio"]{
+  display: inline-block;
+  size: 10px;
 }

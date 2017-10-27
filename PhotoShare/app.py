@@ -289,18 +289,18 @@ def getUsersLike(uid,pid):
 #search function
 
 def search(key,type):
-#type 1 for tags,2 for users,3 for comments
+#type T for tags, U for users, C for comments
     cursor=conn.cursor()
-    if (type==1):
+    if (type=="T"):
         tags=key.split(",")
         for tag in tags:
             cursor.execute("select * from Tags where tname='{0}'".format(tag))
             result=result or cursor.fetchall()
         return result
-    elif(type==2):
+    elif(type=="U"):
         cursor.execute("select * from users where fname='{0}'".format(key))
         return cursor.fetchall()
-    elif(type==3):
+    elif(type=="C"):
         cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
         return cursor.fetchall()
 '''
