@@ -97,7 +97,6 @@ def Login():
         print (email)
         cursor = conn.cursor()
         # check if email is registered
-        print (getUserList() or getUserList())
         if cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email)):
             data = cursor.fetchone()
             print(data)
@@ -113,7 +112,7 @@ def Login():
         # information did not match
         return render_template('Login.html',supress=False)
 
-    if request.method=='GET':
+    elif request.method=='GET':
         return render_template('Login.html', supress=True)
 
 @app.route('/logout')
@@ -131,21 +130,21 @@ def unauthorized_handler():
 @app.route("/register", methods=['POST','GET'])
 def register():
 
-    if request.method==['POST']:
-        '''
-        print("register failed: couldn't find all tokens")
-        # this prints to shell, end users will not see this (all print statements go to shell)
-        return flask.redirect(flask.url_for('register'))
-        '''
-
+    if request.method == 'POST':
         fname = request.form['fname']
+        print("f",fname)
         lname = request.form['lname']
+        print("l",lname)
         email = request.form['email']
-        dob = request.form['dob']
+        print("e",email)
+        dob = request.values.get('dob')
+        print("d",dob)
         hometown = request.form['hometown']
-        gender = request.form['gender']
+        print("h",hometown)
         password = request.form['password']
-        print(email)
+        print("p",password)
+        gender = request.form['gender']
+        print("g",gender)
 
         cursor = conn.cursor()
         test = isEmailUnique(email)
@@ -166,8 +165,10 @@ def register():
         else:
             print("register failed: email already used")
             return flask.redirect(flask.url_for('register'))
+    elif request.method == 'GET':
+        print ("///")
+        return render_template('Register.html', supress='True')
 
-    return render_template('Register.html', supress='True')
 
 
 
@@ -465,4 +466,4 @@ def hello():
 if __name__ == "__main__":
     # this is invoked when in the shell  you run
     # $ python app.py
-    app.run(port=8080, debug=True)
+    app.run(port=5000, debug=True)
