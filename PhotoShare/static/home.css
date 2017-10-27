@@ -2932,12 +2932,12 @@ button.close {
 
 
 ／*--------------------------*／
-form.regform {
+div.regform {
   position: relative;
   vertical-align: middle;
   text-align:center;
   padding: 40px;
-  max-width:600px;
+  max-width:450px;
   margin:40px auto;
 }
 
@@ -2975,7 +2975,7 @@ form.regform label{
   padding: 5px 10px;
   background: none;
   border: 1px solid gray;
-  color: white;
+  color: black;
   border-radius: 0;
   transition: border-color .25s ease, box-shadow .25s ease;
 }
