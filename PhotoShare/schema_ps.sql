@@ -43,15 +43,9 @@ CREATE TABLE Photos(
   own (different) pid. */
 
 CREATE TABLE Tags(
-   hashtag  VARCHAR(50),
-   PRIMARY KEY (hashtag)
-   );
-
-CREATE TABLE photoTag(
 	 pid INTEGER NOT NULL,
-	 hashtag VARCHAR(50) NOT NULL,
-   PRIMARY KEY (pid, hashtag),
-	 FOREIGN KEY (hashtag) REFERENCES Tags(hashtag) ON DELETE CASCADE,
+	 tname VARCHAR(50) NOT NULL,
+   PRIMARY KEY (pid, tname),
 	 FOREIGN KEY (pid) REFERENCES Photos(pid) ON DELETE CASCADE
    );
 
