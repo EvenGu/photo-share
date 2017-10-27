@@ -107,12 +107,13 @@ def loginp():
             flask_login.login_user(user)  # okay login in user
             return flask.redirect(flask.url_for('findu',uid=user.id))  # protected is a function defined in this file
     # information did not match
-    return render_template('Login.html',supress=False)
+    return render_template('Login.html',supress=True)
 
 @app.route('/Login', methods=['GET'])
 def loging():
     return render_template('Login.html',supress=True)
 
+'''
 @app.route('/Login', methods=['GET', 'POST'])
 def login():
     if flask.request.method == 'POST':
@@ -134,6 +135,8 @@ def login():
         # information did not match
         return render_template('Login.html',supress=False)
     return render_template('login.html',supress=True)
+'''
+
 @app.route('/logout')
 def logout():
     flask_login.logout_user()
@@ -220,7 +223,10 @@ def isEmailUnique(email):
 @app.route('/profile/<uid>')
 @flask_login.login_required
 def findu(uid):
-    return render_template('home.html', name=uid, message="Here's your profile")
+    cursor = conn.cursor()
+    cursor.execute("select fname from Users where uid='{0}'".format(uid))
+    fname = cursor.fetchone()[0]
+    return render_template('hello.html', name=fname, message="Here's your profile")
 
 #album page
 @app.route('/album/<aid>')
@@ -271,7 +277,7 @@ def upload_file():
                                photos=getAlbumPhotos(aid))
         else:
             print("not image")
-            return render_template('Home.html')
+            return render_template('Hello.html')
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('Upload.html')
@@ -447,9 +453,9 @@ def createAlbum(uid, aname):
     return
 
 # default page
-@app.route("/", methods=['GET'])
+@app.route("/", methods=['GET', 'POST'])
 def hello():
-    return render_template('hello.html', message='Welecome to Photoshare')
+    return render_template('hello.html', message='Welcome to PhotoShare')
 
 
 if __name__ == "__main__":

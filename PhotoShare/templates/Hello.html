@@ -27,11 +27,14 @@
     <div class="container">
       <div class="row">
         <div class="col-md12">
+        <!--
             {% if current_user.is_authenticated %}
-                <h1>Hello {{ fname }}</h1>
-            {% else %}
+                <h1 style="color:firebrick">Hello {{ current_user.id }}</h1>
+            {% else %} -->
                 <h1>Hello there</h1>
             {% endif %}
+        --->
+            <h1>Hello there</h1>
             <h2 style="margin-top:-5pt">Bonjour</h2>
             <h3 style="margin-top:-5pt">你好</h3>
             <h4 style="margin-top:-6pt">Hola</h4>
@@ -42,7 +45,8 @@
 
       <div class="row">
         <div class="col-lg-12 text-center">
-        <h4>{% if message %} {{ message }} {% endif %}</h4>
+        <h4 style="color: #843534">{% if message %} {{ message }} {% endif %}</h4>
+        <h3 style="color: #843534">{% if name %} {{ name }} {% endif %}</h3>
         </div>
       </div>
 

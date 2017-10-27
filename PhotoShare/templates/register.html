@@ -29,31 +29,31 @@
       <div id="signup">
           <h2>Sign Up for Free</h2>
           
-          <form class="regform" action="/" method="post">
+          <form class="regform" action="{{ url_for('register') }}" method="post">
          
           <div class="field-wrap">
             <label style="text-align:left" for="fname">First Name<span class="req">*</span></label>
-            <input type="text" required autocomplete="off" id="fname" placeholder="First Name"/>
+            <input type="text" required id="fname" placeholder="First Name"/>
           </div>
         
           <div class="field-wrap">
             <label style="text-align:left" for="lname">Last Name<span class="req">*</span></label>
-            <input type="text" required autocomplete="off" id="lname" placeholder="Last Name"/>
+            <input type="text" required id="lname" placeholder="Last Name"/>
           </div>
 
           <div class="field-wrap">
             <label style="text-align:left" for="email">Email Address<span class="req">*</span></label>
-            <input type="email" required autocomplete="off" id="email" placeholder="Email Address"/>
+            <input type="email" required id="email" placeholder="Email Address"/>
           </div>
           
           <div class="field-wrap">
             <label style="text-align:left" for="dob">Date of Birth</label>
-            <input type="date" required autocomplete="off" id="dob"/>
+            <input type="date" id="dob"/>
 		  </div>
           
           <div class="field-wrap">
             <label style="text-align:left" for="hometown">Hometown</label>
-            <input type="text" required autocomplete="off" id="hometown" placeholder="Hometown"/>
+            <input type="text" id="hometown" placeholder="Hometown"/>
           </div>
           
           <div class="field-wrap">
