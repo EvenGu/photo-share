@@ -76,7 +76,10 @@ and recommendations(photo, user)
   <div class="container">
     <div class="row">
     	<div class="col-xs-12 text-center">
-        	<a href="/upload">Upload your photo</a>
+            <form class="createAlbum" method="POST" action="/createalbum/{{ uid }}" >
+                <label for="createalbum">Create a new album</label>
+                <input type="text" name="createalbum" required placeholder="name">
+            </form>
       	</div>
     </div>
   </div>
