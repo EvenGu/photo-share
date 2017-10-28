@@ -20,7 +20,7 @@ Album displays all the containing photos and the owner
       <ul class="nav navbar-nav">
       	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
         {% if current_user.is_authenticated %}
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('profile') }}">My Profile</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('findu',uid=uid) }}">My Profile</a></li>
             <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li>
         {% else %}
             <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>

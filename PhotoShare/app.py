@@ -314,11 +314,13 @@ def getUsersLike(uid,pid):
         return 1
 
 #search function
-@app.route("/search", methods=['GET', 'POST'])
-def search(key,type):
+@app.route("/search", methods=['POST'])
+def search():
 #type T for tags, U for users, C for comments
     if request.method == 'POST':
-        key = request.form.get('search')
+        key = request.form.get('key')
+        type = request.form.get('Type')
+        print(key, type)
         cursor=conn.cursor()
         if (type=="T"):
             cursor.execute("select DISTINCT pid from Tags")
@@ -331,26 +333,26 @@ def search(key,type):
             print(retPhotos)
             photolist = []
             for p in retPhotos:
-                photolist += getPhotos(p)
+                photolist += getPhotoFromList(p)
             #return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
-            return
+            return print (key,type+'V')
 
-        elif (type == "U"):
+        elif (type == "C"):
             cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
             retPhotos = cursor.fetchall()
             print(retPhotos)
             photolist = []
             for p in retPhotos:
-                photolist += getPhotos(p)
+                photolist += getPhotoFromList(p)
             # return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
-            return
+            return print (key,type)
 
-        elif(type=="C"):
+        elif(type=="U"):
             cursor.execute("select * from users where fname='{0}'".format(key))
             retUsers = cursor.fetchall()
             userlist = []
             # return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
-            return
+            return print (key,type)
 
 #add tags
 def AddTags(pid,key):
@@ -364,11 +366,15 @@ def AddTags(pid,key):
     return "success"
 
 #add album
-def AddAlbum(uid,aname):
+@app.route("/createalbum/<uid>",methods=['POST'])
+def AddAlbum(uid):
+    an=request.values.get('albumname')
+    if an is None: aname="undifined"
+    else: aname=an
     cursor=conn.cursor()
     cursor.execute("insert into albums(uid,aname) values ('{0}','{1}')".format(uid,aname))
     conn.commit()
-    return "success"
+    return flask.redirect(flask.url_for('findu',uid=uid))
 
 #make comment
 
