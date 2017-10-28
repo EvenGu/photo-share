@@ -127,7 +127,6 @@ def Login():
             print(data)
             pwd = str(data[0])
             temp=request.form['password']
-
             if temp == pwd:
                 user = User()
                 cursor.execute("SELECT uid FROM Users WHERE email = '{0}'".format(email))
@@ -135,10 +134,7 @@ def Login():
                 flask_login.login_user(user)  # okay login in user
                 return flask.redirect(flask.url_for('findu',uid=cursor.fetchone()[0]))
                 # protected is a function defined in this file
-
-            print('ss')
         # information did not match
-        print('tt')
         return render_template('Login.html',supress=False)
 
     elif request.method=='GET':
@@ -298,17 +294,17 @@ def upload_file(aid):
             conn.commit()
             print(str(pid)+'.'+imgtype[1])
             imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(pid)+'.'+imgtype[1]))
-            return flask.redirect(flask.url_for('album',aid, message="Upload success"))
+            return flask.redirect(flask.url_for('album',aid=aid))
             #return render_template('Album.html', uname=uname, album=getAlbumPhotos(aid), uid=uid,
             #                   photos=getAlbumPhotos(aid), message="Upload success")
         else:
             print("not image")
-            return flask.redirect(flask.url_for('album', aid, message="Upload Failed: not an Image"))
+            return render_template('upload.html',uname=uname,uid=uid,message="Upload Failed: not an image",name=aid)
             #return render_template('Album.html', uname=uname, album=getAlbumPhotos(aid), uid=uid,
             #                   photos=getAlbumPhotos(aid), message="Upload Failed: not an Image")
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
-        return render_template('Upload.html', uname=uname, uid=uid)
+        return render_template('Upload.html', uname=uname, uid=uid,message="Please upload your photo",name=aid)
 
 # end photo uploading code
 
@@ -420,7 +416,7 @@ def delphoto(pid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
     cursor.execute("select * from photos where pid='{0}' "
-                   "and aid in (select aid from album where uid='{1}')".format(pid,uid))
+                   "and aid in (select aid from albums where uid='{1}')".format(pid,uid))
     if cursor.fetchone()is not None:
         cursor.execute("select aid from photos where pid='{0}'".format(pid))
         aid=cursor.fetchone()[0]
