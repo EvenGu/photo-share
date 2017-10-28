@@ -6,7 +6,7 @@
 
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 
-/*! Modified by Yiwen Gu */
+/* Modified by Yiwen Gu */
 
 html {
   font-family: sans-serif;
@@ -2932,7 +2932,7 @@ button.close {
 }
 
 
-／*--------------------------*／
+／*-------log in and regform-------------------*／
 form.regform {
   position: relative;
   vertical-align: middle;
@@ -2996,4 +2996,56 @@ input.search-type,
 .regform input[type="radio"]{
   display: inline-block;
   size: 10px;
+}
+
+
+／*-------photo like comment-------------------*／
+@import url("https://fonts.googleapis.com/css?family=Lato");
+
+
+i {
+  font-size: 25px;
+  color: black;
+}
+
+#thumbs-down,
+#fav {
+  padding-left: 25px;
+}
+
+#like-unlike {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+}
+
+#like-unlike li {
+  float: left;
+}
+
+#like-unlike li span {
+  padding-left: 25px;
+  color: #868e96;
+}
+
+#comments {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#comments li > span {
+    padding-left: 8px;
+  }
+
+#usr-comment {
+  // height: 30px;
+  background-color: inherit;
+  border-style: none;
+  border-bottom: 1px solid rgba(0, 0, 255, 0.42);
+}
+
+.fa-plus-circle {
+  font-size: x-large;
 }

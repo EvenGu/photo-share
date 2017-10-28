@@ -1,5 +1,5 @@
 <!---
-Photo displays one photo with caption, tags, comment
+Photo displays ONE photo with caption, tags, comment
 as well as the containing album and the owner
 --->
 
@@ -11,139 +11,113 @@ as well as the containing album and the owner
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Photo</title>
 <link rel="stylesheet" href="../static/home.css">
+<link  href="../static/showPhoto.js">
 </head>
 
 <body>
-
+<!--- nav bar --->
 <nav class="navbar navbar-default">
   <div class="container"> 
     <div class="navbar-header">
       <ul class="nav navbar-nav">
       	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-        {% if not user %}
-        <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>
-        <li class="navbar-right"><a class="navbar-default" href="/login">Login</a></li>
-        {% else %}
-        <li class="navbar-right"><a class="navbar-default" href="{{ url_for('profile') }}">My Profile</a></li>
-        <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li>
-        {% endif %}        
+        {% if uname=='' %}
+            <li class="navbar-right"><a class="navbar-default" href="/register">Register</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
+          {% else %}
+            <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="">Hello {{ uname }}</a></li>
+          {% endif %}
       </ul> 
 	</div>
   </div>
 </nav>
-
-{% if user %}
+<!--- greetings, NO search bar --->
 <section>
   <div class="jumbotron text-center">
     <div class="container">
       <div class="row">
         <div class="col-md12">
-        {% if name %}
-          <h1>Hello {{Name}}</h1>
-        {% endif %}
+            <h4>{% if message %} {{ message }} {% endif %}</h4>
         </div>
       </div>
       <div class="row">
-      	<div class="col-lg-12 text-center">
-        	<form role="search" action="/photoSearch" method = "POST">
-            	<div style="margin-bottom:10px">
-        		<input type="text" class="form-control " placeholder="Search">
-                </div>
-                <div class="row">
-            		<label style="width:20px">tag</label>
-  						<input type="radio" class="radio-inline" name="search" id="tag" value="t">
-  					<label style="width:30px" for="user">user</label>
-  						<input type="radio" class="radio-inline" name="search" id="user" value="u">
-          		</div>
-        		<button type="search" class="btn btn-primary btn-md">Search</button>       
-     		</form>	
-      	</div>      	
+        <div class="col-lg-12 text-center">
+            <h3>{% if uname %} Hello <span style="color: #843534">{{ uname }}</span> {% endif %}</h3>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!--- THE photo --->
 <section>
   <div class="container">
     <div class="row">
-    {% if photos %}
-	
-	<ul>{
-    	{% for photo in photos %}
-	        <li><a href="{{url_for('photo')}}?pid={{photos[1]}}&photouid={{photos[3]}}">
-                <img src="data:image/png;base64, {{photo[0]}}"/></a><br>{{photos[3]}}<br>
-                caption: {{photo[2]}} photo id: {{photo[2]}}
-	            <a href="{{url_for('delete')}}?pid={{photo[1]}}&photouid={{photo[3]}}&aid={{photo[4]}}">Delete {{photo[2]}}</a>
-		        <br>
-	        </li>
- 	    {% endfor %}
-	</ul>
-	
-{% if photos %}
-<h2>Here's your photos</h2>
-   <ul>
-   {% for photo in photos %}
-       <li><a href = '/albums?photo_id={{photo[2]}}'>caption: {{photo[1]}} photo id: {{photo[2]}}</a></li>
-       <li><img src='/upload/{{ photo[2] }}' /></li>
-   {% endfor %}
-   <img src="http://img.mukewang.com/52da54ed0001ecfa04120172.jpg">
-   </ul>
-{% endif %}
-	<a href="{{url_for('albums')}}?aid={{photos[0][4]}}&userid={{photos[0][3]}}">Back to Album</a>
-	
+    {% for photo in photos %}
+    {% if photos[2] %} <!--how to target the photo?--->
+        <img src="data:image/png;base64, {{photo[0]}}"/><br/>
+        <h5>
+            Caption: <span>{{photo[2]}}</span>
+            Owner: <a href="{{url_for('profile')}}?uid={{photo[0][4]}}">User page</a>
+            Album: <a href="{{url_for('albums')}}?aid={{photo[0][4]}}">Album page</a>
+        </h5>
+        {% if auth %}
+        <a href="{{url_for('delete')}}?pid={{photo[1]}}&photouid={{photo[3]}}&aid={{photo[4]}}">Delete {{photo[2]}}</a>
+		<br>
+        {% endif %}
+    {% endfor %}
+    </div>
 
+    <div class="likes">
+        <ul class="like-unlike">
+        <img src="javascript().like-unlike" alt="" >
+        </ul>
+    {% if likes %}
+		{% for like in likes %}
+			{{like[1]}}
+		{% endfor %}
+		&nbsp;{{count}}
+	likes
+	{% endif %}
+	<a href="{{url_for('photo')}}?pid={{photo[0][1]}}&userid={{photo[0][3]}}">Like!</a>
+    </div>
 
-
-
-
-{% endif %}
-
-{% if photo %}
-	
-	<img src='data:image/png;base64, {{photo[0][0]}}'/><br>{{photo[0][2]}}
-	<a href="{{url_for('albums')}}?aid={{photo[0][4]}}">Back to Album</a>
-	<br>
-	{% if tags %}
-		Tags: 
+    <div class="tagBox">
+	<h3>Tags</h3>
+    {% if tags %}
 		{% for tag in tags %}
 			<br>
 			{{tag[3]}}
 			<br>
 			<a href="{{url_for('photo')}}?word={{tag[3]}}&usertagid={{tag[1]}}&pid={{tag[2]}}">View my photos/</a>
 			<a href="{{url_for('photo')}}?word={{tag[3]}}&pid={{tag[2]}}">View all photos</a>
-
 		{% endfor %}
-		
-
 	{% endif %}
-	<br>
-	{% if likes %}
-		{% for like in likes %}
-			{{like[1]}}
-		{% endfor %}
-		&nbsp;{{count}}
-		people have liked the photo
-	{% endif %}
-	<br>
-	<a href="{{url_for('photo')}}?pid={{photo[0][1]}}&userid={{photo[0][3]}}">Like!</a>
+    <form class="Tags" method="post" action="/photo">
+        <label for="crtTag">Create a New Tag</label>
+        <input type="text" name="crtTag"/>
+        <input type="submit" name="crtTag" value="Submit">
+    </form>
+    </div>
 
-
-	<br>
-	<form method="post" action="/photo">
-		Comment:<label for="comments"></label>
-        <input type="text" name="comment" /><br />
-        <input type="submit" name="comment" value="Submit">
+    <div class="commentBox">
+    <h3>Comments</h3>
+	<form class="Comments" method="post" action="/photo">
+		<label for="addComment">Your Comment</label>
+        <input type="text" name="addComment"/>
+        <input type="submit" name="addComment" value="Submit">
         <input type="hidden" name="pid" value="{{photo[0][1]}}">
         <input type="hidden" name="photouid" value="{{photo[0][3]}}">
 	</form>
 
 	{% if comments %}
 		{% for comment in comments %}
-			{% if not anonymous %}
+			{% if not guest %}
 				<a href="{{url_for('users')}}?uid={{comment[0]}}">{{comment[1]}}</a>
 				:&nbsp;{{comment[2]}}
 			{% else %}
-				Anonymous:&nbsp;{{comment[2]}}
+				guest:&nbsp;{{comment[2]}}
 			{% endif %}
 			
 		{% endfor %}
@@ -151,6 +125,6 @@ as well as the containing album and the owner
 {% endif %}
 
 </section>
-</body>
 
+</body>
 </html>
