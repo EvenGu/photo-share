@@ -69,9 +69,13 @@ as well as the containing album and the owner
     {% endfor %}
     </div>
 
-    <div class="likes">
-        <form class="like-unlike" >
-
+    <div class="like-unlike">
+        <form class="like-unlike" method="GET" action="like">
+            {% if liked %}
+            <input type="button" name="like-unlike"><img src="../static/thumb-up-active.png">
+            {% else %}
+            <input type="button" name="like-unlike"><img src="../static/thumb-up.png">
+            {% endif %}
         </form>
     {% if likes %}
 		{% for like in likes %}
