@@ -20,7 +20,7 @@
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
           {% else %}
             <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
-            <li class="navbar-right"><a class="navbar-default">Hello {{ uname }}</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="">Hello {{ uname }}</a></li>
           {% endif %}
       </ul> 
 	</div>
@@ -32,13 +32,6 @@
     <div class="container">
       <div class="row">
         <div class="col-md12">
-        <!--
-            {% if current_user.is_authenticated %}
-                <h1 style="color:firebrick">Hello {{ current_user.id }}</h1>
-            {% else %} --
-                <h1>Hello there</h1>
-            {% endif %}
-        --->
             <h1>Hello there</h1>
             <h2 style="margin-top:-5pt">Bonjour</h2>
             <h3 style="margin-top:-5pt">你好</h3>
@@ -51,7 +44,7 @@
       <div class="row">
         <div class="col-lg-12 text-center">
         <h4 style="color: #843534">{% if message %} {{ message }} {% endif %}</h4>
-        <h3 style="color: #843534">{% if name %} {{ name }} {% endif %}</h3>
+        <h3 style="color: #843534">{% if uname %} {{ uname }} {% endif %}</h3>
         </div>
       </div>
 

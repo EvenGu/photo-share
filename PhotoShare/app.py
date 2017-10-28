@@ -165,16 +165,16 @@ def register():
             user = User()
             user.id = email
             flask_login.login_user(user)
-            uid = getUserIdFrom(email)
+            id = getUserIdFrom(email)
             createDefaultAlbum(uid)
-            return flask.redirect(flask.url_for('findu',uid=uid))
+            return flask.redirect(flask.url_for('findu',uid=id))
 
         else:
             print("register failed: email already used")
-            return render_template('Register.html', supress='False', message="register failed: email already used")
+            return render_template('Register.html', supress='False', message="Register Failed: Email already used")
 
     elif request.method == 'GET':
-        return render_template('Register.html', supress='True', message="free to register!")
+        return render_template('Register.html', supress='True', message="Free to Register!")
 
 
 
@@ -206,7 +206,7 @@ def findu(uid):
     cursor = conn.cursor()
     cursor.execute("select fname from users where uid='{0}'".format(uid))
     name = cursor.fetchone()[0]
-    return render_template('Hello.html',name=name,message="Login success!",uname=name)
+    return render_template('MyProfile.html',message="Login success!",uname=name)
 
 #album page
 @app.route('/album/<aid>')

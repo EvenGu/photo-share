@@ -19,49 +19,62 @@ and recommendations(photo, user)
     <div class="navbar-header">
       <ul class="nav navbar-nav">
       	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-        {% if auth %}
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('profile/') }}">My Profile</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
-            <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="/login">Login</a></li>
-        {% endif %}
+        {% if uname=='' %}
+            <li class="navbar-right"><a class="navbar-default" href="/register">Register</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
+          {% else %}
+            <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="">Hello {{ uname }}</a></li>
+          {% endif %}
       </ul> 
 	</div>
   </div>
 </nav>
 
-{% if user %}
 <section>
   <div class="jumbotron text-center">
     <div class="container">
       <div class="row">
         <div class="col-md12">
-          <h1>Hello {{user[1]}}</h1>
+            <h4>{% if message %} {{ message }} {% endif %}</h4>
         </div>
       </div>
       <div class="row">
+        <div class="col-lg-12 text-center">
+            <h3>{% if uname %} Hello <span style="color: #843534">{{ uname }}</span> {% endif %}</h3>
+        </div>
+      </div>
+
+      <div class="row">
       	<div class="col-lg-12 text-center">
-        	<form role="search" action="/photoSearch" method = "POST">
+        	<form class="search" role="search">
             	<div style="margin-bottom:10px">
-        		<input type="text" class="form-control " placeholder="Search">
+        		    <input type="text" class="form-control" placeholder="Search">
                 </div>
-                <div class="row">
-            		<label style="width:20px">tag</label>
-  						<input type="radio" class="radio-inline" name="search" id="tag" value="t">
-  					<label style="width:30px" for="user">user</label>
-  						<input type="radio" class="radio-inline" name="search" id="user" value="u">
-          		</div>
-        		<button type="search" class="btn btn-primary btn-md">Search</button>       
-     		</form>	
-      	</div>      	
+                <div class="field-wrap" style="margin-bottom: 0px">
+                    <label class="search-type" for="byTag">by Tag</label>
+			            <input type="radio" class="search-type" name="byTag" value="T">
+                    <label class="search-type" for="byUser">by Comment</label>
+  			            <input type="radio" class="search-type" name="byComm" value="C">
+                    <label class="search-type" for="searchUser">Search User by Name</label>
+  			            <input type="radio" class="search-type" name="searchUser" value="U">
+                </div>
+        		<button type="search" class="btn btn-primary btn-sm">Search</button>
+                {% if uname != '' %}
+                    <button type="search" class="btn btn-primary btn-sm">Search My Photos</button>
+                {% endif %}
+     		</form>
+      	</div>
       </div>
     </div>
   </div>
 </section>
+    </div>
+  </div>
+</section>
 
-{% if user %}
 <!---uploadPhoto--------->
+{% if uname !='' %} <!---if auth--->
 <section>
   <div class="container">
     <div class="row">
@@ -73,15 +86,11 @@ and recommendations(photo, user)
 </section>
 
 <!---myAlbums--------->
+{% if uname !='' %}
 <section>
   <div class="container">
     <div class="row">
-        <div class="col-md-3 text-center col-sm-6 col-xs-6"><img src="img/200x200.gif" alt=""></div>
-        <div class="col-md-3 text-center col-sm-6 col-xs-6"><img src="img/200x200.gif" alt=""></div>
-		<div class="col-md-3 text-center col-sm-6 col-xs-6 hidden-xs hidden-sm"><img src="img/200x200.gif" alt=""></div>
-        <div class="col-md-3 text-center col-sm-6 col-xs-6 hidden-xs hidden-sm"><img src="img/200x200.gif" alt=""></div>
-    </div>
-    {% if albums %}
+        {% if albums %}
 		<ul>
 			{% for album in albums %}
 				<h3><a href="{{url_for('albums')}}?aid={{album[0]}}">{{album[1]}}</a></h3>
@@ -89,7 +98,7 @@ and recommendations(photo, user)
 				<br>
 			{% endfor %}
 		</ul>	
-	{% endif %}
+	    {% endif %}
   </div>
 </section>
 
@@ -97,17 +106,12 @@ and recommendations(photo, user)
 <section>
   <div class="container">
     <div class="row">
-
-	{% if users %}
-
-		{%for user in users %}
+		{% for user in users %}
 			<a href="{{url_for('users')}}?uid={{user[0]}}">{{user[1]}}</a>
-			
 			{% if not friends %}
 				{% if useremail != user[1] %}
 					<a href="{{ url_for('users') }}?fid={{user[0]}}">Add to friends!</a>
 				{% endif %}
-
 			{% endif %}
 			<br>
 		{% endfor %}
@@ -117,6 +121,7 @@ and recommendations(photo, user)
   </div>
 </section>
 {% endif %}
+
 <footer class="text-center">
   <div class="container">
     <div class="row">
