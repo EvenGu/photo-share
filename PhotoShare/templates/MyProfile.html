@@ -24,7 +24,7 @@ and recommendations(photo, user)
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
           {% else %}
             <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="">Hello {{ uname }}</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ uname }}</a></li>
           {% endif %}
       </ul> 
 	</div>
@@ -93,8 +93,8 @@ and recommendations(photo, user)
         {% if albums %}
 		<ul>
 			{% for album in albums %}
-				<h3><a href="{{url_for('albums')}}?aid={{album[0]}}">{{album[1]}}</a></h3>
-				<a href="{{url_for('delete')}}?photouid={{album[3]}}&aid={{album[0]}}">Delete album {{album[1]}}</a>
+				<h3><a href="/album/{{album[0]}}">{{album[1]}}</a></h3>
+				<a href="/delete/{{album[0]}}">Delete album {{album[1]}}</a>
 				<br>
 			{% endfor %}
 		</ul>	

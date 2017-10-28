@@ -63,7 +63,8 @@ def getCurrentUserId():
     email=flask_login.current_user.get_id()
     if email is None: return -1
     else:
-        cursor.execute("select uid from users where email='{0}'",format(email))
+        print(email)
+        cursor.execute("select uid from users where email='{0}'".format(email))
         return cursor.fetchone()[0]
 # Users control
 
@@ -226,7 +227,10 @@ def findu(uid):
     cursor = conn.cursor()
     cursor.execute("select fname from users where uid='{0}'".format(uid))
     name = cursor.fetchone()[0]
-    return render_template('MyProfile.html',message="Login success!",uname=name)
+    cursor.execute("select * from albums where uid='{0}'".format(uid))
+    albums=cursor.fetchall()
+    print(albums)
+    return render_template('MyProfile.html',message="Login success!",uname=name,uid=uid,albums=albums)
 
 #album page
 @app.route('/album/<aid>',methods=['GET','POST'])
@@ -252,8 +256,8 @@ def photo(pid):
         cursor.execute("select * from comments where pid='{0}'".format(pid))
         comm=cursor.fetchall()
         ucurrent=getCurrentUserId()
-        return render_template('hello.html', name=pid, message="Here's photo",
-                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm)
+        return render_template('Hello.html', name=pid, message="Here's photo",
+                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=getCurrentUserId())
 
 
 '''
@@ -292,7 +296,7 @@ def upload_file(aid):
                                photos=getAlbumPhotos(aid))
         else:
             print("not image")
-            return render_template('Hello.html')
+            return render_template('Hello.html',uid=getCurrentUserId())
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('Upload.html')
@@ -383,7 +387,7 @@ def MakeFriends(uid):
 
 #delete functions
 @app.route('/delete/<aid>',methods=['GET'])
-@flask_login.login_required()
+#@flask_login.login_required()
 def delalbum(aid):
     cursor=conn.cursor()
     uid=getCurrentUserId()
@@ -395,7 +399,7 @@ def delalbum(aid):
         return "not your album"
 
 @app.route('/delete/<pid>',methods=['GET'])
-@flask_login.login_required()
+#@flask_login.login_required()
 def delphoto(pid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
@@ -411,7 +415,7 @@ def delphoto(pid):
         return "not your photo"
 
 @app.route('/delete/<cid>',methods=['GET'])
-@flask_login.login_required()
+#@flask_login.login_required()
 def delcom(cid):
     cursor=conn.cursor()
     uid = getCurrentUserId()

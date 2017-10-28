@@ -20,7 +20,7 @@
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
           {% else %}
             <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="">Hello {{ uname }}</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ uname }}</a></li>
           {% endif %}
       </ul> 
 	</div>
