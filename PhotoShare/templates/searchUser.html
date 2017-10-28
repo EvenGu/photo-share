@@ -1,0 +1,85 @@
+<!---
+Album displays all the containing photos and the owner
+--->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Album</title>
+<link rel="stylesheet" href="../static/home.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container"> 
+    <div class="navbar-header">
+      <ul class="nav navbar-nav">
+      	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
+        {% if current_user.is_authenticated %}
+            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('profile') }}">My Profile</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+            <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/login">Login</a></li>
+        {% endif %}        
+      </ul> 
+	</div>
+  </div>
+</nav>
+
+{% if user %}
+<section>
+  <div class="jumbotron text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md12">
+        {% if name %}
+          <h1>Hello {{Name}}</h1>
+        {% endif %}
+        </div>
+      </div>
+      <div class="row">
+      	<div class="col-lg-12 text-center">
+        	<form role="search" action="/search(type)" method = "POST">
+            	<div style="margin-bottom:10px">
+        		<input type="text" class="form-control " placeholder="Search">
+                </div>
+                <div class="row">
+            		<label for="tag" style="width:20px">tag</label>
+  						<input type="radio" class="radio-inline" name="search" id="tag" value="t">
+  					<label for="user" style="width:30px" for="user">user</label>
+  						<input type="radio" class="radio-inline" name="search" id="user" value="u">
+          		</div>
+        		<button type="submit" class="btn btn-primary btn-md">Search</button>
+     		</form>	
+      	</div>      	
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section>
+  <div class="container">
+    <div class="row">
+	{% if album %}
+    	<h3>{{fname}}'s Album:</h3>
+		<h2>{{aname}}</h2>
+		<ul>
+			{% for photo in album %}
+				<h3><a href="{{url_for('albums')}}?aid={{album[0]}}">{{album[1]}}</a></h3>
+				<a href="{{url_for('delete')}}?photouid={{album[3]}}&aid={{album[0]}}">Delete album {{album[1]}}</a>
+				<br>
+			{% endfor %}
+		</ul>
+	{% endif %}
+    </div>
+  </div>
+</section>
+</body>
+
+</html>

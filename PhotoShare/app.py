@@ -173,7 +173,6 @@ def register():
             else: hometown1=hometown
             if gender is None: gender1='/'
             else: gender1=gender
-
             cursor.execute("INSERT INTO Users (fname,lname,email,dob,hometown,gender,password) "
                             "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')"
                             .format(fname,lname,email,dob,hometown1,gender1,password))
@@ -224,20 +223,10 @@ def isEmailUnique(email):
 @app.route('/profile/<uid>')
 @flask_login.login_required
 def findu(uid):
-
-    '''
-    cursor=conn.cursor()
-    cursor.execute("select * from users where uid='{0}'".format(uid))
-    user=cursor.fetchone()
-    cursor.execute("select * from albums where uid='{0}'".format(uid))
-    album=cursor.fetchone()
-    return render_template('MyProfile.html', user=user, album=album)
-    '''
-    print("here")
-    cursor=conn.cursor()
+    cursor = conn.cursor()
     cursor.execute("select fname from users where uid='{0}'".format(uid))
     name = cursor.fetchone()[0]
-    return render_template('Hello.html',name=name,message="Login success!",uname=name)
+    return render_template('MyProfile.html',message="Login success!",uname=name)
 
 #album page
 @app.route('/album/<aid>',methods=['GET','POST'])
@@ -275,6 +264,7 @@ def getp(pid):
 '''
 
 # begin photo uploading code
+# photos uploaded using base64 encoding so they can be directly embeded in HTML
 
 
 @app.route('/upload/<aid>', methods=['GET', 'POST'])
@@ -283,6 +273,7 @@ def upload_file(aid):
     if request.method == 'POST':
         imgfile = request.files['photo']
         caption = request.form.get('caption')
+        aid=1  #todo
         imgtype=imgfile.mimetype.split("/")
         print (imgtype[1])
 
@@ -319,28 +310,43 @@ def getUsersLike(uid,pid):
         return 1
 
 #search function
-
+@app.route("/search", methods=['GET', 'POST'])
 def search(key,type):
 #type T for tags, U for users, C for comments
-    cursor=conn.cursor()
-    if (type=="T"):
-        tags=key.split(",")
-        for tag in tags:
-            cursor.execute("select * from Tags where tname='{0}'".format(tag))
-            result=result or cursor.fetchall()
-        return result
-    elif(type=="U"):
-        cursor.execute("select * from users where fname='{0}'".format(key))
-        return cursor.fetchall()
-    elif(type=="C"):
-        cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
-        return cursor.fetchall()
-'''
-def deluser(uid):
-    cursor=conn.cursor()
-    cursor.execute("delete from users where uid='{0}'".format(uid))
-    return "deleted"
-'''
+    if request.method == 'POST':
+        key = request.form.get('search')
+        cursor=conn.cursor()
+        if (type=="T"):
+            cursor.execute("select DISTINCT pid from Tags")
+            retPhotos = cursor.fetchall()
+            tags = key.split(" ")
+            for tag in tags:
+                cursor.execute("select pid from Tags where tname='{0}'".format(tag))
+                retPhotos = cursor.fetchall() and retPhotos #TODO result init to null??
+
+            print(retPhotos)
+            photolist = []
+            for p in retPhotos:
+                photolist += getPhotos(p)
+            #return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
+            return
+
+        elif (type == "U"):
+            cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
+            retPhotos = cursor.fetchall()
+            print(retPhotos)
+            photolist = []
+            for p in retPhotos:
+                photolist += getPhotos(p)
+            # return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
+            return
+
+        elif(type=="C"):
+            cursor.execute("select * from users where fname='{0}'".format(key))
+            retUsers = cursor.fetchall()
+            userlist = []
+            # return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
+            return
 
 #add tags
 def AddTags(pid,key):

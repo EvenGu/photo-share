@@ -37,14 +37,15 @@
 
 <!---LOGIN--->
 <section>
-{%if not supress%}
-<h2 style="text-align:center;">Email or password incorrect! Please check or <a href="/register">register</a></h2>
-{% endif %}
 <div class="regform">
 
       <div id="login">
-          <h1 style="text-align:center;">Welcome Back!</h1>
-
+          {% if not supress %}
+          <h1 style="text-align:center;">Email or password incorrect! Please check or <a href="/register">register</a></h2>
+          {% endif %}
+          {% if supress %}
+          <h1 style="text-align:center;">Please Log in</h1>
+          {% endif %}
           <form class="regform" method="post" action="/Login" >
 
           <div class="field-wrap">
@@ -54,7 +55,7 @@
 
           <div class="field-wrap">
             <label class="regform" for="password">Password<span class="req">*</span></label>
-            <input type="password" required id="password" name="password" placeholder="Set Password"/>
+            <input type="password" required id="password" name="password" placeholder="Password"/>
 		  </div>
           
           <div class="field-wrap" style="text-align:center">
