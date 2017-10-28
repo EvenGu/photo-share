@@ -166,6 +166,7 @@ def register():
             else: hometown1=hometown
             if gender is None: gender1='/'
             else: gender1=gender
+
             cursor.execute("INSERT INTO Users (fname,lname,email,dob,hometown,gender,password) "
                             "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')"
                             .format(fname,lname,email,dob,hometown1,gender1,password))
@@ -178,8 +179,9 @@ def register():
 
             flask_login.login_user(user)
 
-            createDefaultAlbum(uid) # TODO
-        #     cursor.execute("INSERT INTO Albums(aname,)")
+            cursor.execute("INSERT INTO Albums(aname, uid) VALUES ('default','{0}')".format(uid))
+            conn.commit()
+
 
             return flask.redirect(flask.url_for('findu',uid=uid))
         else:
@@ -330,12 +332,14 @@ def addtags(pid,key):
         cursor.execute("select * from Tags where tname='{0}'".format(tag))
         if cursor.fetchone() is None:
             cursor.execute("insert into Tags VALUES ('{0}','{1}')".format(pid,tag))
+            conn.commit()
     return "success"
 
 #add album
 def addalbum(uid,aname):
     cursor=conn.cursor()
     cursor.execute("insert into albums(uid,aname) values ('{0}','{1}')".format(uid,aname))
+    conn.commit()
     return "success"
 
 #make comment
@@ -343,6 +347,7 @@ def addalbum(uid,aname):
 def addcomment(uid,comt,pid):
     cursor=conn.cursor()
     cursor.execute("insert into comments(uid,comt,pid) values('{0}','{1}','{2}')".format(uid,comt,pid))
+    conn.commit()
     return "success"
 
 
@@ -404,33 +409,26 @@ def suggestPhotos(uid):
 #contribution function
 def contribution():
     cursor=conn.cursor()
-    cursor.execute("select up from"
+    cursor.execute("create view contribution as select up,cc+cp as con from"
                    "(select uid as up, count(pid) as cp from photos, users, albums "
                    "where albums.aid=photos.aid and users.uid=albums.uid "
                    "group by uid),"
                    "(select uid as uc, count(cid) as cc from comments "
                    "group by uid) "
                    "where uc=up "
-                   "order by cc+cp desc")
-    return cursor.fetchall()
+                   "order by con desc")
+    return "done"
 
-'''
+
 # Yiwen
 def getFriendsList(uid):
-    query = "SELECT u1.uid AS ID, u1.fname AS FirstName, u1.lname AS LastName " \
-            "FROM Users AS u1" \
-            "WHERE u1.uid IN (SELECT f.fuid FROM isFriend AS f WHERE f.uid = '{0}')" \
-            "ORDER BY u1.fname, u1.lname"
-
-    query2 = "SELECT u1.uid, u1.fname, u1.lname "\
-            "FROM Users AS u1, isFriend AS f"\
-            "WHERE u1.uid = f.fuid AND f.uid = '{0}'"\
-            "ORDER BY u1.fname"
-    print(query.format(uid))  # optional printing out in your terminal
     cursor = conn.cursor()
-    cursor.execute(query.format(uid))
+    cursor.execute("SELECT u1.uid AS ID, u1.fname AS FirstName, u1.lname AS LastName " 
+                    "FROM Users AS u1 " 
+                    "WHERE u1.uid IN (SELECT f.fuid FROM isFriend AS f WHERE f.uid = '{0}')" 
+                    "ORDER BY u1.fname, u1.lname".format(uid))
     return cursor.fetchall()
-'''
+
 
 #get photo by pidlist from cursor
 def getPhotoFromList(list):
@@ -441,21 +439,15 @@ def getPhotoFromList(list):
         a=cursor.fetchone()
         plist.append(a)
     return plist
-
-def createDefaultAlbum(uid):
-    query = "INSERT INTO Albums(aname, uid) VALUES ('default','{0}')"
-    print(query.format(uid))  # optional printing out in your terminal
-    cursor = conn.cursor()
-    cursor.execute(query.format(uid))
-    return
-
+'''
 def createAlbum(uid, aname):
     query = "INSERT INTO Albums(aname, uid) VALUES ('{0}','{1}')"
     print(query.format(uid))  # optional printing out in your terminal
     cursor = conn.cursor()
     cursor.execute(query.format(aname,uid))
+    conn.commit()
     return
-
+'''
 # default page
 @app.route("/", methods=['GET','POST'])
 def hello():
