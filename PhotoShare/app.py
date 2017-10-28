@@ -43,12 +43,22 @@ cursor = conn.cursor()
 cursor.execute("SELECT email FROM Users")
 users = cursor.fetchall()
 
-
 def getUserList():
     cursor = conn.cursor()
     cursor.execute("SELECT email FROM Users")
     return cursor.fetchall()
 
+def getUserIdFrom(email):
+    cursor = conn.cursor()
+    cursor.execute("SELECT uid  FROM Users WHERE email = '{0}'".format(email))
+    return cursor.fetchone()[0]
+
+def getUserFname(email):
+    cursor = conn.cursor()
+    cursor.execute("SELECT fname  FROM Users WHERE email = '{0}'".format(email))
+    return cursor.fetchone()[0]
+
+# Users control
 
 class User(flask_login.UserMixin):
     pass
@@ -72,8 +82,6 @@ def request_loader(request):
         return
     user = User()
     user.id = email
-    global uid
-    uid = getUserIdFromEmail(email)
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email))
     data = cursor.fetchall()
@@ -81,6 +89,10 @@ def request_loader(request):
     print(data)
     user.is_authenticated = request.form['password'] == pwd
     return user
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    return render_template('unauth.html')
 
 
 '''
@@ -90,6 +102,7 @@ def new_page_function():
 	return new_page_html
 '''
 
+#login method
 
 @app.route('/Login', methods=['POST','GET'])
 def Login():
@@ -99,7 +112,6 @@ def Login():
         print (email)
         cursor = conn.cursor()
         # check if email is registered
-        print (getUserList() or getUserList())
         if cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email)):
             data = cursor.fetchone()
             print(data)
@@ -115,61 +127,55 @@ def Login():
         # information did not match
         return render_template('Login.html',supress=False)
 
-    if request.method=='GET':
+    elif request.method=='GET':
         return render_template('Login.html', supress=True)
 
+#logout method
 @app.route('/Logout')
 def logout():
     flask_login.logout_user()
-    return render_template('Hello.html', message='You are logged out', auth=False)
-
-@login_manager.unauthorized_handler
-def unauthorized_handler():
-    return render_template('unauth.html')
+    return render_template('Hello.html', message='You are logged out', uname='')
 
 
-# you can specify specific methods (GET/POST) in function header instead of inside the functions as seen earlier
-
+# register method
 @app.route("/register", methods=['POST','GET'])
 def register():
 
-    if request.method==['POST']:
-        '''
-        print("register failed: couldn't find all tokens")
-        # this prints to shell, end users will not see this (all print statements go to shell)
-        return flask.redirect(flask.url_for('register'))
-        '''
-
+    if request.method == 'POST':
         fname = request.form['fname']
         lname = request.form['lname']
         email = request.form['email']
-        dob = request.form['dob']
-        hometown = request.form['hometown']
-        gender = request.form['gender']
+        dob = request.values.get('dob')
+        hometown = request.values.get('hometown')
         password = request.form['password']
-        print(email)
+        gender = request.values.get('gender')
 
         cursor = conn.cursor()
         test = isEmailUnique(email)
         if test:
-            print(cursor.execute("INSERT INTO Users (fname,lname,email,dob,hometown,gender,password) "
-                                 "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')".format(fname,lname,email,dob,hometown,gender,password)))
+            if hometown is None: hometown1='NULL'
+            else: hometown1=hometown
+            if gender is None: gender1='/'
+            else: gender1=gender
+            cursor.execute("INSERT INTO Users (fname,lname,email,dob,hometown,gender,password) "
+                            "VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}')"
+                            .format(fname,lname,email,dob,hometown1,gender1,password))
             conn.commit()
             # log user in
             user = User()
             user.id = email
             flask_login.login_user(user)
+            uid = getUserIdFrom(email)
+            createDefaultAlbum(uid)
+            return flask.redirect(flask.url_for('findu',uid=uid))
 
-        #     createDefaultAlbum(uid) # TODO
-
-        #     cursor.execute("INSERT INTO Albums(aname,)")
-
-            return render_template('Hello.html', name=fname, message='Account Created!', auth=True)
         else:
             print("register failed: email already used")
-            return flask.redirect(flask.url_for('register'))
+            return render_template('Register.html', supress='False', message="register failed: email already used")
 
-    return render_template('Register.html', supress='True')
+    elif request.method == 'GET':
+        return render_template('Register.html', supress='True', message="free to register!")
+
 
 
 
@@ -183,12 +189,6 @@ def getAlbumPhotos(aid):
     cursor.execute("select * from photos WHERE aid='{0}'".format(aid))
     return cursor.fetchall()
 
-def getUserIdFromEmail(email):
-    cursor = conn.cursor()
-    cursor.execute("SELECT uid  FROM Users WHERE email = '{0}'".format(email))
-    return cursor.fetchone()[0]
-
-
 def isEmailUnique(email):
     # use this to check if a email has already been registered
     cursor = conn.cursor()
@@ -197,28 +197,16 @@ def isEmailUnique(email):
         return False
     else:
         return True
-
-
-# end login code
+#end login code
 
 #profile page
-@app.route('/profile/<uid>',methods=['GET'])
+@app.route('/profile/<uid>')
 @flask_login.login_required
 def findu(uid):
-
-    '''
-    cursor=conn.cursor()
-    cursor.execute("select * from users where uid='{0}'".format(uid))
-    user=cursor.fetchone()
-    cursor.execute("select * from albums where uid='{0}'".format(uid))
-    album=cursor.fetchone()
-    return render_template('MyProfile.html', user=user, album=album)
-    '''
-    cursor=conn.cursor()
+    cursor = conn.cursor()
     cursor.execute("select fname from users where uid='{0}'".format(uid))
     name = cursor.fetchone()[0]
-    print(name, uid)
-    return render_template('Hello.html',message="Welcome Back",name=name, auth=True, uid=uid )
+    return render_template('Hello.html',name=name,message="Login success!",uname=name)
 
 #album page
 @app.route('/album/<aid>')
@@ -326,6 +314,7 @@ def search(key,type):
             userlist = []
             # return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
             return
+
 #add tags
 def addtags(pid,key):
     cursor=conn.cursor()
@@ -436,18 +425,15 @@ def getFriendsList(uid):
     return cursor.fetchall()
 '''
 
-'''
-Alternatively, 
-
-suggestFriends: RIGHT
-SELECT u2.uid, u2.fname, u2.lname
-FROM Users AS u2, isFriend f2
-WHERE f2.uid IN (SELECT f1.fuid FROM isFriend AS f1 WHERE f1.uid = '{0}')
-    AND u2.uid = f2.fuid
-GROUP BY f2.fuid
-ORDER BY COUNT(*) DESC
-
-'''
+#get photo by pidlist from cursor
+def getPhotoFromList(list):
+    plist=[]
+    for pid in list:
+        cursor=conn.cursor()
+        cursor.execute("select * from photos where pid='{0}'".format(pid[0]))
+        a=cursor.fetchone()
+        plist.append(a)
+    return plist
 
 def createDefaultAlbum(uid):
     query = "INSERT INTO Albums(aname, uid) VALUES ('default','{0}')"
@@ -463,17 +449,14 @@ def createAlbum(uid, aname):
     cursor.execute(query.format(aname,uid))
     return
 
-def getPhotos(pid):
-    return
-
-
 # default page
 @app.route("/", methods=['GET','POST'])
 def hello():
-    return render_template('Hello.html', message='Welcome to PhotoShare', auth=False, uid=0)
+    print (flask_login.current_user.get_id())
+    return render_template('Hello.html', message='Welcome to PhotoShare', uname='')
 
 
 if __name__ == "__main__":
     # this is invoked when in the shell  you run
     # $ python app.py
-    app.run(port=8080, debug=True)
+    app.run(port=5000, debug=True)
