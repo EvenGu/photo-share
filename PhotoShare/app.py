@@ -432,7 +432,15 @@ def getFriendsList(uid):
     return cursor.fetchall()
 '''
 
-
+#get photo by pidlist from cursor
+def getPhotoFromList(list):
+    plist=[]
+    for pid in list:
+        cursor=conn.cursor()
+        cursor.execute("select * from photos where pid='{0}'".format(pid[0]))
+        a=cursor.fetchone()
+        plist.append(a)
+    return plist
 
 def createDefaultAlbum(uid):
     query = "INSERT INTO Albums(aname, uid) VALUES ('default','{0}')"
