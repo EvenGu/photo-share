@@ -18,65 +18,45 @@ Album displays all the containing photos and the owner
   <div class="container"> 
     <div class="navbar-header">
       <ul class="nav navbar-nav">
-      	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-        {% if uid!=-1 %}
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('findu',uid=uid) }}">My Profile</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
-            <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="/login">Login</a></li>
-        {% endif %}        
+          <li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
+          {% if uname=='guest' %}
+            <li class="navbar-right"><a class="navbar-default" href="/register">Register</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
+          {% else %}
+            <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ uname }}</a></li>
+          {% endif %}
       </ul> 
 	</div>
   </div>
 </nav>
 
-{% if user %}
-<section>
-  <div class="jumbotron text-center">
-    <div class="container">
-      <div class="row">
-        <div class="col-md12">
-        {% if name %}
-          <h1>Hello {{Name}}</h1>
-        {% endif %}
-        </div>
-      </div>
-      <div class="row">
-      	<div class="col-lg-12 text-center">
-        	<form role="search" action="/search(type)" method = "POST">
-            	<div style="margin-bottom:10px">
-        		<input type="text" class="form-control " placeholder="Search">
-                </div>
-                <div class="row">
-            		<label for="tag" style="width:20px">tag</label>
-  						<input type="radio" class="radio-inline" name="search" id="tag" value="t">
-  					<label for="user" style="width:30px" for="user">user</label>
-  						<input type="radio" class="radio-inline" name="search" id="user" value="u">
-          		</div>
-        		<button type="submit" class="btn btn-primary btn-md">Search</button>
-     		</form>	
-      	</div>      	
-      </div>
-    </div>
-  </div>
-</section>
-{% endif %}
 
 <section>
-  <div class="container">
-    <div class="row">
-    	<h3>{{fname}}'s Album:</h3>
-		<h2>{{aname}}</h2>
-		<ul>
-			{% for photo in photos %}
-				<h3><a href="{{url_for('albums')}}?aid={{photo[0]}}">{{photo[1]}}</a></h3>
-				<a href="{{url_for('delete')}}?photouid={{photo[3]}}&aid={{photo[0]}}">Delete photo {{photos[1]}}</a>
-				<br>
-			{% endfor %}
-		</ul>
+    <div class="jumbotron text-center">
+        <div class="container">
+            <div class="field-wrap">
+    	        <h3>{{uname}}'s Album:</h3>
+		        <h2>{{aname}}</h2>
+            </div>
+            <div class="col-xs-12 text-center">
+                <a href="Upload.html">Upload your photo</a>
+                {% if message %}<h3>{{ message }}</h3>{% endif %}
+            </div>
+            <div>
+		        <ul>{% for photo in photos %}
+                    <li>
+                    <a href="/photo/{{photo[0]}}">
+                        <h3>{{photo[1]}}</h3>
+                        <img src="../static/upload/{{photo[2]}}" alt=""><br/>
+                    </a>
+
+				    <a href="/deletep/{{photo[0]}}">Delete photo</a>
+                    </li>
+			    {% endfor %}</ul>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 </body>
 

@@ -142,7 +142,7 @@ def Login():
 @app.route('/Logout')
 def logout():
     flask_login.logout_user()
-    return render_template('Hello.html', message='You are logged out', uname='')
+    return render_template('Hello.html', message='You are logged out', uname='guest')
 
 
 
@@ -193,9 +193,9 @@ def register():
             return flask.redirect(flask.url_for('findu',uid=uid))
         else:
             print("register failed: email already used")
-            return render_template('Register.html', supress='True',message="register failed: email already used")
+            return render_template('Register.html', supress='False')
     elif request.method == 'GET':
-        return render_template('Register.html', supress='True',message="free to register!")
+        return render_template('Register.html', supress='True', message="free to register!")
 
 
 
@@ -247,7 +247,8 @@ def album(aid):
         name=cursor.fetchone()
         fname=name[0]
         aname=name[1]
-        return render_template('album.html', name=aid, auth=auth,photos=photos,fname=fname,aname=aname)
+        return render_template('Album.html',name=aid,auth=auth,photos=photos,
+                               aname=aname,uname=fname,uid=ucurrent)
 #    if request.method=='POST':
 
 
@@ -262,31 +263,26 @@ def photo(pid):
         cursor.execute("select * from comments where pid='{0}'".format(pid))
         comm=cursor.fetchall()
         ucurrent=getCurrentUserId()
-        return render_template('Hello.html', name=pid, message="Here's photo",
-                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=getCurrentUserId())
+        cursor = conn.cursor()
+        cursor.execute("select fname from Users where uid='{0}'".format(ucurrent))
+        uname = cursor.fetchone()[0]
+        return render_template('Photo.html', name=pid, message="Here's photo",
+                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=getCurrentUserId(),uname=uname)
 
-
-'''
-@app.route('/photo/<pid>',methods='post')
-@flask_login.login_required
-def getp(pid):
-    return render_template('hello.html', name=pid, message="Here's photo")
-'''
 
 # begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
 
-
 @app.route('/upload/<aid>', methods=['GET', 'POST'])
 @flask_login.login_required
 def upload_file(aid):
+    uname = getUserFname(flask_login.current_user.id)
+    uid = getUserIdFrom(flask_login.current_user.id)
     if request.method == 'POST':
         imgfile = request.files['photo']
         caption = request.form.get('caption')
-        aid=1  #todo
         imgtype=imgfile.mimetype.split("/")
         print (imgtype[1])
-
         if imgtype[0]=='image':
             cursor = conn.cursor()
             cursor.execute("INSERT INTO photos (path, aid, caption) VALUES (%s, %s, %s)",
@@ -298,14 +294,17 @@ def upload_file(aid):
             conn.commit()
             print(str(pid)+'.'+imgtype[1])
             imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(pid)+'.'+imgtype[1]))
-            return render_template('album.html', name=flask_login.current_user.id, album=getAlbumPhotos(aid),
-                               photos=getAlbumPhotos(aid))
+            return flask.redirect(flask.url_for('album',aid, message="Upload success"))
+            #return render_template('Album.html', uname=uname, album=getAlbumPhotos(aid), uid=uid,
+            #                   photos=getAlbumPhotos(aid), message="Upload success")
         else:
             print("not image")
-            return render_template('Hello.html',uid=getCurrentUserId())
+            return flask.redirect(flask.url_for('album', aid, message="Upload Failed: not an Image"))
+            #return render_template('Album.html', uname=uname, album=getAlbumPhotos(aid), uid=uid,
+            #                   photos=getAlbumPhotos(aid), message="Upload Failed: not an Image")
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
-        return render_template('Upload.html')
+        return render_template('Upload.html', uname=uname, uid=uid)
 
 # end photo uploading code
 
@@ -398,7 +397,7 @@ def MakeFriends(uid):
     return "success"
 
 #delete functions
-@app.route('/delete/<aid>',methods=['GET'])
+@app.route('/deletea/<aid>',methods=['GET'])
 #@flask_login.login_required()
 def delalbum(aid):
     cursor=conn.cursor()
@@ -410,7 +409,7 @@ def delalbum(aid):
     else:
         return "not your album"
 
-@app.route('/delete/<pid>',methods=['GET'])
+@app.route('/deletep/<pid>',methods=['GET'])
 #@flask_login.login_required()
 def delphoto(pid):
     cursor=conn.cursor()
@@ -497,20 +496,12 @@ def getPhotoFromList(list):
         a=cursor.fetchone()
         plist.append(a)
     return plist
-'''
-def createAlbum(uid, aname):
-    query = "INSERT INTO Albums(aname, uid) VALUES ('{0}','{1}')"
-    print(query.format(uid))  # optional printing out in your terminal
-    cursor = conn.cursor()
-    cursor.execute(query.format(aname,uid))
-    conn.commit()
-    return
-'''
+
 # default page
 @app.route("/", methods=['GET','POST'])
 def hello():
     print (flask_login.current_user.get_id())
-    return render_template('Hello.html', message='Welcome to PhotoShare', uname='')
+    return render_template('Hello.html', message='Welcome to PhotoShare', uname='guest')
 
 
 if __name__ == "__main__":

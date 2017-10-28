@@ -20,13 +20,13 @@ as well as the containing album and the owner
   <div class="container"> 
     <div class="navbar-header">
       <ul class="nav navbar-nav">
-      	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-        {% if uname=='' %}
+          <li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
+          {% if uname=='guest' %}
             <li class="navbar-right"><a class="navbar-default" href="/register">Register</a></li>
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
           {% else %}
             <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="">Hello {{ uname }}</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ uname }}</a></li>
           {% endif %}
       </ul> 
 	</div>
@@ -54,24 +54,24 @@ as well as the containing album and the owner
 <section>
   <div class="container">
     <div class="row">
-    {% for photo in photos %}
-    {% if photos[2] %} <!--how to target the photo?--->
-        <img src="data:image/png;base64, {{photo[0]}}"/><br/>
+    {% if photo %} <!--how to target the photo?--->
+        <img src="../static/upload/{{photo[2]}}" alt=""/><br/>
         <h5>
-            Caption: <span>{{photo[2]}}</span>
-            Owner: <a href="{{url_for('profile')}}?uid={{photo[0][4]}}">User page</a>
-            Album: <a href="{{url_for('albums')}}?aid={{photo[0][4]}}">Album page</a>
+            Caption: <span>{{photo[1]}}</span>
+            Owner: <a href="{{url_for('profile',uid)}}">{{ uid }}</a>
+            Album: <a href="{{url_for('albums',photo[3])}}">{{ photo[3]}}</a>
         </h5>
+        <!---
         {% if auth %}
         <a href="{{url_for('delete')}}?pid={{photo[1]}}&photouid={{photo[3]}}&aid={{photo[4]}}">Delete {{photo[2]}}</a>
 		<br>
+		--->
         {% endif %}
-    {% endfor %}
     </div>
 
     <div class="like-unlike">
         <form class="like-unlike" method="GET" action="like">
-            {% if liked %}
+            {% if like %}
             <input type="button" name="like-unlike"><img src="../static/thumb-up-active.png">
             {% else %}
             <input type="button" name="like-unlike"><img src="../static/thumb-up.png">

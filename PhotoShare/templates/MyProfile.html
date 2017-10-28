@@ -8,7 +8,7 @@ and recommendations(photo, user)
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>User</title>
+<title>MyProfile</title>
 <link rel="stylesheet" href="../static/home.css">
 </head>
 
@@ -18,13 +18,13 @@ and recommendations(photo, user)
   <div class="container"> 
     <div class="navbar-header">
       <ul class="nav navbar-nav">
-      	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-        {% if uname=='' %}
+          <li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
+          {% if uname=='guest' %}
             <li class="navbar-right"><a class="navbar-default" href="/register">Register</a></li>
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
           {% else %}
             <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('findu',uid=uid) }}">Hello {{ uname }}</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ uname }}</a></li>
           {% endif %}
       </ul> 
 	</div>
@@ -60,7 +60,7 @@ and recommendations(photo, user)
   			            <input type="radio" class="search-type" name="Type" value="U">
                 </div>
         		<button type="search" class="btn btn-primary btn-sm">Search</button>
-                {% if uname != '' %}
+                {% if uname != 'guest' %}
                     <button type="search" class="btn btn-primary btn-sm">Search My Photos</button>
                 {% endif %}
      		</form>
@@ -94,7 +94,7 @@ and recommendations(photo, user)
 		<ul>
 			{% for album in albums %}
 				<h3><a href="/album/{{album[0]}}">{{album[1]}}</a></h3>
-				<a href="/delete/{{album[0]}}">Delete album {{album[1]}}</a>
+				<a href="/deletea/{{album[0]}}">Delete album {{album[1]}}</a>
 				<br>
 			{% endfor %}
 		</ul>	

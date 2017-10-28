@@ -13,25 +13,27 @@
   <div class="container"> 
     <div class="navbar-header">
       <ul class="nav navbar-nav">
-      	<li class="navbar-left"><a class="navbar-brand" href="home.html">Home</a></li>
-        {% if not user %}
-        <li class="navbar-right active"><a class="navbar-default" href="register.html">Register</a></li>
-        <li class="navbar-right"><a class="navbar-default" href="login.html">Login</a></li>
-        {% else %}
-        <li class="navbar-right"><a class="navbar-default" href="{{ url_for('profile') }}">My Profile</a></li>
-        <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li> 
-        {% endif %} 
+          <li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
+          {% if uname=='guest' %}
+            <li class="navbar-right"><a class="navbar-default" href="/register">Register</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
+          {% else %}
+            <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ uname }}</a></li>
+          {% endif %}
       </ul> 
 	</div>
   </div>
 </nav>
+
+
 <section>
   <div class="jumbotron text-center">
     <div class="container">
       <div class="row">
         <div class="col-md12">
-        {% if name %}
-          <h1>Hello {{Name}}</h1>
+        {% if uname != 'guest' %}
+          <h1>Hello {{uname}}</h1>
         {% endif %}
         </div>
       </div>
@@ -75,22 +77,6 @@
     </div>
   </div>
 </section>
-
-<section>
-  <div class="container">
-    <div class="row">
-    	<div class="col-xs-12 text-center">
-        	<form action="CreateAlbum" method="POST" >	
-			<label for="Name">Album name: </label>
-    		<input type="text" name="Name" required>
-    		<button type="submit" class="btn btn-primary btn-sm">Create an album</button>
-			</form>
-      	</div>
-    </div>
-  </div>
-
-</section>
-
 
 {% endif %} 
 </body>
