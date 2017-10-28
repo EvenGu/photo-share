@@ -58,6 +58,13 @@ def getUserFname(email):
     cursor.execute("SELECT fname  FROM Users WHERE email = '{0}'".format(email))
     return cursor.fetchone()[0]
 
+def getCurrentUserId():
+    cursor=conn.cursor()
+    email=flask_login.current_user.get_id()
+    if email is None: return -1
+    else:
+        cursor.execute("select uid from users where email='{0}'",format(email))
+        return cursor.fetchone()[0]
 # Users control
 
 class User(flask_login.UserMixin):
@@ -233,19 +240,33 @@ def findu(uid):
     return render_template('Hello.html',name=name,message="Login success!",uname=name)
 
 #album page
-@app.route('/album/<aid>')
-@flask_login.login_required
-def finda(aid):
-    return render_template('album.html', name=aid, message="this is the album")
+@app.route('/album/<aid>',methods=['GET','POST'])
+def album(aid):
+    if request.method=='GET':
+        ucurrent=getCurrentUserId()
+        cursor=conn.cursor()
+        cursor.execute("select * from albums where aid='{0}' and uid='{0}'".format(aid,ucurrent))
+        if cursor.fetchall() is None : auth=False
+        else : auth=True
+        return render_template('album.html', name=aid, auth=auth)
+#    if request.method=='POST':
+
+
 
 #photo page
-@app.route('/photo/<pid>')
-@flask_login.login_required
-def findp(pid):
-    cursor=conn.cursor()
-    cursor.execute("select count(*) from likephoto where pid='{0}'".format(pid))
-    pl=cursor.fetchone()[0]
-    return render_template('hello.html', name=pid, message="Here's photo",liken=pl)
+@app.route('/photo/<pid>', methods=['GET','POST'])
+def photo(pid):
+    if request.method=='GET':
+        cursor=conn.cursor()
+        cursor.execute("select count(*) from likephoto where pid='{0}'".format(pid))
+        pl=cursor.fetchone()[0]
+        cursor.execute("select * from comments where pid='{0}'".format(pid))
+        comm=cursor.fetchall()
+        ucurrent=getCurrentUserId()
+        return render_template('hello.html', name=pid, message="Here's photo",
+                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm)
+
+
 '''
 @app.route('/photo/<pid>',methods='post')
 @flask_login.login_required
@@ -254,17 +275,14 @@ def getp(pid):
 '''
 
 # begin photo uploading code
-# photos uploaded using base64 encoding so they can be directly embeded in HTML
 
 
-
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/upload/<aid>', methods=['GET', 'POST'])
 @flask_login.login_required
-def upload_file():
+def upload_file(aid):
     if request.method == 'POST':
         imgfile = request.files['photo']
         caption = request.form.get('caption')
-        aid=1  #todo
         imgtype=imgfile.mimetype.split("/")
         print (imgtype[1])
 
@@ -325,7 +343,7 @@ def deluser(uid):
 '''
 
 #add tags
-def addtags(pid,key):
+def AddTags(pid,key):
     cursor=conn.cursor()
     tags = key.split(",")
     for tag in tags:
@@ -336,7 +354,7 @@ def addtags(pid,key):
     return "success"
 
 #add album
-def addalbum(uid,aname):
+def AddAlbum(uid,aname):
     cursor=conn.cursor()
     cursor.execute("insert into albums(uid,aname) values ('{0}','{1}')".format(uid,aname))
     conn.commit()
@@ -344,39 +362,57 @@ def addalbum(uid,aname):
 
 #make comment
 
-def addcomment(uid,comt,pid):
+def AddComment(uid,comt,pid):
     cursor=conn.cursor()
     cursor.execute("insert into comments(uid,comt,pid) values('{0}','{1}','{2}')".format(uid,comt,pid))
     conn.commit()
     return "success"
 
+def MakeFriends(uid):
+    cursor=conn.cursor()
+    ucurrent=getCurrentUserId()
+    cursor.execute("insert into isfriend(uid,fuid) values('{0}','{1}'),('{1}','{0}')".format(uid, ucurrent))
+    conn.commit()
+    return "success"
 
 #delete functions
-def delalbum(aid,uid):
+@app.route('/delete/<aid>',methods=['GET'])
+@flask_login.login_required()
+def delalbum(aid):
     cursor=conn.cursor()
+    uid=getCurrentUserId()
     cursor.execute("select * from album where aid='{0}' and uid='{1}'".format(aid,uid))
     if cursor.fetchone()is not None:
         cursor.execute("delete from album where aid='{0}'".format(aid))
-        return "deleted"
+        return flask.redirect(flask.url_for('findu',uid=uid))
     else:
         return "not your album"
 
-def delphoto(pid,uid):
+@app.route('/delete/<pid>',methods=['GET'])
+@flask_login.login_required()
+def delphoto(pid):
     cursor=conn.cursor()
+    uid = getCurrentUserId()
     cursor.execute("select * from photos where pid='{0}' "
                    "and aid in (select aid from album where uid='{1}')".format(pid,uid))
     if cursor.fetchone()is not None:
+        cursor.execute("select aid from photos where pid='{0}'".format(pid))
+        aid=cursor.fetchone()[0]
         cursor.execute("delete from photos where pid='{0}'".format(pid))
-        return "deleted"
+        conn.commit()
+        return flask.redirect(flask.url_for('album', aid=aid))
     else:
         return "not your photo"
 
-def delcom(cid,uid):
+@app.route('/delete/<cid>',methods=['GET'])
+@flask_login.login_required()
+def delcom(cid):
     cursor=conn.cursor()
+    uid = getCurrentUserId()
     cursor.execute("select * from comments where cid='{0}' and uid='{1}'".format(cid,uid))
     if cursor.fetchone()[0]is not None:
         cursor.execute("delete from comments where aid='{0}'".format(cid))
-        return "deleted"
+        return flask.redirect(flask.url_for('photo', cid=cid))
     else:
         return "not your comment"
 
