@@ -19,8 +19,8 @@ and recommendations(photo, user)
     <div class="navbar-header">
       <ul class="nav navbar-nav">
       	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-        {% if current_user.is_authenticated %}
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('profile') }}">My Profile</a></li>
+        {% if auth %}
+            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('profile/') }}">My Profile</a></li>
             <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li>
         {% else %}
             <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>

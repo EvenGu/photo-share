@@ -72,6 +72,8 @@ def request_loader(request):
         return
     user = User()
     user.id = email
+    global uid
+    uid = getUserIdFromEmail(email)
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email))
     data = cursor.fetchall()
@@ -116,10 +118,10 @@ def Login():
     if request.method=='GET':
         return render_template('Login.html', supress=True)
 
-@app.route('/logout')
+@app.route('/Logout')
 def logout():
     flask_login.logout_user()
-    return render_template('Hello.html', message='You are logged out')
+    return render_template('Hello.html', message='You are logged out', auth=False)
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -162,7 +164,7 @@ def register():
 
         #     cursor.execute("INSERT INTO Albums(aname,)")
 
-            return render_template('Hello.html', name=fname, message='Account Created!')
+            return render_template('Hello.html', name=fname, message='Account Created!', auth=True)
         else:
             print("register failed: email already used")
             return flask.redirect(flask.url_for('register'))
@@ -200,7 +202,7 @@ def isEmailUnique(email):
 # end login code
 
 #profile page
-@app.route('/profile/<uid>')
+@app.route('/profile/<uid>',methods=['GET'])
 @flask_login.login_required
 def findu(uid):
 
@@ -214,8 +216,9 @@ def findu(uid):
     '''
     cursor=conn.cursor()
     cursor.execute("select fname from users where uid='{0}'".format(uid))
-
-    return render_template('Hello.html',message="damn it",name=cursor.fetchone()[0])
+    name = cursor.fetchone()[0]
+    print(name, uid)
+    return render_template('Hello.html',message="Welcome Back",name=name, auth=True, uid=uid )
 
 #album page
 @app.route('/album/<aid>')
@@ -286,29 +289,43 @@ def getUsersLike(uid,pid):
         return 1
 
 #search function
-
+@app.route("/search", methods=['GET', 'POST'])
 def search(key,type):
 #type T for tags, U for users, C for comments
-    cursor=conn.cursor()
-    if (type=="T"):
-        tags=key.split(",")
-        for tag in tags:
-            cursor.execute("select * from Tags where tname='{0}'".format(tag))
-            result=result or cursor.fetchall()
-        return result
-    elif(type=="U"):
-        cursor.execute("select * from users where fname='{0}'".format(key))
-        return cursor.fetchall()
-    elif(type=="C"):
-        cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
-        return cursor.fetchall()
-'''
-def deluser(uid):
-    cursor=conn.cursor()
-    cursor.execute("delete from users where uid='{0}'".format(uid))
-    return "deleted"
-'''
+    if request.method == 'POST':
+        key = request.form.get('search')
+        cursor=conn.cursor()
+        if (type=="T"):
+            cursor.execute("select DISTINCT pid from Tags")
+            retPhotos = cursor.fetchall()
+            tags = key.split(" ")
+            for tag in tags:
+                cursor.execute("select pid from Tags where tname='{0}'".format(tag))
+                retPhotos = cursor.fetchall() and retPhotos #TODO result init to null??
 
+            print(retPhotos)
+            photolist = []
+            for p in retPhotos:
+                photolist += getPhotos(p)
+            #return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
+            return
+
+        elif (type == "U"):
+            cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
+            retPhotos = cursor.fetchall()
+            print(retPhotos)
+            photolist = []
+            for p in retPhotos:
+                photolist += getPhotos(p)
+            # return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
+            return
+
+        elif(type=="C"):
+            cursor.execute("select * from users where fname='{0}'".format(key))
+            retUsers = cursor.fetchall()
+            userlist = []
+            # return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
+            return
 #add tags
 def addtags(pid,key):
     cursor=conn.cursor()
@@ -430,16 +447,6 @@ WHERE f2.uid IN (SELECT f1.fuid FROM isFriend AS f1 WHERE f1.uid = '{0}')
 GROUP BY f2.fuid
 ORDER BY COUNT(*) DESC
 
-suggestPhotos: WRONG
-SELECT p2.pid FROM Photos p2
-WHERE p2.pid = pt2.pid AND
-    pt2.hashtag IN (SELECT t.hashtag
-                FROM Albums a, Photos p, photoTag pt, Tags t
-                WHERE a.uid = '{0}' 
-                AND a.aid = p.aid AND p.pid = pt.pid AND pt.hashtag = t.hashtag
-                GROUP BY t.hashtag
-                ORDER BY COUNT(*)
-                LIMIT 5)
 '''
 
 def createDefaultAlbum(uid):
@@ -456,10 +463,14 @@ def createAlbum(uid, aname):
     cursor.execute(query.format(aname,uid))
     return
 
+def getPhotos(pid):
+    return
+
+
 # default page
 @app.route("/", methods=['GET','POST'])
 def hello():
-    return render_template('Hello.html', message='Welcome to PhotoShare')
+    return render_template('Hello.html', message='Welcome to PhotoShare', auth=False, uid=0)
 
 
 if __name__ == "__main__":
