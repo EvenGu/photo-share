@@ -19,7 +19,7 @@ Album displays all the containing photos and the owner
     <div class="navbar-header">
       <ul class="nav navbar-nav">
       	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-        {% if current_user.is_authenticated %}
+        {% if uid!=-1 %}
             <li class="navbar-right"><a class="navbar-default" href="{{ url_for('findu',uid=uid) }}">My Profile</a></li>
             <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li>
         {% else %}
@@ -66,20 +66,20 @@ Album displays all the containing photos and the owner
 <section>
   <div class="container">
     <div class="row">
-	{% if album %}
     	<h3>{{fname}}'s Album:</h3>
 		<h2>{{aname}}</h2>
 		<ul>
-			{% for photo in album %}
-				<h3><a href="{{url_for('albums')}}?aid={{album[0]}}">{{album[1]}}</a></h3>
-				<a href="{{url_for('delete')}}?photouid={{album[3]}}&aid={{album[0]}}">Delete album {{album[1]}}</a>
+			{% for photo in photos %}
+				<h3><a href="{{url_for('albums')}}?aid={{photo[0]}}">{{photo[1]}}</a></h3>
+				<a href="{{url_for('delete')}}?photouid={{photo[3]}}&aid={{photo[0]}}">Delete photo {{photos[1]}}</a>
 				<br>
 			{% endfor %}
 		</ul>
-	{% endif %}
     </div>
   </div>
 </section>
 </body>
+
+
 
 </html>

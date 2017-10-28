@@ -241,7 +241,13 @@ def album(aid):
         cursor.execute("select * from albums where aid='{0}' and uid='{0}'".format(aid,ucurrent))
         if cursor.fetchall() is None : auth=False
         else : auth=True
-        return render_template('album.html', name=aid, auth=auth)
+        cursor.execute("select * from photos where aid='{0}'".format(aid))
+        photos=cursor.fetchall()
+        cursor.execute("select fname,aname from albums, users where users.uid=albums.uid and aid='{0}'".format(aid))
+        name=cursor.fetchone()
+        fname=name[0]
+        aname=name[1]
+        return render_template('album.html', name=aid, auth=auth,photos=photos,fname=fname,aname=aname)
 #    if request.method=='POST':
 
 
@@ -397,9 +403,9 @@ def MakeFriends(uid):
 def delalbum(aid):
     cursor=conn.cursor()
     uid=getCurrentUserId()
-    cursor.execute("select * from album where aid='{0}' and uid='{1}'".format(aid,uid))
+    cursor.execute("select * from albums where aid='{0}' and uid='{1}'".format(aid,uid))
     if cursor.fetchone()is not None:
-        cursor.execute("delete from album where aid='{0}'".format(aid))
+        cursor.execute("delete from albums where aid='{0}'".format(aid))
         return flask.redirect(flask.url_for('findu',uid=uid))
     else:
         return "not your album"
