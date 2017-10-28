@@ -43,12 +43,22 @@ cursor = conn.cursor()
 cursor.execute("SELECT email FROM Users")
 users = cursor.fetchall()
 
-
 def getUserList():
     cursor = conn.cursor()
     cursor.execute("SELECT email FROM Users")
     return cursor.fetchall()
 
+def getUserIdFrom(email):
+    cursor = conn.cursor()
+    cursor.execute("SELECT uid  FROM Users WHERE email = '{0}'".format(email))
+    return cursor.fetchone()[0]
+
+def getUserFname(email):
+    cursor = conn.cursor()
+    cursor.execute("SELECT fname  FROM Users WHERE email = '{0}'".format(email))
+    return cursor.fetchone()[0]
+
+# Users control
 
 class User(flask_login.UserMixin):
     pass
@@ -80,6 +90,10 @@ def request_loader(request):
     user.is_authenticated = request.form['password'] == pwd
     return user
 
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    return render_template('unauth.html')
+
 
 '''
 A new page looks like this:
@@ -88,6 +102,7 @@ def new_page_function():
 	return new_page_html
 '''
 
+#login method
 
 @app.route('/Login', methods=['POST','GET'])
 def Login():
@@ -114,18 +129,16 @@ def Login():
     elif request.method=='GET':
         return render_template('Login.html', supress=True)
 
-@app.route('/logout')
+#logout method
+
+@app.route('/Logout')
 def logout():
     flask_login.logout_user()
-    return render_template('Hello.html', message='You are logged out')
+    return render_template('Hello.html', message='You are logged out', uname='')
 
 
-@login_manager.unauthorized_handler
-def unauthorized_handler():
-    return render_template('unauth.html')
 
-
-# you can specify specific methods (GET/POST) in function header instead of inside the functions as seen earlier
+# register method
 
 @app.route("/register", methods=['POST','GET'])
 def register():
@@ -188,12 +201,6 @@ def getAlbumPhotos(aid):
     cursor.execute("select * from photos WHERE aid='{0}'".format(aid))
     return cursor.fetchall()
 
-def getUserIdFromEmail(email):
-    cursor = conn.cursor()
-    cursor.execute("SELECT uid  FROM Users WHERE email = '{0}'".format(email))
-    return cursor.fetchone()[0]
-
-
 def isEmailUnique(email):
     # use this to check if a email has already been registered
     cursor = conn.cursor()
@@ -203,8 +210,6 @@ def isEmailUnique(email):
     else:
         return True
 
-
-# end login code
 
 #profile page
 @app.route('/profile/<uid>')
@@ -222,8 +227,8 @@ def findu(uid):
     print("here")
     cursor=conn.cursor()
     cursor.execute("select fname from users where uid='{0}'".format(uid))
-
-    return render_template('Hello.html',name=cursor.fetchone()[0],message="Login success!")
+    name = cursor.fetchone()[0]
+    return render_template('Hello.html',name=name,message="Login success!",uname=name)
 
 #album page
 @app.route('/album/<aid>')
@@ -427,28 +432,7 @@ def getFriendsList(uid):
     return cursor.fetchall()
 '''
 
-'''
-Alternatively, 
 
-suggestFriends: RIGHT
-SELECT u2.uid, u2.fname, u2.lname
-FROM Users AS u2, isFriend f2
-WHERE f2.uid IN (SELECT f1.fuid FROM isFriend AS f1 WHERE f1.uid = '{0}')
-    AND u2.uid = f2.fuid
-GROUP BY f2.fuid
-ORDER BY COUNT(*) DESC
-
-suggestPhotos: WRONG
-SELECT p2.pid FROM Photos p2
-WHERE p2.pid = pt2.pid AND
-    pt2.hashtag IN (SELECT t.hashtag
-                FROM Albums a, Photos p, photoTag pt, Tags t
-                WHERE a.uid = '{0}' 
-                AND a.aid = p.aid AND p.pid = pt.pid AND pt.hashtag = t.hashtag
-                GROUP BY t.hashtag
-                ORDER BY COUNT(*)
-                LIMIT 5)
-'''
 
 def createDefaultAlbum(uid):
     query = "INSERT INTO Albums(aname, uid) VALUES ('default','{0}')"
@@ -467,7 +451,8 @@ def createAlbum(uid, aname):
 # default page
 @app.route("/", methods=['GET','POST'])
 def hello():
-    return render_template('Hello.html', message='Welcome to PhotoShare')
+    print (flask_login.current_user.get_id())
+    return render_template('Hello.html', message='Welcome to PhotoShare', uname='')
 
 
 if __name__ == "__main__":
