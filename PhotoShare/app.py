@@ -277,13 +277,12 @@ def getp(pid):
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
 
 
-@app.route('/upload/<aid>', methods=['GET', 'POST'])
+@app.route('/upload/<aid>', methods=['POST'])
 @flask_login.login_required
 def upload_file(aid):
     if request.method == 'POST':
         imgfile = request.files['photo']
         caption = request.form.get('caption')
-        aid=1  #todo
         imgtype=imgfile.mimetype.split("/")
         print (imgtype[1])
 
@@ -302,10 +301,8 @@ def upload_file(aid):
                                photos=getAlbumPhotos(aid))
         else:
             print("not image")
-            return render_template('Hello.html',uid=getCurrentUserId())
+            return flask.redirect(flask.url_for('upload_file',aid))
     # The method is GET so we return a  HTML form to upload the a photo.
-    else:
-        return render_template('Upload.html')
 
 # end photo uploading code
 
@@ -374,8 +371,8 @@ def AddTags(pid,key):
 #add album
 @app.route("/createalbum/<uid>",methods=['POST'])
 def AddAlbum(uid):
-    an=request.values.get('albumname')
-    if an is None: aname="undifined"
+    an=request.values.get('createalbum')
+    if an is None: aname="undefined"
     else: aname=an
     cursor=conn.cursor()
     cursor.execute("insert into albums(uid,aname) values ('{0}','{1}')".format(uid,aname))
