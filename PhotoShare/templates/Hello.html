@@ -20,7 +20,7 @@
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
           {% else %}
             <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="">Hello {{ uname }}</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ uname }}</a></li>
           {% endif %}
       </ul> 
 	</div>
@@ -56,11 +56,11 @@
                 </div>
                 <div class="field-wrap" style="margin-bottom: 0px">
                     <label class="search-type" for="byTag">by Tag</label>
-			            <input type="radio" class="search-type" name="byTag" value="T">
+			            <input type="radio" class="search-type" name="Type" value="T">
                     <label class="search-type" for="byUser">by Comment</label>
-  			            <input type="radio" class="search-type" name="byComm" value="C">
+  			            <input type="radio" class="search-type" name="Type" value="C">
                     <label class="search-type" for="searchUser">Search User by Name</label>
-  			            <input type="radio" class="search-type" name="searchUser" value="U">
+  			            <input type="radio" class="search-type" name="Type" value="U">
                 </div>
         		<button type="search" class="btn btn-primary btn-sm">Search</button>
                 {% if uname != '' %}

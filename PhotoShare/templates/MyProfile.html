@@ -24,7 +24,7 @@ and recommendations(photo, user)
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
           {% else %}
             <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="">Hello {{ uname }}</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('findu',uid=uid) }}">Hello {{ uname }}</a></li>
           {% endif %}
       </ul> 
 	</div>
@@ -47,17 +47,17 @@ and recommendations(photo, user)
 
       <div class="row">
       	<div class="col-lg-12 text-center">
-        	<form class="search" role="search">
+        	<form class="search" role="search" method="post" action="/search">
             	<div style="margin-bottom:10px">
-        		    <input type="text" class="form-control" placeholder="Search">
+        		    <input type="text" class="form-control" placeholder="Search" name="key">
                 </div>
                 <div class="field-wrap" style="margin-bottom: 0px">
                     <label class="search-type" for="byTag">by Tag</label>
-			            <input type="radio" class="search-type" name="byTag" value="T">
+			            <input type="radio" class="search-type" name="Type" value="T">
                     <label class="search-type" for="byUser">by Comment</label>
-  			            <input type="radio" class="search-type" name="byComm" value="C">
+  			            <input type="radio" class="search-type" name="Type" value="C">
                     <label class="search-type" for="searchUser">Search User by Name</label>
-  			            <input type="radio" class="search-type" name="searchUser" value="U">
+  			            <input type="radio" class="search-type" name="Type" value="U">
                 </div>
         		<button type="search" class="btn btn-primary btn-sm">Search</button>
                 {% if uname != '' %}
@@ -70,7 +70,7 @@ and recommendations(photo, user)
   </div>
 </section>
 
-<!---uploadPhoto--------->
+<!---Create album--------->
 {% if uname !='' %} <!---if auth--->
 <section>
   <div class="container">
@@ -90,8 +90,8 @@ and recommendations(photo, user)
         {% if albums %}
 		<ul>
 			{% for album in albums %}
-				<h3><a href="{{url_for('albums')}}?aid={{album[0]}}">{{album[1]}}</a></h3>
-				<a href="{{url_for('delete')}}?photouid={{album[3]}}&aid={{album[0]}}">Delete album {{album[1]}}</a>
+				<h3><a href="/album/{{album[0]}}">{{album[1]}}</a></h3>
+				<a href="/delete/{{album[0]}}">Delete album {{album[1]}}</a>
 				<br>
 			{% endfor %}
 		</ul>	
