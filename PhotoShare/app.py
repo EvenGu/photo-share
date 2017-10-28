@@ -71,7 +71,6 @@ def getCurrentUserId():
 class User(flask_login.UserMixin):
     pass
 
-
 @login_manager.user_loader
 def user_loader(email):
     users = getUserList()
@@ -94,13 +93,11 @@ def request_loader(request):
     cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email))
     data = cursor.fetchall()
     pwd = str(data[0][0]) #why?
-
     print(request.form['password'] == pwd)
-
-    if request.form['password'] == pwd:
+    '''if request.form['password'] == pwd:
         user.is_authenticated = True
     else :
-        user.is_authenticated = False
+        user.is_authenticated = False'''
     return user
 
 @login_manager.unauthorized_handler
@@ -129,6 +126,7 @@ def Login():
             data = cursor.fetchone()
             pwd = str(data[0])
             temp=request.form['password']
+
             if temp == pwd:
                 user = User()
                 cursor.execute("SELECT uid FROM Users WHERE email = '{0}'".format(email))
@@ -136,7 +134,10 @@ def Login():
                 flask_login.login_user(user)  # okay login in user
                 return flask.redirect(flask.url_for('findu',uid=cursor.fetchone()[0]))
                 # protected is a function defined in this file
+
+            print('ss')
         # information did not match
+        print('tt')
         return render_template('Login.html',supress=False)
 
     elif request.method=='GET':
@@ -148,8 +149,6 @@ def Login():
 def logout():
     flask_login.logout_user()
     return render_template('Hello.html', message='You are logged out', uname='')
-
-
 
 # register method
 
