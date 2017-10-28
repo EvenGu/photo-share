@@ -71,7 +71,6 @@ def getCurrentUserId():
 class User(flask_login.UserMixin):
     pass
 
-
 @login_manager.user_loader
 def user_loader(email):
     users = getUserList()
@@ -94,8 +93,11 @@ def request_loader(request):
     cursor.execute("SELECT password FROM Users WHERE email = '{0}'".format(email))
     data = cursor.fetchall()
     pwd = str(data[0][0]) #why?
-    print(data)
-    user.is_authenticated = request.form['password'] == pwd
+    print(request.form['password'] == pwd)
+    '''if request.form['password'] == pwd:
+        user.is_authenticated = True
+    else :
+        user.is_authenticated = False'''
     return user
 
 @login_manager.unauthorized_handler
@@ -124,14 +126,19 @@ def Login():
             data = cursor.fetchone()
             print(data)
             pwd = str(data[0])
-            if request.form['password'] == pwd:
+            temp=request.form['password']
+
+            if temp == pwd:
                 user = User()
                 cursor.execute("SELECT uid FROM Users WHERE email = '{0}'".format(email))
                 user.id = email
                 flask_login.login_user(user)  # okay login in user
                 return flask.redirect(flask.url_for('findu',uid=cursor.fetchone()[0]))
                 # protected is a function defined in this file
+
+            print('ss')
         # information did not match
+        print('tt')
         return render_template('Login.html',supress=False)
 
     elif request.method=='GET':
@@ -144,10 +151,7 @@ def logout():
     flask_login.logout_user()
     return render_template('Hello.html', message='You are logged out', uname='guest')
 
-
-
 # register method
-
 @app.route("/register", methods=['POST','GET'])
 def register():
 
@@ -323,24 +327,25 @@ def getUsersLike(uid,pid):
 def search():
 #type T for tags, U for users, C for comments
     if request.method == 'POST':
-        key = request.form.get('key')
-        type = request.form.get('Type')
+        key = request.values.get('key')
+        type = request.form['Type']
         print(key, type)
         cursor=conn.cursor()
         if (type=="T"):
             cursor.execute("select DISTINCT pid from Tags")
             retPhotos = cursor.fetchall()
-            tags = key.split(" ")
-            for tag in tags:
-                cursor.execute("select pid from Tags where tname='{0}'".format(tag))
-                retPhotos = cursor.fetchall() and retPhotos #TODO result init to null??
+            if key is not None :
+                tags = key.split(" ")
+                for tag in tags:
+                    cursor.execute("select distinct pid from Tags where tname='{0}'".format(tag))
+                    retPhotos = cursor.fetchall() and retPhotos
 
             print(retPhotos)
             photolist = []
             for p in retPhotos:
                 photolist += getPhotoFromList(p)
-            #return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
-            return print (key,type+'V')
+
+            return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId())
 
         elif (type == "C"):
             cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
@@ -349,15 +354,14 @@ def search():
             photolist = []
             for p in retPhotos:
                 photolist += getPhotoFromList(p)
-            # return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
-            return print (key,type)
+            return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId())
+
 
         elif(type=="U"):
-            cursor.execute("select * from users where fname='{0}'".format(key))
+            cursor.execute("select * from users where fname='{0}'".format('%'+key+'%'))
             retUsers = cursor.fetchall()
-            userlist = []
-            # return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
-            return print (key,type)
+            return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
+
 
 #add tags
 def AddTags(pid,key):
@@ -373,8 +377,8 @@ def AddTags(pid,key):
 #add album
 @app.route("/createalbum/<uid>",methods=['POST'])
 def AddAlbum(uid):
-    an=request.values.get('albumname')
-    if an is None: aname="undifined"
+    an=request.values.get('createalbum')
+    if an is None: aname="undefined"
     else: aname=an
     cursor=conn.cursor()
     cursor.execute("insert into albums(uid,aname) values ('{0}','{1}')".format(uid,aname))
