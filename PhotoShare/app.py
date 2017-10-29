@@ -101,11 +101,8 @@ def request_loader(request):
     '''if request.form['password'] == pwd:
         user.is_authenticated = True
     else :
-        user.is_anonymous = True'''
+        user.is_authenticated = False'''
     return user
-
-
-
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -340,9 +337,9 @@ def getUsersLike(uid,pid):
     cursor= conn.cursor()
     cursor.execute("SELECT pid from likePhoto where uid='{0}' and pid='{1}'".format(uid, pid))
     if cursor.fetchone()is None: # or NULL?
-        return 0 # tuple exists (user likes the photo)
+        return False # tuple does not exist (this user does not like the photo)
     else:
-        return 1
+        return True
 
 #search function
 @app.route("/search", methods=['POST'])

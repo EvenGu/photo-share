@@ -77,23 +77,14 @@ as well as the containing album and the owner
                 <input type="button" name="like-unlike"><img src="../static/thumb-up.png">
             {% endif %}
         </form>
-        {% if likes %}
-            {% for like in likes %}
-                {{like[1]}}
-            {% endfor %}
-            &nbsp;{{count}}
-        {% endif %}
+        {{ liken }}
     </div>
 
     <div class="tagBox">
 	<h3>Tags</h3>
     {% if tags %}
 		{% for tag in tags %}
-			<br>
-			{{tag[3]}}
-			<br>
-			<a href="{{url_for('photo')}}?word={{tag[3]}}&usertagid={{tag[1]}}&pid={{tag[2]}}">View my photos/</a>
-			<a href="{{url_for('photo')}}?word={{tag[3]}}&pid={{tag[2]}}">View all photos</a>
+            <span class="tag">{{tag[3]}}</span>
 		{% endfor %}
 	{% endif %}
     <form class="Tags" method="post" action="/photo">
