@@ -345,7 +345,7 @@ def search():
                     print(retPhotos)
             photolist=getPhotoFromList(retPhotos)
 
-            return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId())
+            return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId())
 
         elif (type == "C"):
             cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
@@ -413,7 +413,7 @@ def delalbum(aid):
         return "not your album"
 
 @app.route('/deletep/<pid>',methods=['GET'])
-@flask_login.login_required()
+#@flask_login.login_required()
 def delphoto(pid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
@@ -429,7 +429,7 @@ def delphoto(pid):
         return "not your photo"
 
 @app.route('/deletec/<cid>',methods=['GET'])
-@flask_login.login_required()
+#@flask_login.login_required()
 def delcom(cid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
@@ -444,7 +444,7 @@ def delcom(cid):
         return "not your comment"
 
 @app.route('/like/<pid>',methods=['GET'])
-@flask_login.login_required()
+#@flask_login.login_required()
 def likechange(pid):
     cursor=conn.cursor()
     uid=getCurrentUserId()
