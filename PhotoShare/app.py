@@ -430,7 +430,7 @@ def delphoto(pid):
     else:
         return "not your photo"
 
-@app.route('/delete/<cid>',methods=['GET'])
+@app.route('/deletec/<cid>',methods=['GET'])
 #@flask_login.login_required()
 def delcom(cid):
     cursor=conn.cursor()
@@ -526,7 +526,7 @@ def hello():
     print (id)
 
     return render_template('Hello.html', message='Welcome to PhotoShare',
-                           uid=id,uname=getUserFname())
+                           uid=id,uname=getUserFname(flask_login.current_user.get_id()))
 
 
 if __name__ == "__main__":
