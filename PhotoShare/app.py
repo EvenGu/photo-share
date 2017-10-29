@@ -219,20 +219,21 @@ def isEmailUnique(email):
 def findu(uid):
     cursor = conn.cursor()
     cursor.execute("select fname from users where uid='{0}'".format(uid))
-    name = cursor.fetchone()[0]
+    profname = cursor.fetchone()[0]
     cursor.execute("select * from albums where uid='{0}'".format(uid))
     albums=cursor.fetchall()
-
     profid = int(uid)
     uid = int(getCurrentUserId())
     friends=getUsersFriend(uid,profid)
     cursor.execute("select u.* from users u,isfriend i where u.uid=i.fuid and i.uid='{0}'".format(uid))
     users=cursor.fetchall()
     recfriends=getPeopleFromList(suggestFriends(uid))
+    recphotos=getPhotoFromList(suggestPhotos(uid))
     print (recfriends)
     print (profid==uid)
-    return render_template('MyProfile.html',message=name+"'s mainpage",uname=getUserFname(),
-                           uid=uid,albums=albums,profid=profid,friends=friends,users=users,recfriends=recfriends)
+    return render_template('MyProfile.html', uname=getUserFname(),uid=uid,albums=albums,
+                           profname=profname, profid=profid,friends=friends,users=users,
+                           recphotos=recphotos, recfriends=recfriends)
 
 #album page
 @app.route('/album/<aid>',methods=['GET','POST'])
@@ -541,7 +542,6 @@ def contribution():
     return "done"
 
 
-# Yiwen
 def getFriendsList(uid):
     cursor = conn.cursor()
     cursor.execute("SELECT u1.uid AS ID, u1.fname AS FirstName, u1.lname AS LastName " 
@@ -561,7 +561,7 @@ def getPhotoFromList(list):
         plist.append(a)
     return plist
 
-#get photo by pidlist from cursor
+#get people by pidlist from cursor
 def getPeopleFromList(list):
     plist=[]
     for uid in list:
