@@ -242,7 +242,11 @@ def album(aid):
         fname=name[0]
         aname=name[1]
         cursor.execute("select count(pid) from photos where aid='{0}' GROUP BY aid".format(aid))
-        pnum=cursor.fetchone()[0]
+        pnum=cursor.fetchone()
+        print(pnum)
+        if pnum is None: pnum=0
+        else : pnum=pnum[0]
+        print(pnum)
         return render_template('Album.html',name=aid,auth=auth,photos=photos,
                                aname=aname,uname=fname,uid=ucurrent,pnum=pnum)
 #    if request.method=='POST':
@@ -422,7 +426,10 @@ def delalbum(aid):
     cursor=conn.cursor()
     uid=getCurrentUserId()
     cursor.execute("select * from albums where aid='{0}' and uid='{1}'".format(aid,uid))
-    if cursor.fetchone()is not None:
+    c=cursor.fetchone()
+    print (c)
+    if c is not None:
+        print(aid)
         cursor.execute("delete from albums where aid='{0}'".format(aid))
         conn.commit()
         return flask.redirect(flask.url_for('findu',uid=uid))
