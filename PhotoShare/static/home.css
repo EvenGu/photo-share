@@ -3049,3 +3049,9 @@ i {
 .fa-plus-circle {
   font-size: x-large;
 }
+
+
+/*-----------show photo----------*/
+#photoTable table {
+  text-align: center;
+}

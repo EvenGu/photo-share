@@ -236,8 +236,9 @@ def album(aid):
         cursor.execute("select * from albums where aid='{0}' and uid='{0}'".format(aid,ucurrent))
         if cursor.fetchall() is None : auth=False
         else : auth=True
-        cursor.execute("select * from photos where aid='{0}'".format(aid))
+        cursor.execute("select *, COUNT(pid) from photos where aid='{0}' GROUP BY aid".format(aid))
         photos=cursor.fetchall()
+        #count = photos[][4]
         cursor.execute("select fname,aname from albums, users where users.uid=albums.uid and aid='{0}'".format(aid))
         name=cursor.fetchone()
         fname=name[0]
@@ -254,11 +255,11 @@ def photo(pid):
     if request.method=='GET':
         cursor=conn.cursor()
         cursor.execute("select count(*) from likephoto where pid='{0}'".format(pid))
-        pl=cursor.fetchone()[0]
+        pl=cursor.fetchone()[0] #could be none
         cursor.execute("select * from comments where pid='{0}'".format(pid))
-        comm=cursor.fetchall()
+        comm=cursor.fetchall() #could be none
         cursor.execute("select * from tags where pid='{0}'".format(pid))
-        tags = cursor.fetchall()
+        tags = cursor.fetchall() #could be none
         ucurrent=getCurrentUserId()
         uname=getUserFname()
         cursor.execute("select * from photos where pid='{0}'".format(pid))
