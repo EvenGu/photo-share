@@ -263,8 +263,12 @@ def photo(pid):
         photo=cursor.fetchone()
         cursor.execute("select aname from Albums a,photos p where p.pid='{0}' and a.aid=p.aid".format(pid))
         aname=cursor.fetchone()[0]
-        return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
-                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=getCurrentUserId(),uname=uname)
+        cursor.execute("SELECT tname FROM Tags t WHERE t.pid='{0}'".format(pid))
+        tags = cursor.fetchall()[0]
+
+        return render_template('Photo.html',name=pid,photo=photo,aname=aname,
+                               liken=pl,like=getUsersLike(ucurrent,pid),
+                               tags=tags,comments=comm,uid=ucurrent,uname=uname)
 
 
 # begin photo uploading code
@@ -300,8 +304,7 @@ def upload_file(aid):
             print(str(pid)+'.'+imgtype[1])
             imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(pid)+'.'+imgtype[1]))
             return flask.redirect(flask.url_for('album',aid=aid))
-            #return render_template('Album.html', uname=uname, album=getAlbumPhotos(aid), uid=uid,
-            #                   photos=getAlbumPhotos(aid), message="Upload success")
+
         else:
             print("not image")
             return render_template('upload.html',uname=uname,uid=uid,message="Upload Failed: not an image",name=aid)
@@ -359,6 +362,7 @@ def search():
 
 
 #add tags
+@app.route("/photo/<pid>",methods=['POST'])
 def AddTags(pid,key):
     cursor=conn.cursor()
     tags = key.split(",")

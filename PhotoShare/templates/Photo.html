@@ -37,11 +37,6 @@ as well as the containing album and the owner
   <div class="jumbotron text-center">
     <div class="container">
       <div class="row">
-        <div class="col-md12">
-            <h4>{% if message %} {{ message }} {% endif %}</h4>
-        </div>
-      </div>
-      <div class="row">
         <div class="col-lg-12 text-center">
             <h3>{% if uname %} Hello <span style="color: #843534">{{ uname }}</span> {% endif %}</h3>
         </div>
@@ -53,8 +48,7 @@ as well as the containing album and the owner
 <!--- THE photo --->
 <section>
   <div class="container">
-    <div class="row">
-    {% if photo %} <!--how to target the photo?--->
+    <div class="field-wrap">
         <img src="../static/upload/{{photo[2]}}" alt=""/><br/>
         <h5>
             Caption: <span>{{photo[1]}}</span>
