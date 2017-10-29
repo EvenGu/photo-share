@@ -11,6 +11,7 @@ as well as the containing album and the owner
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Photo</title>
 <link rel="stylesheet" href="../static/home.css">
+<link  href="../static/showPhoto.js">
 </head>
 
 <body>
@@ -54,20 +55,15 @@ as well as the containing album and the owner
             Owner: <a href="{{url_for('findu',uid=uid)}}">{{ oname }}</a>
             Album: <a href="{{url_for('album',aid=photo[3])}}">{{ aname }}</a>
         </h5>
-        <!---
-        {% if auth %}
-        <a href="{{url_for('delete')}}?pid={{photo[1]}}&photouid={{photo[3]}}&aid={{photo[4]}}">Delete {{photo[2]}}</a>
-		<br>
-		--->
-        {% endif %}
     </div>
 
     <div class="like-unlike">
-        <form class="like-unlike" method="GET" action="/like">
+        <form class="like-unlike" method="GET" action="/like/{{ photo[0] }}">
             {% if like %}
-                <input type="button" name="like-unlike"><img src="../static/thumb-up-active.png">
+                <button type="like" class="btn btn-primary btn-sm"><img src="../static/thumb-up-active.png"></button>
+
             {% else %}
-                <input type="button" name="like-unlike"><img src="../static/thumb-up.png">
+                <button type="like" class="btn btn-primary btn-sm"><img src="../static/thumb-up.png"></button>
             {% endif %}
         </form>
         {{ liken }}
@@ -77,23 +73,29 @@ as well as the containing album and the owner
 	<h3>Tags</h3>
     {% if tags %}
 		{% for tag in tags %}
-            <span class="tag">{{tag[3]}}</span>
+            <span class="tag">{{tag[1]}}</span>
 		{% endfor %}
 	{% endif %}
-    <form class="Tags" method="post" action="/photo">
+    {% if uid==oid %}
+        <form class="Tags" method="POST" action="/Ctag/{{ photo[0] }}">
         <label for="crtTag">Create a New Tag</label>
         <input type="text" name="crtTag"/>
         <input type="submit" name="crtTag" value="Submit">
     </form>
+    {% endif %}
     </div>
 
     <div class="field-wrap">
     <h3>Comments</h3>
-	<form class="Comments" method="post" action="/photo">
-		<label for="addComment">Your Comment</label>
-        <input type="text" required name="addComment"/>
-        <input type="submit" name="submit" value="Submit">
-	</form>
+	{% if uid!=oid %}
+        <form class="Comments" method="post" action="/photo">
+            <label for="addComment">Your Comment</label>
+            <input type="text" required name="addComment"/>
+            <input type="submit" name="submit" value="Submit">
+            <input type="hidden" name="pid" value="{{photo[1]}}">
+            <input type="hidden" name="photouid" value="{{photo[3]}}">
+        </form>
+    {% endif %}
     </div>
 
     <div class="field-wrap">
