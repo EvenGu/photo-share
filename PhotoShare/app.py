@@ -108,16 +108,7 @@ def request_loader(request):
 def unauthorized_handler():
     return render_template('unauth.html')
 
-
-'''
-A new page looks like this:
-@app.route('new_page_name')
-def new_page_function():
-	return new_page_html
-'''
-
 #login method
-
 @app.route('/Login', methods=['POST','GET'])
 def Login():
     if request.method=='POST':
@@ -145,7 +136,6 @@ def Login():
         return render_template('Login.html', supress=True)
 
 #logout method
-
 @app.route('/Logout')
 def logout():
     flask_login.logout_user()
@@ -249,7 +239,6 @@ def album(aid):
         photos=cursor.fetchall()
         cursor.execute("select fname,aname from albums, users where users.uid=albums.uid and aid='{0}'".format(aid))
         name=cursor.fetchone()
-        print(ucurrent)
         fname=name[0]
         aname=name[1]
         return render_template('Album.html',name=aid,auth=auth,photos=photos,
@@ -286,7 +275,6 @@ def photo(pid):
 
 # begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
-
 @app.route('/upload/<aid>', methods=['GET', 'POST'])
 @flask_login.login_required
 def upload_file(aid):
@@ -318,8 +306,7 @@ def upload_file(aid):
             print(str(pid)+'.'+imgtype[1])
             imgfile.save(os.path.join(app.config['UPLOAD_FOLDER'], str(pid)+'.'+imgtype[1]))
             return flask.redirect(flask.url_for('album',aid=aid))
-            #return render_template('Album.html', uname=uname, album=getAlbumPhotos(aid), uid=uid,
-            #                   photos=getAlbumPhotos(aid), message="Upload success")
+
         else:
             print("not image")
             return render_template('upload.html',uname=uname,uid=uid,message="Upload Failed: not an image",name=aid)
@@ -328,7 +315,6 @@ def upload_file(aid):
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('Upload.html', uname=uname, uid=uid,message="Please upload your photo",name=aid)
-
 # end photo uploading code
 
 #bwen's query functions
@@ -378,6 +364,7 @@ def search():
 
 
 #add tags
+@app.route("/photo/<pid>",methods=['POST'])
 def AddTags(pid,key):
     cursor=conn.cursor()
     tags = key.split(",")
@@ -400,7 +387,6 @@ def AddAlbum(uid):
     return flask.redirect(flask.url_for('findu',uid=uid))
 
 #make comment
-
 def AddComment(uid,comt,pid):
     cursor=conn.cursor()
     cursor.execute("insert into comments(uid,comt,pid) values('{0}','{1}','{2}')".format(uid,comt,pid))
