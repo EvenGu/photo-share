@@ -365,15 +365,16 @@ def search():
 
 #add tags
 @app.route("/photo/<pid>",methods=['POST'])
-def AddTags(pid,key):
+def AddTags(pid):
     cursor=conn.cursor()
+    key=request.form['crtTag']
     tags = key.split(",")
     for tag in tags:
         cursor.execute("select * from Tags where tname='{0}'".format(tag))
         if cursor.fetchone() is None:
             cursor.execute("insert into Tags VALUES ('{0}','{1}')".format(pid,tag))
             conn.commit()
-    return "success"
+    return flask.redirect(flask.url_for('photo', pid=pid))
 
 #add album
 @app.route("/createalbum/<uid>",methods=['POST'])
@@ -387,18 +388,23 @@ def AddAlbum(uid):
     return flask.redirect(flask.url_for('findu',uid=uid))
 
 #make comment
-def AddComment(uid,comt,pid):
+@app.route('/comment/<pid>',methods=['POST'])
+def AddComment(pid):
+    uid=getCurrentUserId()
+    comt=request.values.get('addComment')
     cursor=conn.cursor()
     cursor.execute("insert into comments(uid,comt,pid) values('{0}','{1}','{2}')".format(uid,comt,pid))
     conn.commit()
-    return "success"
+    return flask.redirect(flask.url_for('photo', pid=pid))
 
+@app.route('/friend/<uid>',methods=['GET'])
+@flask_login.login_required
 def MakeFriends(uid):
     cursor=conn.cursor()
     ucurrent=getCurrentUserId()
     cursor.execute("insert into isfriend(uid,fuid) values('{0}','{1}'),('{1}','{0}')".format(uid, ucurrent))
     conn.commit()
-    return "success"
+    return flask.redirect(flask.url_for('findu',uid=uid))
 
 #delete functions
 @app.route('/deletea/<aid>',methods=['GET'])
