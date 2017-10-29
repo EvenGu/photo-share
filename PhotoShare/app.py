@@ -53,8 +53,9 @@ def getUserIdFrom(email):
     cursor.execute("SELECT uid  FROM Users WHERE email = '{0}'".format(email))
     return cursor.fetchone()[0]
 
-def getUserFname(email):
+def getUserFname():
     cursor = conn.cursor()
+    email=flask_login.current_user.get_id()
     print(email)
     if email is None:
         return ''
@@ -100,8 +101,11 @@ def request_loader(request):
     '''if request.form['password'] == pwd:
         user.is_authenticated = True
     else :
-        user.is_authenticated = False'''
+        user.is_anonymous = True'''
     return user
+
+
+
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
@@ -129,7 +133,7 @@ def Login():
             data = cursor.fetchone()
             print(data)
             pwd = str(data[0])
-            temp=request.form['password']
+            temp=flask.request.form['password']
             if temp == pwd:
                 user = User()
                 cursor.execute("SELECT uid FROM Users WHERE email = '{0}'".format(email))
@@ -248,6 +252,7 @@ def album(aid):
         photos=cursor.fetchall()
         cursor.execute("select fname,aname from albums, users where users.uid=albums.uid and aid='{0}'".format(aid))
         name=cursor.fetchone()
+        print(ucurrent)
         fname=name[0]
         aname=name[1]
         return render_template('Album.html',name=aid,auth=auth,photos=photos,
@@ -265,16 +270,21 @@ def photo(pid):
         pl=cursor.fetchone()[0]
         cursor.execute("select * from comments where pid='{0}'".format(pid))
         comm=cursor.fetchall()
+        cursor.execute("select * from tags where pid='{0}'".format(pid))
+        tags = cursor.fetchall()
         ucurrent=getCurrentUserId()
-        cursor = conn.cursor()
-        cursor.execute("select fname from Users where uid='{0}'".format(ucurrent))
-        uname = cursor.fetchone()[0]
+        uname=getUserFname()
         cursor.execute("select * from photos where pid='{0}'".format(pid))
         photo=cursor.fetchone()
         cursor.execute("select aname from Albums a,photos p where p.pid='{0}' and a.aid=p.aid".format(pid))
         aname=cursor.fetchone()[0]
+        cursor.execute("select u.fname from users u,photos p,albums a where p.pid='{0}' and u.uid=a.uid and a.aid=p.aid".format(pid))
+        oname=cursor.fetchone()[0]
+
+
         return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
-                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=getCurrentUserId(),uname=uname)
+                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=getCurrentUserId()
+                               ,uname=uname,oname=oname,tags=tags)
 
 
 # begin photo uploading code
@@ -283,7 +293,7 @@ def photo(pid):
 @app.route('/upload/<aid>', methods=['GET', 'POST'])
 @flask_login.login_required
 def upload_file(aid):
-    uname = getUserFname(flask_login.current_user.id)
+    uname = getUserFname()
     uid = getUserIdFrom(flask_login.current_user.id)
     if request.method == 'POST':
         imgfile = request.files['photo']
@@ -422,7 +432,7 @@ def delalbum(aid):
         return "not your album"
 
 @app.route('/deletep/<pid>',methods=['GET'])
-@flask_login.login_required()
+#@flask_login.login_required()
 def delphoto(pid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
@@ -438,7 +448,7 @@ def delphoto(pid):
         return "not your photo"
 
 @app.route('/delete/<cid>',methods=['GET'])
-@flask_login.login_required()
+#@flask_login.login_required()
 def delcom(cid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
@@ -453,7 +463,7 @@ def delcom(cid):
         return "not your comment"
 
 @app.route('/like/<pid>',methods=['GET'])
-@flask_login.login_required()
+#@flask_login.login_required()
 def likechange(pid):
     cursor=conn.cursor()
     uid=getCurrentUserId()
@@ -463,7 +473,7 @@ def likechange(pid):
     else:
         cursor.execute("delete from likephoto where uid='{0}' and '{1}'".format(uid,pid))
         conn.commit()
-    return flask.redirect(flask.url_for('photo', pid=pid)
+    return flask.redirect(flask.url_for('photo', pid=pid))
 
 
 def suggestFriends(uid):
@@ -533,7 +543,7 @@ def hello():
     print (id)
 
     return render_template('Hello.html', message='Welcome to PhotoShare',
-                           uid=id,uname=getUserFname(flask_login.current_user.get_id()))
+                           uid=id,uname=getUserFname())
 
 
 if __name__ == "__main__":

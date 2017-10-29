@@ -21,7 +21,7 @@ as well as the containing album and the owner
     <div class="navbar-header">
       <ul class="nav navbar-nav">
           <li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-          {% if uid!=-1 %}
+          {% if uid==-1 %}
             <li class="navbar-right"><a class="navbar-default" href="/register">Register</a></li>
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
           {% else %}
@@ -58,7 +58,7 @@ as well as the containing album and the owner
         <img src="../static/upload/{{photo[2]}}" alt=""/><br/>
         <h5>
             Caption: <span>{{photo[1]}}</span>
-            Owner: <a href="{{url_for('findu',uid=uid)}}">{{ uname }}</a>
+            Owner: <a href="{{url_for('findu',uid=uid)}}">{{ oname }}</a>
             Album: <a href="{{url_for('album',aid=photo[3])}}">{{ aname }}</a>
         </h5>
         <!---
