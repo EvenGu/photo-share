@@ -107,16 +107,7 @@ def request_loader(request):
 def unauthorized_handler():
     return render_template('unauth.html')
 
-
-'''
-A new page looks like this:
-@app.route('new_page_name')
-def new_page_function():
-	return new_page_html
-'''
-
 #login method
-
 @app.route('/Login', methods=['POST','GET'])
 def Login():
     if request.method=='POST':
@@ -144,7 +135,6 @@ def Login():
         return render_template('Login.html', supress=True)
 
 #logout method
-
 @app.route('/Logout')
 def logout():
     flask_login.logout_user()
@@ -279,7 +269,6 @@ def photo(pid):
 
 # begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
-
 @app.route('/upload/<aid>', methods=['GET', 'POST'])
 @flask_login.login_required
 def upload_file(aid):
@@ -321,7 +310,6 @@ def upload_file(aid):
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('Upload.html', uname=uname, uid=uid,message="Please upload your photo",name=aid)
-
 # end photo uploading code
 
 #bwen's query functions
@@ -393,7 +381,6 @@ def AddAlbum(uid):
     return flask.redirect(flask.url_for('findu',uid=uid))
 
 #make comment
-
 def AddComment(uid,comt,pid):
     cursor=conn.cursor()
     cursor.execute("insert into comments(uid,comt,pid) values('{0}','{1}','{2}')".format(uid,comt,pid))
@@ -437,7 +424,7 @@ def delphoto(pid):
     else:
         return "not your photo"
 
-@app.route('/delete/<cid>',methods=['GET'])
+@app.route('/deletec/<cid>',methods=['GET'])
 @flask_login.login_required()
 def delcom(cid):
     cursor=conn.cursor()
@@ -463,7 +450,7 @@ def likechange(pid):
     else:
         cursor.execute("delete from likephoto where uid='{0}' and '{1}'".format(uid,pid))
         conn.commit()
-    return flask.redirect(flask.url_for('photo', pid=pid)
+    return flask.redirect(flask.url_for('photo', pid=pid))
 
 
 def suggestFriends(uid):
