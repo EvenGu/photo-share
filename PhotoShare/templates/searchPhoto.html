@@ -47,16 +47,17 @@ Album displays all the containing photos and the owner
             {% if photos %}
 	        <ul>
 	            {% for photo in photos %}
-	            <li>{{photo[2]}}</li>
+	            <li><img src="../static/upload/{{photo[2]}}" alt=""/></li>
+                    <a href="{{url_for('album',aid=photo[3])}}">Back it's Album</a>
 	            {% endfor %}
             </ul>
-            <a href="{{url_for('albums')}}?aid={{photos[0][4]}}&uid={{photos[0][3]}}">Back to Albumlist</a>
+            {% endif %}
         </div>
       </div>
     </div>
   </div>
 </section>
-{% endif %}
+
 
 </body>
 

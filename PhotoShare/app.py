@@ -55,6 +55,9 @@ def getUserIdFrom(email):
 
 def getUserFname(email):
     cursor = conn.cursor()
+    print(email)
+    if email is None:
+        return ''
     cursor.execute("SELECT fname  FROM Users WHERE email = '{0}'".format(email))
     return cursor.fetchone()[0]
 
@@ -145,7 +148,7 @@ def Login():
 @app.route('/Logout')
 def logout():
     flask_login.logout_user()
-    return render_template('Hello.html', message='You are logged out', uname='guest')
+    return render_template('Hello.html', message='You are logged out',uid=getCurrentUserId(), uname='guest')
 
 # register method
 @app.route("/register", methods=['POST','GET'])
@@ -282,13 +285,22 @@ def upload_file(aid):
         imgfile = request.files['photo']
         caption = request.form.get('caption')
         imgtype=imgfile.mimetype.split("/")
+        tags=request.values.get('tags')
         print (imgtype[1])
         if imgtype[0]=='image':
             cursor = conn.cursor()
             cursor.execute("INSERT INTO photos (path, aid, caption) VALUES (%s, %s, %s)",
                            ('path', aid, caption))
+
             cursor.execute("select pid from photos where path='path'")
-            pid=cursor.fetchone()[0]
+            pid = cursor.fetchone()[0]
+
+            if tags is not None:
+                tagss=tags.split(",")
+                print(tagss)
+                for tag in tagss:
+                    cursor.execute("INSERT INTO Tags(pid,tname) VALUES ('{0}','{1}')".format(pid,tag))
+
             cursor.execute("UPDATE photos set path=%s where pid=%s",
                            (str(pid)+'.'+imgtype[1],pid))
             conn.commit()
@@ -328,18 +340,15 @@ def search():
         print(key, type)
         cursor=conn.cursor()
         if (type=="T"):
-            cursor.execute("select DISTINCT pid from Tags")
-            retPhotos = cursor.fetchall()
+            retPhotos=[]
             if key is not None :
-                tags = key.split(" ")
+                tags = key.split(",")
                 for tag in tags:
+                    print(tag)
                     cursor.execute("select distinct pid from Tags where tname='{0}'".format(tag))
-                    retPhotos = cursor.fetchall() and retPhotos
-
-            print(retPhotos)
-            photolist = []
-            for p in retPhotos:
-                photolist += getPhotoFromList(p)
+                    retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
+                    print(retPhotos)
+            photolist=getPhotoFromList(retPhotos)
 
             return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId())
 
@@ -347,9 +356,7 @@ def search():
             cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
             retPhotos = cursor.fetchall()
             print(retPhotos)
-            photolist = []
-            for p in retPhotos:
-                photolist += getPhotoFromList(p)
+            photolist=getPhotoFromList(p)
             return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId())
 
 
@@ -501,7 +508,11 @@ def getPhotoFromList(list):
 @app.route("/", methods=['GET','POST'])
 def hello():
     print (flask_login.current_user.get_id())
-    return render_template('Hello.html', message='Welcome to PhotoShare', uname='guest')
+    id=getCurrentUserId()
+    print (id)
+
+    return render_template('Hello.html', message='Welcome to PhotoShare',
+                           uid=id,uname=getUserFname(flask_login.current_user.get_id()))
 
 
 if __name__ == "__main__":

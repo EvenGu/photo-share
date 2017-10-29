@@ -15,7 +15,7 @@
     <div class="navbar-header">
       <ul class="nav navbar-nav">
           <li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-          {% if uname=='guest' %}
+          {% if uid==-1 %}
             <li class="navbar-right"><a class="navbar-default" href="/register">Register</a></li>
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
           {% else %}
@@ -63,7 +63,7 @@
   			            <input type="radio" class="search-type" name="Type" value="U"/>
                 </div>
         		<button type="search" class="btn btn-primary btn-sm">Search</button>
-                {% if uname != 'guest' %}
+                {% if uid != -1 %}
                     <button type="search" class="btn btn-primary btn-sm">Search My Photos</button>
                 {% endif %}
      		</form>	
