@@ -61,17 +61,17 @@ Album displays all the containing photos and the owner
         </table>
     </div>
 
-    <div id="photoTable"></div>
+    <div id="photoTable">ttttttttttttttttttt</div>
 
     <script>
 
     var cellsInRow = 4;
+    var count = {{ pnum }};
 
     function drawTable() {
         var divTable = document.getElementById('photoTable');
         var tbl = document.createElement("table");
         {% for photo in photos %}
-        var count = {{ photo[4] }};
         for (var r = 0; r <  count/cellsInRow + 2 ; r++) {
             var row = document.createElement("tr");
             for (var c = 0; c < cellsInRow; c++) {
@@ -95,7 +95,7 @@ Album displays all the containing photos and the owner
         divTable.appendChild(tbl); // appends <table> into <div>
         {% endfor %}
     }
-    window.onload=drawTable;
+    window.onload=drawTable();
 
     </script>
 

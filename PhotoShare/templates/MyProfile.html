@@ -70,29 +70,24 @@ and recommendations(photo, user)
   </div>
 </section>
 
-<!---Create album--------->
-{% if uname !='' and profid==uid %} <!---if auth--->
 <section>
-  <div class="container">
-    <div class="row">
-    	<div class="col-xs-12 text-center">
+<div class="container">
+    <div class="col-xs-7 text-center">
+        <!---Create album--------->
+        {% if uname !='' and profid==uid %} <!---if auth--->
+    	<div class="row">
             <form class="createAlbum" method="POST" action="/createalbum/{{ profid }}" >
                 <input type="text" name="createalbum" required placeholder="name for new album">
                 <button type="submit" name="createalbum" class="btn btn-primary btn-sm">Create a new album</button>
             </form>
       	</div>
-    </div>
-  </div>
-</section>
-{% endif %}
+        {% endif %}
 
-<!---myAlbums--------->
-{% if uname !='' %}
-<section>
-  <div class="container">
-    <div class="row">
-        {% if albums %}
-		<ul>
+        <!---myAlbums--------->
+        {% if uname !='' %}
+        <div class="row">
+            {% if albums %}
+		    <ul>
 			{% for album in albums %}
 				<h3><a href="/album/{{album[0]}}">{{album[1]}}</a></h3>
 				{% if profid==uid %}
@@ -100,21 +95,32 @@ and recommendations(photo, user)
                 {% endif %}
 				<br>
 			{% endfor %}
-		</ul>	
-	    {% endif %}
-  </div>
-</section>
+		    </ul>
+	        {% endif %}
+        </div>
+    </div>
 
-<!---recommendations--->
-<section>
-  <div class="container">
-    <div class="row">
+    <div class="col-xs-5 text-center">
+        <!---friends list--->
+        <div class="field-wrap">
+        <h3>Friends List</h3>
+            <ul>
+                <li>{% for user in users %}
+                    <a href="/profile/{{ user[0] }}">
+                        <h3>{{user[1]}} {{ user[2] }}</h3>
+                    </a>
+                {% endfor %}</li>
+            </ul>
+        </div>
+
+        <!---recommendations--->
+        <div class="field-wrap">
 		{% if profid==uid %}
             {% for user in users %}
                 <a href="{{url_for('users')}}?uid={{user[0]}}">{{user[1]}}</a>
                 {% if not friends %}
                     {% if useremail != user[1] %}
-                        <a href="{{ url_for('MakeFriends',uid=user[0])}}">Add to friends!</a>
+                        <a href="">Add to friends!</a>
                     {% endif %}
                 {% endif %}
 			<br>

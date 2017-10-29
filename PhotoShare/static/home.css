@@ -708,7 +708,8 @@ th {
   padding: 5px;
 }
 .table-bordered {
-  border: 1px solid #ddd;
+  border: 3px solid #ddd;
+  height-min: 100px;
 }
 .table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
@@ -3002,7 +3003,7 @@ input.search-type,
 }
 
 
-／*-------photo like comment-------------------*／
+／*-------photo like tag comment-------------------*／
 
 form.like-unlike {
   text-align: left;
@@ -3014,6 +3015,7 @@ form.like-unlike {
 #like-unlike{
   margin-left: 50%;
 }
+
 #comments {
   list-style-type: none;
   margin: 0;
@@ -3024,8 +3026,9 @@ form.like-unlike {
     padding-left: 8px;
   }
 
-#usr-comment {
-  // height: 30px;
+.commBox,
+usr-comment {
+  height: 30px;
   background-color: inherit;
   border-style: none;
   border-bottom: 1px solid rgba(0, 0, 255, 0.42);
@@ -3040,3 +3043,4 @@ form.like-unlike {
 #photoTable table {
   text-align: center;
 }
+

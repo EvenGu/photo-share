@@ -71,11 +71,11 @@ as well as the containing album and the owner
 
     <div class="col-xs-6">
 	<h3>Tags</h3>
-    {% if tags %}
+    <div class="table-bordered">
 		{% for tag in tags %}
-            <span class="tag">{{tag[1]}}</span>
+            <button class="btn-sm">{{tag[1]}}</button>
 		{% endfor %}
-	{% endif %}
+    </div>
     {% if uid==oid %}
         <form class="Tags" method="POST" action="/Ctag/{{ photo[0] }}">
         <input type="text" name="crtTag" placeholder="Create a New Tag"/>
@@ -86,27 +86,28 @@ as well as the containing album and the owner
     <hr>
 
     <h3>Comments</h3>
-	{% if uid!=oid %}
-        <form class="Comments" method="post" action="/comment/{{ photo[0] }}">
-            <label for="addComment">Your Comment</label>
-            <input type="text" name="addComment" placeholder="Leave Your Comment"/>
+    {% if uid!=oid %}
+        <form class="Comments" method="POST" action="/comment/{{ photo[0] }}">
+            <input type="text" class="commBox" name="addComment" placeholder="Leave Your Comment"/>
             <button type="submit" name="addCmm" value="Submit">Submit</button>
         </form>
-    </div>
-  {% endif %}
+    {% endif %}
 
-    <div class="field-wrap">
-	{% if comments %}
+	{% if comments != '' %}
+        <ul>
 		{% for comment in comments %}
+            <li id="comments">
 			{% if comment[4]!=-1 %}
-				<a href="{{url_for('findu',uid=comment[4])}}">{{comment[5]}}</a>
-				:&nbsp;{{comment[2]}}
+				<a href="{{url_for('findu',uid=comment[4])}}">{{comment[5]}}</a>:<br>{{comment[2]}}
 			{% else %}
-				guest:&nbsp;{{comment[2]}}
+				guest:<br>{{comment[2]}}
 			{% endif %}
-			
+			</li>
 		{% endfor %}
+        </ul>
 	{% endif %}
+    </div>
+
     </div>
 
 

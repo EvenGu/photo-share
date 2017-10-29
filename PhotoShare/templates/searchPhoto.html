@@ -39,11 +39,8 @@ Displays all the containing photos and the owner
         {% if uname != '' %} <!---fei hua--->
           <h1>Hello {{uname}}</h1>
         {% endif %}
-        {% if type=='C' %}
-            <h2>Here is your search result for comments include {{ key }}</h2>
-        {% elif type=='T' %}
-            <h2>Here is your search result for tags include {{ key }}</h2>
-        {% endif %}
+        <h2>You searched <span style="color:darkred">{{ key }}</span> in <span style="color:darkblue">{{ type }}</span></h2>
+        <h3>Here is your search result</h3>
         </div>
       </div>
       <div class="row">
