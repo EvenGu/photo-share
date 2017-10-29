@@ -225,12 +225,12 @@ def findu(uid):
     profid = int(uid)
     uid = int(getCurrentUserId())
     friends=getUsersFriend(uid,profid)
-    cursor.execute("select u.* from users u,isfriend i where u.uid=i.fuid and i.uid='{0}'".format(uid))
+    cursor.execute("select u.* from users u,isfriend i where u.uid=i.fuid and i.uid='{0}'".format(profid))
     users=cursor.fetchall()
     recfriends=getPeopleFromList(suggestFriends(uid))
     recphotos=getPhotoFromList(suggestPhotos(uid))
-    print (recfriends)
-    print (profid==uid)
+    print(getUserFname())
+    print(users)
     return render_template('MyProfile.html', uname=getUserFname(),uid=uid,albums=albums,
                            profname=profname, profid=profid,friends=friends,users=users,
                            recphotos=recphotos, recfriends=recfriends)
