@@ -222,10 +222,9 @@ def findu(uid):
     name = cursor.fetchone()[0]
     cursor.execute("select * from albums where uid='{0}'".format(uid))
     albums=cursor.fetchall()
-    print(albums)
 
     return render_template('MyProfile.html',message=name+"'s mainpage",uname=getUserFname(),
-                           uid=getCurrentUserId(),albums=albums,profid=uid)
+                           uid=int(getCurrentUserId()),albums=albums,profid=int(uid))
 
 #album page
 @app.route('/album/<aid>',methods=['GET','POST'])
@@ -265,13 +264,15 @@ def photo(pid):
         photo=cursor.fetchone()
         cursor.execute("select aname from Albums a,photos p where p.pid='{0}' and a.aid=p.aid".format(pid))
         aname=cursor.fetchone()[0]
-        cursor.execute("select u.fname from users u,photos p,albums a where p.pid='{0}' and u.uid=a.uid and a.aid=p.aid".format(pid))
-        oname=cursor.fetchone()[0]
-
+        cursor.execute("select u.fname,u.uid from users u,photos p,albums a where p.pid='{0}' and u.uid=a.uid and a.aid=p.aid".format(pid))
+        owner=cursor.fetchone()
+        oid=owner[1]
+        oname=owner[0]
+        print(tags)
 
         return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
-                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=getCurrentUserId()
-                               ,uname=uname,oname=oname,tags=tags)
+                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=int(getCurrentUserId())
+                               ,uname=uname,oname=oname,tags=tags,oid=int(oid))
 
 
 # begin photo uploading code
@@ -365,7 +366,7 @@ def search():
     
 
 #add tags
-@app.route("/photo/<pid>",methods=['POST'])
+@app.route("/Ctag/<pid>",methods=['POST'])
 def AddTags(pid):
     cursor=conn.cursor()
     key=request.form['crtTag']
