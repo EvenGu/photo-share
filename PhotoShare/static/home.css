@@ -449,6 +449,9 @@ ol {
   margin-top: 0;
   margin-bottom: 10px;
 }
+li{
+  list-style-type: none;
+}
 ul ul,
 ol ul,
 ul ol,
@@ -3000,35 +3003,17 @@ input.search-type,
 
 
 ／*-------photo like comment-------------------*／
-@import url("https://fonts.googleapis.com/css?family=Lato");
 
-
-i {
-  font-size: 25px;
-  color: black;
-}
-
-#thumbs-down,
-#fav {
-  padding-left: 25px;
-}
-
-#like-unlike {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+form.like-unlike {
+  text-align: left;
+  padding-left: 50%;
+  margin-top: auto;
   font-size: 20px;
 }
 
-#like-unlike li {
-  float: left;
+#like-unlike{
+  margin-left: 50%;
 }
-
-#like-unlike li span {
-  padding-left: 25px;
-  color: #868e96;
-}
-
 #comments {
   list-style-type: none;
   margin: 0;
