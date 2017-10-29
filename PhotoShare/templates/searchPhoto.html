@@ -44,13 +44,13 @@ Displays all the containing photos and the owner
       </div>
       <div class="row">
           {% if photos %}
-	      <div class="field-wrap">
-            <img src="../static/upload/{{photo[2]}}" alt=""/><br/>
-            <h5>
-                Caption: <span>{{photo[1]}}</span>
-                Owner: <a href="{{url_for('findu',uid=uid)}}">{{ uname }}</a>
-                Album: <a href="{{url_for('album',aid=photo[3])}}">{{ aname }}</a>
-            </h5>
+	      {% for photo in photos %}
+              <div class="field-wrap">
+              <a href="/photo/{{photo[0]}}">
+                        <h3>{{photo[1]}}</h3>
+                        <img src="../static/upload/{{photo[2]}}" alt=""><br/>
+                    </a>
+          {% endfor %}
           {% endif %}
           </div>
         </div>
