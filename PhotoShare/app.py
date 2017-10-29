@@ -346,21 +346,20 @@ def search():
                     retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
                     print(retPhotos)
             photolist=getPhotoFromList(retPhotos)
-
             return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId())
 
         elif (type == "C"):
             cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
             retPhotos = cursor.fetchall()
             print(retPhotos)
-            photolist=getPhotoFromList(p)
+            photolist=getPhotoFromList(retPhotos)
             return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId())
 
 
         elif(type=="U"):
-            cursor.execute("select * from users where fname='{0}'".format('%'+key+'%'))
+            cursor.execute("select * from users where fname='{0}' OR lname='{0}'".format('%'+key+'%'))
             retUsers = cursor.fetchall()
-            return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
+            return render_template('searchUser.html', users=retUsers, uname=getUserFname())
 
 
 #add tags
@@ -518,6 +517,16 @@ def getPhotoFromList(list):
         plist.append(a)
     return plist
 
+#get photo by pidlist from cursor
+def getPhotoFromList(list):
+    plist=[]
+    for pid in list:
+        cursor=conn.cursor()
+        cursor.execute("select * from photos where pid='{0}'".format(pid[0]))
+        a=cursor.fetchone()
+        plist.append(a)
+    return plist
+
 # default page
 @app.route("/", methods=['GET','POST'])
 def hello():
@@ -526,7 +535,7 @@ def hello():
     print (id)
 
     return render_template('Hello.html', message='Welcome to PhotoShare',
-                           uid=id,uname=getUserFname(flask_login.current_user.get_id()))
+                           uid=id,uname=getUserFname())
 
 
 if __name__ == "__main__":

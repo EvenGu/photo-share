@@ -19,13 +19,13 @@ Displays all the containing photos and the owner
     <div class="navbar-header">
       <ul class="nav navbar-nav">
       	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-        {% if uid!=-1 %}
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('findu',uid=uid) }}">My Profile</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
-            <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>
+        {% if uid==-1 %}
+            <li class="navbar-right"><a class="navbar-default" href="/register">Register</a></li>
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
-        {% endif %}        
+          {% else %}
+            <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ uname }}</a></li>
+          {% endif %}
       </ul> 
 	</div>
   </div>
@@ -43,15 +43,16 @@ Displays all the containing photos and the owner
         </div>
       </div>
       <div class="row">
-          {% if photos %}
 	      <div class="field-wrap">
-              <a href="/photo/{{photo[0]}}">
-                  <h3>{{photo[1]}}</h3>
-                  <img src="../static/upload/{{photo[2]}}" alt=""><br/>
-              </a>
+              <ul>
+                  <li>{% for photo in photos %}
+                      <a href="/photo/{{photo[0]}}">
+                          <h3>{{photo[1]}}</h3>
+                          <img src="../static/upload/{{photo[2]}}" alt=""><br/>
+                      </a>
+                  {% endfor %}</li>
+              </ul>
           </div>
-          {% endif %}
-          
         </div>
       </div>
     </div>
