@@ -346,21 +346,21 @@ def search():
                     retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
                     print(retPhotos)
             photolist=getPhotoFromList(retPhotos)
-
             return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId())
 
         elif (type == "C"):
             cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
             retPhotos = cursor.fetchall()
             print(retPhotos)
-            photolist=getPhotoFromList(p)
+            photolist=getPhotoFromList(retPhotos)
             return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId())
 
 
         elif(type=="U"):
-            cursor.execute("select * from users where fname='{0}'".format('%'+key+'%'))
+            cursor.execute("select * from users where fname like '{0}' OR lname like '{0}'".format('%'+key+'%'))
             retUsers = cursor.fetchall()
-            return render_template('searchPhoto.html', photos=photolist, guest=anonymous, name=flask_login.current_user.id)
+            print(retUsers)
+            return render_template('searchUser.html', users=retUsers, uname=getUserFname(),uid=getCurrentUserId())
 
 
 #add tags
@@ -402,7 +402,7 @@ def MakeFriends(uid):
 
 #delete functions
 @app.route('/deletea/<aid>',methods=['GET'])
-#@flask_login.login_required()
+@flask_login.login_required
 def delalbum(aid):
     cursor=conn.cursor()
     uid=getCurrentUserId()
@@ -415,7 +415,7 @@ def delalbum(aid):
         return "not your album"
 
 @app.route('/deletep/<pid>',methods=['GET'])
-#@flask_login.login_required()
+@flask_login.login_required
 def delphoto(pid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
@@ -431,7 +431,7 @@ def delphoto(pid):
         return "not your photo"
 
 @app.route('/deletec/<cid>',methods=['GET'])
-#@flask_login.login_required()
+@flask_login.login_required
 def delcom(cid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
@@ -446,7 +446,7 @@ def delcom(cid):
         return "not your comment"
 
 @app.route('/like/<pid>',methods=['GET'])
-#@flask_login.login_required()
+@flask_login.login_required
 def likechange(pid):
     cursor=conn.cursor()
     uid=getCurrentUserId()
@@ -518,6 +518,16 @@ def getPhotoFromList(list):
         plist.append(a)
     return plist
 
+#get photo by pidlist from cursor
+def getPhotoFromList(list):
+    plist=[]
+    for pid in list:
+        cursor=conn.cursor()
+        cursor.execute("select * from photos where pid='{0}'".format(pid[0]))
+        a=cursor.fetchone()
+        plist.append(a)
+    return plist
+
 # default page
 @app.route("/", methods=['GET','POST'])
 def hello():
@@ -526,7 +536,7 @@ def hello():
     print (id)
 
     return render_template('Hello.html', message='Welcome to PhotoShare',
-                           uid=id,uname=getUserFname(flask_login.current_user.get_id()))
+                           uid=id,uname=getUserFname())
 
 
 if __name__ == "__main__":

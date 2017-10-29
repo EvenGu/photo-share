@@ -1,5 +1,5 @@
 <!---
-Displays all the users with the same uname
+Displays all the users <fname lname email> (and link) with the searched fname or lname
 --->
 
 <!DOCTYPE html>
@@ -19,67 +19,43 @@ Displays all the users with the same uname
     <div class="navbar-header">
       <ul class="nav navbar-nav">
       	<li class="navbar-left"><a class="navbar-brand" href="/">Home</a></li>
-        {% if uid!=-1 %}
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('findu',uid=uid) }}">My Profile</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
-            <li class="navbar-right active"><a class="navbar-default" href="/register">Register</a></li>
+        {% if uid==-1 %}
+            <li class="navbar-right"><a class="navbar-default" href="/register">Register</a></li>
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
-        {% endif %}
+          {% else %}
+            <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ uname }}</a></li>
+          {% endif %}
       </ul> 
 	</div>
   </div>
 </nav>
 
-{% if user %}
 <section>
   <div class="jumbotron text-center">
     <div class="container">
       <div class="row">
         <div class="col-md12">
-        {% if name %}
-          <h1>Hello {{Name}}</h1>
-        {% endif %}
+          <h1>Hello {{uname}}</h1>
+        <h2>Here is your search result</h2>
         </div>
       </div>
       <div class="row">
-      	<div class="col-lg-12 text-center">
-        	<form role="search" action="/search(type)" method = "POST">
-            	<div style="margin-bottom:10px">
-        		<input type="text" class="form-control " placeholder="Search">
-                </div>
-                <div class="row">
-            		<label for="tag" style="width:20px">tag</label>
-  						<input type="radio" class="radio-inline" name="search" id="tag" value="t">
-  					<label for="user" style="width:30px" for="user">user</label>
-  						<input type="radio" class="radio-inline" name="search" id="user" value="u">
-          		</div>
-        		<button type="submit" class="btn btn-primary btn-md">Search</button>
-     		</form>	
-      	</div>      	
+	      <div class="field-wrap">
+              <ul>
+                  <li>{% for user in users %}
+                      <a href="/profile/{{ user[0] }}">
+                          <h3>{{user[1]}} {{ user[2] }} {{ user[3] }}</h3>
+                      </a>
+                  {% endfor %}</li>
+              </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
-{% endif %}
 
-<section>
-  <div class="container">
-    <div class="row">
-	{% if album %}
-    	<h3>{{fname}}'s Album:</h3>
-		<h2>{{aname}}</h2>
-		<ul>
-			{% for photo in album %}
-				<h3><a href="{{url_for('albums')}}?aid={{album[0]}}">{{album[1]}}</a></h3>
-				<a href="{{url_for('delete')}}?photouid={{album[3]}}&aid={{album[0]}}">Delete album {{album[1]}}</a>
-				<br>
-			{% endfor %}
-		</ul>
-	{% endif %}
-    </div>
-  </div>
-</section>
 </body>
 
 </html>
