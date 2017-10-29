@@ -269,7 +269,11 @@ def photo(pid):
         cursor = conn.cursor()
         cursor.execute("select fname from Users where uid='{0}'".format(ucurrent))
         uname = cursor.fetchone()[0]
-        return render_template('Photo.html', name=pid, message="Here's photo",
+        cursor.execute("select * from photos where pid='{0}'".format(pid))
+        photo=cursor.fetchone()
+        cursor.execute("select aname from Albums a,photos p where p.pid='{0}' and a.aid=p.aid".format(pid))
+        aname=cursor.fetchone()[0]
+        return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
                                liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=getCurrentUserId(),uname=uname)
 
 
@@ -418,7 +422,7 @@ def delalbum(aid):
         return "not your album"
 
 @app.route('/deletep/<pid>',methods=['GET'])
-#@flask_login.login_required()
+@flask_login.login_required()
 def delphoto(pid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
@@ -434,17 +438,32 @@ def delphoto(pid):
         return "not your photo"
 
 @app.route('/delete/<cid>',methods=['GET'])
-#@flask_login.login_required()
+@flask_login.login_required()
 def delcom(cid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
     cursor.execute("select * from comments where cid='{0}' and uid='{1}'".format(cid,uid))
     if cursor.fetchone()[0]is not None:
-        cursor.execute("delete from comments where aid='{0}'".format(cid))
+        cursor.execute("select pid from comments where cid='{0}'".format(cid))
+        pid=cursor.fetchone()[0]
+        cursor.execute("delete from comments where cid='{0}'".format(cid))
         conn.commit()
-        return flask.redirect(flask.url_for('photo', cid=cid))
+        return flask.redirect(flask.url_for('photo', pid=pid))
     else:
         return "not your comment"
+
+@app.route('/like/<pid>',methods=['GET'])
+@flask_login.login_required()
+def likechange(pid):
+    cursor=conn.cursor()
+    uid=getCurrentUserId()
+    if not getUsersLike(uid,pid):
+        cursor.execute("insert into likephoto(uid,pid) VALUES ('{0}','{1}')".format(uid,pid))
+        conn.commit()
+    else:
+        cursor.execute("delete from likephoto where uid='{0}' and '{1}'".format(uid,pid))
+        conn.commit()
+    return flask.redirect(flask.url_for('photo', pid=pid)
 
 
 def suggestFriends(uid):
