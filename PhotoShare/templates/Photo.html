@@ -88,7 +88,7 @@ as well as the containing album and the owner
     </form>
     </div>
 
-    <div class="commentBox">
+    <div class="field-wrap">
     <h3>Comments</h3>
 	<form class="Comments" method="post" action="/photo">
 		<label for="addComment">Your Comment</label>
@@ -97,7 +97,9 @@ as well as the containing album and the owner
         <input type="hidden" name="pid" value="{{photo[0][1]}}">
         <input type="hidden" name="photouid" value="{{photo[0][3]}}">
 	</form>
+    </div>
 
+    <div class="field-wrap">
 	{% if comments %}
 		{% for comment in comments %}
 			{% if not guest %}
@@ -109,7 +111,8 @@ as well as the containing album and the owner
 			
 		{% endfor %}
 	{% endif %}
-{% endif %}
+    </div>
+
 
 </section>
 
