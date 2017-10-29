@@ -114,7 +114,7 @@ and recommendations(photo, user)
                 <a href="{{url_for('users')}}?uid={{user[0]}}">{{user[1]}}</a>
                 {% if not friends %}
                     {% if useremail != user[1] %}
-                        <a href="{{ url_for('users') }}?fid={{user[0]}}">Add to friends!</a>
+                        <a href="{{ url_for('MakeFriends',uid=user[0])}}">Add to friends!</a>
                     {% endif %}
                 {% endif %}
 			<br>
