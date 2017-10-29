@@ -518,13 +518,13 @@ def suggestFriends(uid):
 def suggestPhotos(uid):
     cursor=conn.cursor()
     cursor.execute("select p1 from"
-                   "(select pid as p1, count (pid) as cp1 from tags group by pid),"
-                   "(select pid as p2, count (pid) as cp2 from tags,"
-                   "(select DISTINCT c.tname as tagn from tags c,album b,photos a "
-                   "where b.uid='{0}' and a.aid=b.aid and c.pid=a.pid)"
-                   "where tags.tname in tagn"
-                   "group by pid)"
-                   "where p1=p2"
+                   "(select pid as p1, count(pid) as cp1 from tags group by pid) t1,"
+                   "(select pid as p2, count(pid) as cp2 from tags,"
+                   "(select DISTINCT c.tname as tagn from tags c,albums b,photos a "
+                   "where b.uid='{0}' and a.aid=b.aid and c.pid=a.pid) tn "
+                   "where tags.tname in (tagn) "
+                   "group by pid) t2 "
+                   "where t1.p1=t2.p2 "
                    "order by p1,cp2/cp1 desc".format(uid))
     return cursor.fetchall()
 
