@@ -69,7 +69,8 @@ CREATE TABLE Comments(
    pid  INTEGER NOT NULL,
    uid  INTEGER NOT NULL, 
    PRIMARY KEY  (cid),
-   FOREIGN KEY  (pid) REFERENCES Photos(pid),
+   FOREIGN KEY  (pid) REFERENCES Photos(pid)
+      ON DELETE CASCADE,
    FOREIGN KEY  (uid) REFERENCES Users(uid)
    );
 
