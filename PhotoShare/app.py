@@ -235,7 +235,7 @@ def album(aid):
         cursor.execute("select * from albums where aid='{0}' and uid='{0}'".format(aid,ucurrent))
         if cursor.fetchall() is None : auth=False
         else : auth=True
-        cursor.execute("select *, COUNT(pid) from photos where aid='{0}' GROUP BY aid".format(aid))
+        cursor.execute("select *, COUNT(*) from photos where aid='{0}'".format(aid))
         photos=cursor.fetchall()
         #count = photos[][4]
         cursor.execute("select fname,aname from albums, users where users.uid=albums.uid and aid='{0}'".format(aid))
