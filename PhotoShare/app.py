@@ -361,7 +361,7 @@ def search():
             retUsers = cursor.fetchall()
             print(retUsers)
             return render_template('searchUser.html', users=retUsers, uname=getUserFname(),uid=getCurrentUserId())
-
+    
 
 #add tags
 @app.route("/photo/<pid>",methods=['POST'])

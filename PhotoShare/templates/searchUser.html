@@ -40,20 +40,23 @@ Displays all the users <fname lname email> (and link) with the searched fname or
         <h2>Here is your search result</h2>
         </div>
       </div>
-      <div class="row">
+    </div>
+  </div>
+
+  <div class="container">
+        <div class="row">
 	      <div class="field-wrap">
               <ul>
                   <li>{% for user in users %}
                       <a href="/profile/{{ user[0] }}">
-                          <h3>{{user[1]}} {{ user[2] }} {{ user[3] }}</h3>
+                          <h3>{{user[1]}} {{ user[2] }}</h3>
                       </a>
                   {% endfor %}</li>
               </ul>
           </div>
         </div>
-      </div>
-    </div>
   </div>
+
 </section>
 
 </body>
