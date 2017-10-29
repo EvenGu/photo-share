@@ -37,6 +37,17 @@ and recommendations(photo, user)
       <div class="row">
         <div class="col-md12">
             <h4>{% if message %} {{ message }} {% endif %}</h4>
+            {% if uid!=-1 and uid!=profid %}
+                <form class="makefriends" method="GET" action="/friend/{{ profid }}">
+                    {% if not friends %}
+                        <button id="makefriends" type="submit"><img style="width:20%;height:20%">make friends</button>
+                        <span style="font-weight: 900">{{ liken }}</span>
+                    {% else %}
+                        <button id="makefriends" type="submit"><img style="width:20%;height:20%">cancel friends</button>
+                        <span style="font-weight: 400">{{ liken }}</span>
+                    {% endif %}
+                </form>
+            {% endif %}
         </div>
       </div>
       <div class="row">
@@ -116,13 +127,9 @@ and recommendations(photo, user)
         <!---recommendations--->
         <div class="field-wrap">
 		{% if profid==uid %}
-            {% for user in users %}
-                <a href="{{url_for('users')}}?uid={{user[0]}}">{{user[1]}}</a>
-                {% if not friends %}
-                    {% if useremail != user[1] %}
-                        <a href="">Add to friends!</a>
-                    {% endif %}
-                {% endif %}
+            <h3>recommendation</h3>
+            {% for user in recfriends %}
+                <a href="{{url_for('findu',uid=user[0])}}">{{user[1]}}</a>
 			<br>
 		    {% endfor %}
 	    {% endif %}

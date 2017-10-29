@@ -223,8 +223,16 @@ def findu(uid):
     cursor.execute("select * from albums where uid='{0}'".format(uid))
     albums=cursor.fetchall()
 
+    profid = int(uid)
+    uid = int(getCurrentUserId())
+    friends=getUsersFriend(uid,profid)
+    cursor.execute("select u.* from users u,isfriend i where u.uid=i.fuid and i.uid='{0}'".format(uid))
+    users=cursor.fetchall()
+    recfriends=getPeopleFromList(suggestFriends(uid))
+    print (recfriends)
+    print (profid==uid)
     return render_template('MyProfile.html',message=name+"'s mainpage",uname=getUserFname(),
-                           uid=int(getCurrentUserId()),albums=albums,profid=int(uid))
+                           uid=uid,albums=albums,profid=profid,friends=friends,users=users,recfriends=recfriends)
 
 #album page
 @app.route('/album/<aid>',methods=['GET','POST'])
@@ -334,6 +342,14 @@ def getUsersLike(uid,pid):
     else:
         return True
 
+def getUsersFriend(uid, fuid):
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from isfriend where uid='{0}' and fuid='{1}'".format(uid, fuid))
+    if cursor.fetchone() is None:  # or NULL?
+        return False  # tuple does not exist (they are not friends)
+    else:
+        return True
+
 #search function
 @app.route("/search", methods=['POST'])
 def search():
@@ -414,7 +430,14 @@ def AddComment(pid):
 def MakeFriends(uid):
     cursor=conn.cursor()
     ucurrent=getCurrentUserId()
-    cursor.execute("insert into isfriend(uid,fuid) values('{0}','{1}'),('{1}','{0}')".format(uid, ucurrent))
+    print(uid,ucurrent)
+    print(getUsersFriend(uid,ucurrent))
+    if getUsersFriend(uid, ucurrent):
+        cursor.execute("delete from isfriend where uid='{0}' and fuid='{1}'".format(uid, ucurrent))
+        cursor.execute("delete from isfriend where uid='{0}' and fuid='{1}'".format(ucurrent, uid))
+        conn.commit()
+    else:
+        cursor.execute("insert into isfriend(uid,fuid) values('{0}','{1}'),('{1}','{0}')".format(uid, ucurrent))
     conn.commit()
     return flask.redirect(flask.url_for('findu',uid=uid))
 
@@ -482,14 +505,13 @@ def likechange(pid):
 
 def suggestFriends(uid):
     cursor=conn.cursor()
-    cursor.execute("select u1 from "
-                   "(select uid as u1,count(uid)as u1c1 from isfriend a,isfriend b"
-                   "group by uid)"
-                   "(select u2,count(u2)as u1c from isfriend a1, isfriend b1"
-                   "(select c.fuid as u1 from isfriend a, isfriend b, isfriend c"
-                   "where a.uid='{0}' and b.uid=a.fuid and b.fuid=c.uid and c.uid<>'{0}')"
-                   "where a1.uid=u2 and b1.uid=a1.fuid and b1.fuid<>'{0}' group by u2)"  
-                   "where u1=u2 order by u1c/u1c1 DESC ".format(uid))
+    cursor.execute("select c1.u1 from"
+                   "(select uid as u1,count(uid)as u1c1 from isfriend group by uid) c1,"
+                   "(select find3.u2,count(find3.u2)as u1c from isfriend a1, isfriend b1,"
+                   "(select c.uid as u2 from isfriend a, isfriend b, isfriend c "
+                   "where a.uid='{0}' and b.uid=a.fuid and b.fuid=c.uid and c.uid<>'{0}') find3 "
+                   "where a1.uid=find3.u2 and b1.uid=a1.fuid and b1.fuid='{0}' group by find3.u2) c2 "
+                   "where c1.u1=c2.u2 order by c2.u1c/c1.u1c1 DESC".format(uid))
     return cursor.fetchall()
 
 def suggestPhotos(uid):
@@ -540,11 +562,11 @@ def getPhotoFromList(list):
     return plist
 
 #get photo by pidlist from cursor
-def getPhotoFromList(list):
+def getPeopleFromList(list):
     plist=[]
-    for pid in list:
+    for uid in list:
         cursor=conn.cursor()
-        cursor.execute("select * from photos where pid='{0}'".format(pid[0]))
+        cursor.execute("select * from users where uid='{0}'".format(uid[0]))
         a=cursor.fetchone()
         plist.append(a)
     return plist
@@ -564,3 +586,4 @@ if __name__ == "__main__":
     # this is invoked when in the shell  you run
     # $ python app.py
     app.run(port=5000, debug=True)
+
