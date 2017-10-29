@@ -53,8 +53,9 @@ def getUserIdFrom(email):
     cursor.execute("SELECT uid  FROM Users WHERE email = '{0}'".format(email))
     return cursor.fetchone()[0]
 
-def getUserFname(email):
+def getUserFname():
     cursor = conn.cursor()
+    email=flask_login.current_user.get_id()
     print(email)
     if email is None:
         return ''
@@ -120,7 +121,7 @@ def Login():
             data = cursor.fetchone()
             print(data)
             pwd = str(data[0])
-            temp=request.form['password']
+            temp=flask.request.form['password']
             if temp == pwd:
                 user = User()
                 cursor.execute("SELECT uid FROM Users WHERE email = '{0}'".format(email))
@@ -255,20 +256,21 @@ def photo(pid):
         pl=cursor.fetchone()[0]
         cursor.execute("select * from comments where pid='{0}'".format(pid))
         comm=cursor.fetchall()
+        cursor.execute("select * from tags where pid='{0}'".format(pid))
+        tags = cursor.fetchall()
         ucurrent=getCurrentUserId()
-        cursor = conn.cursor()
-        cursor.execute("select fname from Users where uid='{0}'".format(ucurrent))
-        uname = cursor.fetchone()[0]
+        uname=getUserFname()
         cursor.execute("select * from photos where pid='{0}'".format(pid))
         photo=cursor.fetchone()
         cursor.execute("select aname from Albums a,photos p where p.pid='{0}' and a.aid=p.aid".format(pid))
         aname=cursor.fetchone()[0]
-        cursor.execute("SELECT tname FROM Tags t WHERE t.pid='{0}'".format(pid))
-        tags = cursor.fetchall()[0]
+        cursor.execute("select u.fname from users u,photos p,albums a where p.pid='{0}' and u.uid=a.uid and a.aid=p.aid".format(pid))
+        oname=cursor.fetchone()[0]
 
-        return render_template('Photo.html',name=pid,photo=photo,aname=aname,
-                               liken=pl,like=getUsersLike(ucurrent,pid),
-                               tags=tags,comments=comm,uid=ucurrent,uname=uname)
+
+        return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
+                               liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=getCurrentUserId()
+                               ,uname=uname,oname=oname,tags=tags)
 
 
 # begin photo uploading code
@@ -276,7 +278,7 @@ def photo(pid):
 @app.route('/upload/<aid>', methods=['GET', 'POST'])
 @flask_login.login_required
 def upload_file(aid):
-    uname = getUserFname(flask_login.current_user.id)
+    uname = getUserFname()
     uid = getUserIdFrom(flask_login.current_user.id)
     if request.method == 'POST':
         imgfile = request.files['photo']
@@ -345,7 +347,7 @@ def search():
                     print(retPhotos)
             photolist=getPhotoFromList(retPhotos)
 
-            return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId())
+            return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId())
 
         elif (type == "C"):
             cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
