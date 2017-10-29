@@ -216,7 +216,6 @@ def isEmailUnique(email):
 
 #profile page
 @app.route('/profile/<uid>')
-@flask_login.login_required
 def findu(uid):
     cursor = conn.cursor()
     cursor.execute("select fname from users where uid='{0}'".format(uid))
@@ -224,7 +223,9 @@ def findu(uid):
     cursor.execute("select * from albums where uid='{0}'".format(uid))
     albums=cursor.fetchall()
     print(albums)
-    return render_template('MyProfile.html',message="Login success!",uname=name,uid=uid,albums=albums)
+
+    return render_template('MyProfile.html',message=name+"'s mainpage",uname=getUserFname(),
+                           uid=getCurrentUserId(),albums=albums,profid=uid)
 
 #album page
 @app.route('/album/<aid>',methods=['GET','POST'])
