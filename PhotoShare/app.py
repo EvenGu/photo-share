@@ -241,8 +241,10 @@ def album(aid):
         name=cursor.fetchone()
         fname=name[0]
         aname=name[1]
+        cursor.execute("select count(pid) from photos where aid='{0}' GROUP BY aid".format(aid))
+        pnum=cursor.fetchone()[0]
         return render_template('Album.html',name=aid,auth=auth,photos=photos,
-                               aname=aname,uname=fname,uid=ucurrent)
+                               aname=aname,uname=fname,uid=ucurrent,pnum=pnum)
 #    if request.method=='POST':
 
 
