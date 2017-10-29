@@ -353,14 +353,14 @@ def search():
                     retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
                     print(retPhotos)
             photolist=getPhotoFromList(retPhotos)
-            return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId())
+            return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId(),type=type,key=key)
 
         elif (type == "C"):
             cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
             retPhotos = cursor.fetchall()
             print(retPhotos)
             photolist=getPhotoFromList(retPhotos)
-            return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId())
+            return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(),type=type,key=key)
 
 
         elif(type=="U"):
