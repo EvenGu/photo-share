@@ -235,9 +235,8 @@ def album(aid):
         cursor.execute("select * from albums where aid='{0}' and uid='{0}'".format(aid,ucurrent))
         if cursor.fetchall() is None : auth=False
         else : auth=True
-        cursor.execute("select *, COUNT(*) from photos where aid='{0}'".format(aid))
+        cursor.execute("select * from photos where aid='{0}'".format(aid))
         photos=cursor.fetchall()
-        #count = photos[][4]
         cursor.execute("select fname,aname from albums, users where users.uid=albums.uid and aid='{0}'".format(aid))
         name=cursor.fetchone()
         fname=name[0]
@@ -254,8 +253,9 @@ def photo(pid):
     if request.method=='GET':
         cursor=conn.cursor()
         cursor.execute("select count(*) from likephoto where pid='{0}'".format(pid))
-        pl=cursor.fetchone()[0] #could be none
-        cursor.execute("select * from comments where pid='{0}'".format(pid))
+        pl=cursor.fetchone()[0]
+        if pl is None: pl=0#could be none
+        cursor.execute("select c.*,u.fname from comments c,users u where c.pid='{0}' and u.uid=c.uid".format(pid))
         comm=cursor.fetchall() #could be none
         cursor.execute("select * from tags where pid='{0}'".format(pid))
         tags = cursor.fetchall() #could be none
@@ -269,8 +269,6 @@ def photo(pid):
         owner=cursor.fetchone()
         oid=owner[1]
         oname=owner[0]
-        print(tags)
-
         return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
                                liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=int(getCurrentUserId())
                                ,uname=uname,oname=oname,tags=tags,oid=int(oid))
@@ -396,8 +394,9 @@ def AddComment(pid):
     uid=getCurrentUserId()
     comt=request.values.get('addComment')
     cursor=conn.cursor()
-    cursor.execute("insert into comments(uid,comt,pid) values('{0}','{1}','{2}')".format(uid,comt,pid))
+    cursor.execute("insert into comments(uid,text,pid) values('{0}','{1}','{2}')".format(uid,comt,pid))
     conn.commit()
+
     return flask.redirect(flask.url_for('photo', pid=pid))
 
 @app.route('/friend/<uid>',methods=['GET'])

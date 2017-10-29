@@ -64,7 +64,7 @@ CREATE TABLE isFriend(
 
 CREATE TABLE Comments(
    cid  INTEGER NOT NULL AUTO_INCREMENT,
-   cdate  TIMESTAMP NOT NULL,
+   cdate  TIMESTAMP DEFAULT current_timestamp,
    text  VARCHAR(255),
    pid  INTEGER NOT NULL,
    uid  INTEGER NOT NULL, 
@@ -83,7 +83,7 @@ CREATE TABLE likePhoto(
    	   ON DELETE CASCADE
    );
 
-INSERT INTO Users(fname,lname,password) VALUES ('guest','guest','password');
+INSERT INTO Users(uid,fname,lname,password) VALUES ('-1','guest','guest','password');
 /* for unregistered users */
 INSERT INTO Users(fname,lname,email,password) VALUES ('test','test','yiweng@bu.edu','123456');
 /* test users test*/

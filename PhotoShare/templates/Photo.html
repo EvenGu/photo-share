@@ -88,7 +88,7 @@ as well as the containing album and the owner
     <div class="field-wrap">
     <h3>Comments</h3>
 	{% if uid!=oid %}
-        <form class="Comments" method="post" action="/photo">
+        <form class="Comments" method="post" action="/comment/{{ photo[0] }}">
             <label for="addComment">Your Comment</label>
             <input type="text" required name="addComment"/>
             <input type="submit" name="submit" value="Submit">
@@ -101,8 +101,8 @@ as well as the containing album and the owner
     <div class="field-wrap">
 	{% if comments %}
 		{% for comment in comments %}
-			{% if not guest %}
-				<a href="{{url_for('users')}}?uid={{comment[0]}}">{{comment[1]}}</a>
+			{% if comment[4]!=-1 %}
+				<a href="{{url_for('findu',uid=comment[4])}}">{{comment[5]}}</a>
 				:&nbsp;{{comment[2]}}
 			{% else %}
 				guest:&nbsp;{{comment[2]}}
