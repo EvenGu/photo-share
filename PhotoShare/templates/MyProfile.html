@@ -36,7 +36,7 @@ and recommendations(photo, user)
     <div class="container">
       <div class="row">
         <div class="col-md12">
-            <h4>{% if profname %} <span style="color:darkred">{{ profname }}</span>'s Mainpage{% endif %}</h4>
+            <h3>{% if profname %} <span style="color:darkred">{{ profname }}</span>'s Mainpage{% endif %}</h3>
             {% if uid!=-1 and uid!=profid %}
                 <form class="makefriends" method="GET" action="/friend/{{ profid }}">
                     {% if not friends %}
@@ -87,7 +87,7 @@ and recommendations(photo, user)
     <div class="col-xs-7 text-center">
         <!---Album--------->
         <div class="field-wrap">
-        <h3><span style="color:darkred;">{{ profname }}</span>'s Albums</h3>
+        <h4><span style="color:darkred;">{{ profname }}</span>'s Albums</h4>
         <!---Create album--------->
         {% if uname !='' and profid==uid %} <!---if auth--->
     	<div class="row text-center">
@@ -118,7 +118,7 @@ and recommendations(photo, user)
     <div class="col-xs-5 text-left">
         <!---my friends list--->
         <div class="field-wrap">
-            <h3><span style="color:darkred;">{{ profname }}</span>'s Friends</h3>
+            <h4><span style="color:darkred;">{{ profname }}</span>'s Friends</h4>
         </div>
         <div class="field-wrap" style="height: 200px;overflow-y: scroll">
             <ul>
@@ -137,39 +137,48 @@ and recommendations(photo, user)
 <!--- recommendations --->
 {% if uid==profid %}
 <section>
-<div class="jumbotron text-center"">
+<div class="jumbotron text-center">
   <div class="container">
-     <div class="row">
+     <div class="col-xs-7 text-center">
         <div class="field-wrap">
-           <h3>Photo You May Like</h3>
+           <h4>Photo You May Like</h4>
+        </div>
+        <div class="field-wrap" style="height: 200px;overflow-y: scroll">
            <table>
-           <tr>
-              {% for photo in recphotos %}
+           {% for photobatch in recphotos|batch(3) %}
+              <tr>
+              {% for photo in photobatch %}
               <td style="padding-left: 50px">
                  <a href="/photo/{{photo[0]}}">
                     <h3>{{photo[1]}}</h3>
-                    <img src="../static/upload/{{photo[2]}}" alt="" style="width:180px; height: 180px"><br/>
+                    <img src="../static/upload/{{photo[2]}}" alt="" style="width:150px; height: 150px"><br/>
                  </a>
               </td>
               {% endfor %}
-           </tr>
+              </tr>
+           {% endfor %}
            </table>
         </div>
      </div>
 
-     <div class="row">
+     <div class="col-xs-5 text-left">
         <div class="field-wrap">
-            <h3>People You May Like</h3>
+            <h4>People You May Like</h4>
+        </div>
+        <div class="field-wrap" style="height: 200px;overflow-y: scroll">
             <ul>
             {% for user in recfriends %}
-                <li class="list-inline">
+                <li>
                 <a href="{{url_for('findu',uid=user[0])}}">{{user[1]}}</a>
                 </li>
 		    {% endfor %}
             </ul>
         </div>
      </div>
+  </div>
+</div>
 
+<div id="foot"></div>
 </section>
 {% endif %}
 
