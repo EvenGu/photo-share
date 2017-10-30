@@ -225,12 +225,12 @@ def findu(uid):
     profid = int(uid)
     uid = int(getCurrentUserId())
     friends=getUsersFriend(uid,profid)
-    cursor.execute("select u.* from users u,isfriend i where u.uid=i.fuid and i.uid='{0}'".format(uid))
+    cursor.execute("select u.* from users u,isfriend i where u.uid=i.fuid and i.uid='{0}'".format(profid))
     users=cursor.fetchall()
     recfriends=getPeopleFromList(suggestFriends(uid))
     recphotos=getPhotoFromList(suggestPhotos(uid))
-    print (recfriends)
-    print (profid==uid)
+    print(getUserFname())
+    print(users)
     return render_template('MyProfile.html', uname=getUserFname(),uid=uid,albums=albums,
                            profname=profname, profid=profid,friends=friends,users=users,
                            recphotos=recphotos, recfriends=recfriends)
@@ -242,8 +242,11 @@ def album(aid):
         ucurrent=getCurrentUserId()
         cursor=conn.cursor()
         cursor.execute("select * from albums where aid='{0}' and uid='{0}'".format(aid,ucurrent))
-        if cursor.fetchall() is None : auth=False
-        else : auth=True
+        a=cursor.fetchone()
+        if a == None:
+            auth=False
+        else:
+            auth=True
         cursor.execute("select * from photos where aid='{0}'".format(aid))
         photos=cursor.fetchall()
         cursor.execute("select fname,aname from albums, users where users.uid=albums.uid and aid='{0}'".format(aid))
@@ -252,12 +255,10 @@ def album(aid):
         aname=name[1]
         cursor.execute("select count(pid) from photos where aid='{0}' GROUP BY aid".format(aid))
         pnum=cursor.fetchone()
-        print(pnum)
         if pnum is None: pnum=0
         else : pnum=pnum[0]
-        print(pnum)
         return render_template('Album.html',name=aid,auth=auth,photos=photos,
-                               aname=aname,uname=fname,uid=ucurrent,pnum=pnum)
+                               aname=aname,uname=fname,uid=ucurrent,pnum=pnum,cname=getUserFname())
 #    if request.method=='POST':
 
 
