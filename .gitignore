@@ -3,3 +3,4 @@
 *.xml
 
 PhotoShare/static/.DS_Store
+*.jpeg
