@@ -40,10 +40,10 @@ and recommendations(photo, user)
             {% if uid!=-1 and uid!=profid %}
                 <form class="makefriends" method="GET" action="/friend/{{ profid }}">
                     {% if not friends %}
-                        <button id="makefriends" type="submit"><img style="width:20%;height:20%">make friends</button>
+                        <button id="makefriends" type="submit">make friends</button>
                         <span style="font-weight: 900">{{ liken }}</span>
                     {% else %}
-                        <button id="makefriends" type="submit"><img style="width:20%;height:20%">cancel friends</button>
+                        <button id="makefriends" type="submit">cancel friends</button>
                         <span style="font-weight: 400">{{ liken }}</span>
                     {% endif %}
                 </form>
@@ -82,22 +82,25 @@ and recommendations(photo, user)
 </section>
 
 <section>
-<div class="jumbotron" style="background-color: transparent; min-height: 300px">
-
+<div class="jumbotron" style="background-color: transparent; padding-top:0px; min-height: 320px">
+    <div class="container">
     <div class="col-xs-7 text-center">
         <!---Album--------->
+        <div class="field-wrap">
         <h3><span style="color:darkred;">{{ profname }}</span>'s Albums</h3>
         <!---Create album--------->
         {% if uname !='' and profid==uid %} <!---if auth--->
-    	<div class="row">
+    	<div class="row text-center">
             <form class="createAlbum" method="POST" action="/createalbum/{{ profid }}" >
                 <input type="text" name="createalbum" required placeholder="name for new album">
                 <button type="submit" name="createalbum" class="btn btn-primary btn-sm">Create a new album</button>
             </form>
       	</div>
         {% endif %}
+        </div>
+
         <!---myAlbums--------->
-        <div class="row">
+        <div class="row text-center" style="height: 200px;overflow-y: scroll">
             {% if albums %}
 		    <ul>
 			{% for album in albums %}
@@ -115,7 +118,9 @@ and recommendations(photo, user)
     <div class="col-xs-5 text-left">
         <!---my friends list--->
         <div class="field-wrap">
-        <h3><span style="color:darkred;">{{ profname }}</span>'s Friends</h3>
+            <h3><span style="color:darkred;">{{ profname }}</span>'s Friends</h3>
+        </div>
+        <div class="field-wrap" style="height: 200px;overflow-y: scroll">
             <ul>
                 <li>{% for user in users %}
                     <a href="/profile/{{ user[0] }}">
@@ -125,14 +130,14 @@ and recommendations(photo, user)
             </ul>
         </div>
     </div>
-  </div>
-
+    </div>
+</div>
 </section>
 
 <!--- recommendations --->
 {% if uid==profid %}
 <section>
-<div class="jumbotron text-center">
+<div class="jumbotron text-center"">
   <div class="container">
      <div class="row">
         <div class="field-wrap">
