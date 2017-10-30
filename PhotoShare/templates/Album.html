@@ -24,7 +24,7 @@ Album displays all the containing photos and the owner
             <li class="navbar-right"><a class="navbar-default" href="/Login">Login</a></li>
           {% else %}
             <li class="navbar-right"><a class="navbar-default" href="/Logout">Logout</a></li>
-            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ uname }}</a></li>
+            <li class="navbar-right"><a class="navbar-default" href="/profile/{{ uid }}">Hello {{ cname }}</a></li>
           {% endif %}
       </ul> 
 	</div>
@@ -39,8 +39,10 @@ Album displays all the containing photos and the owner
 		        <h2>{{aname}}</h2>
             </div>
             <div class="col-xs-12 text-center">
+            {% if auth %}
                 <a href="/upload/{{name}}">Upload your photo</a>
                 {% if message %}<h3>{{ message }}</h3>{% endif %}
+            {% endif %}
             </div>
         </div>
     </div>
@@ -60,8 +62,6 @@ Album displays all the containing photos and the owner
             </tr>
         </table>
     </div>
-
-    <div id="photoTable">ttttttttttttttttttt</div>
 
     <script>
 
