@@ -92,7 +92,7 @@ and recommendations(photo, user)
         {% if uname !='' and profid==uid %} <!---if auth--->
     	<div class="row text-center">
             <form class="createAlbum" method="POST" action="/createalbum/{{ profid }}" >
-                <input type="text" name="createalbum" required placeholder="name for new album">
+                <input type="text" name="createalbum" placeholder="name for new album">
                 <button type="submit" name="createalbum" class="btn btn-primary btn-sm">Create a new album</button>
             </form>
       	</div>
