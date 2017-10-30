@@ -519,7 +519,8 @@ def suggestPhotos(uid):
                    "where b.uid='{0}' and a.aid=b.aid and c.pid=a.pid) tn "
                    "where tags.tname in (tagn) "
                    "group by pid) t2 "
-                   "where t1.p1=t2.p2 "
+                   "where t1.p1=t2.p2 and "
+                   "not exists( select * from photos p,albums al where p.pid=p1 and p.aid=al.aid and al.uid='{0}')"
                    "order by p1,cp2/cp1 desc".format(uid))
     return cursor.fetchall()
 
