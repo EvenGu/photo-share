@@ -84,6 +84,23 @@ CREATE TABLE likePhoto(
    	   ON DELETE CASCADE
    );
 
+create view contribution as select up,cc,cp from
+   (select uid as up, ifnull(count(pid),0) as cp from
+      (select u.uid,p.pid from photos p RIGHT JOIN albums a ON a.aid = p.aid right join users u on u.uid=a.uid) b
+      GROUP BY uid) a1,
+   (select uid as uc,ifnull(count(cid),0) as cc from
+      (select u.uid,c.cid from comments c RIGHT JOIN users u ON c.uid = u.uid) b group by uid) b1
+   where uc=up and uc<>-1
+   order by cc+cp desc;
+
+
+
+create view tagcount as
+SELECT tname,count(tname)
+   from Tags
+   group by tname;
+
+
 INSERT INTO Users(uid,fname,lname,password) VALUES ('-1','guest','guest','password');
 /* for unregistered users */
 INSERT INTO Users(fname,lname,email,password) VALUES ('test','test','yiweng@bu.edu','123456');

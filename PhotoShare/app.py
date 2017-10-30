@@ -373,7 +373,7 @@ def search():
 
         elif (type == "C"):
             type="comments";
-            cursor.execute("select pid from comments where text like '{0}'".format('%'+key+'%'))
+            cursor.execute("select distinct pid from comments where text like '{0}'".format('%'+key+'%'))
             retPhotos = cursor.fetchall()
             print(retPhotos)
             photolist=getPhotoFromList(retPhotos)
@@ -523,19 +523,24 @@ def suggestPhotos(uid):
                    "not exists( select * from photos p,albums al where p.pid=p1 and p.aid=al.aid and al.uid='{0}')"
                    "order by p1,cp2/cp1 desc".format(uid))
     return cursor.fetchall()
-
+'''
 #contribution function
 def contribution():
     cursor=conn.cursor()
-    cursor.execute("create view contribution as select up,cc+cp as con from"
-                   "(select uid as up, count(pid) as cp from photos, users, albums "
+    cursor.execute("create view contribution as select up,cc,cp from"
+                   "(select users.uid as up, count(pid) as cp from photos, users, albums "
                    "where albums.aid=photos.aid and users.uid=albums.uid "
-                   "group by uid),"
+                   "group by users.uid) a,"
                    "(select uid as uc, count(cid) as cc from comments "
-                   "group by uid) "
+                   "group by uid) b "
                    "where uc=up "
-                   "order by con desc")
+                   "order by cc+cp desc")
     return "done"
+
+def popularTag():
+    cursor=conn.cursor()
+    cursor.execute()
+'''
 
 
 def getFriendsList(uid):
@@ -578,4 +583,5 @@ def hello():
 if __name__ == "__main__":
     # this is invoked when in the shell  you run
     # $ python app.py
+#    contribution()
     app.run(port=5000, debug=True)
