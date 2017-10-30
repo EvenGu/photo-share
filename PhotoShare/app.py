@@ -229,7 +229,7 @@ def findu(uid):
     users=cursor.fetchall()
     recfriends=getPeopleFromList(suggestFriends(uid))
     recphotos=getPhotoFromList(suggestPhotos(uid))
-    print(getUserFname())
+    print(suggestFriends(uid))
     print(users)
     return render_template('MyProfile.html', uname=getUserFname(),uid=uid,albums=albums,
                            profname=profname, profid=profid,friends=friends,users=users,
@@ -277,7 +277,8 @@ def photo(pid):
         photo=cursor.fetchone()
         cursor.execute("select aname from Albums a,photos p where p.pid='{0}' and a.aid=p.aid".format(pid))
         aname=cursor.fetchone()[0]
-        cursor.execute("select u.fname,u.uid from users u,photos p,albums a where p.pid='{0}' and u.uid=a.uid and a.aid=p.aid".format(pid))
+        cursor.execute("select u.fname,u.uid from users u,photos p,albums a "
+                       "where p.pid='{0}' and u.uid=a.uid and a.aid=p.aid".format(pid))
         owner=cursor.fetchone()
         oid=owner[1]
         oname=owner[0]
@@ -503,7 +504,7 @@ def likechange(pid):
 
 def suggestFriends(uid):
     cursor=conn.cursor()
-    cursor.execute("select c1.u1 from isfriend i,"
+    cursor.execute("select c1.u1 from"
                    "(select uid as u1,count(uid)as u1c1 from isfriend group by uid) c1,"
                    "(select find3.u2,count(find3.u2)as u1c from isfriend a1, isfriend b1,"
                    "(select c.uid as u2 from isfriend a, isfriend b, isfriend c "
