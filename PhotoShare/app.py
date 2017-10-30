@@ -259,10 +259,6 @@ def album(aid):
         else : pnum=pnum[0]
         return render_template('Album.html',name=aid,auth=auth,photos=photos,
                                aname=aname,uname=fname,uid=ucurrent,pnum=pnum,cname=getUserFname())
-#    if request.method=='POST':
-
-
-
 #photo page
 @app.route('/photo/<pid>', methods=['GET','POST'])
 def photo(pid):
@@ -288,7 +284,6 @@ def photo(pid):
         return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
                                liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=int(getCurrentUserId())
                                ,uname=uname,oname=oname,tags=tags,oid=int(oid))
-
 
 # begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
@@ -409,7 +404,8 @@ def AddTags(pid):
 @app.route("/createalbum/<uid>",methods=['POST'])
 def AddAlbum(uid):
     an=request.values.get('createalbum')
-    if an is None: aname="undefined"
+    print('a',an)
+    if an=='': aname="untitled"
     else: aname=an
     cursor=conn.cursor()
     cursor.execute("insert into albums(uid,aname) values ('{0}','{1}')".format(uid,aname))
@@ -507,13 +503,14 @@ def likechange(pid):
 
 def suggestFriends(uid):
     cursor=conn.cursor()
-    cursor.execute("select c1.u1 from"
+    cursor.execute("select c1.u1 from isfriend i,"
                    "(select uid as u1,count(uid)as u1c1 from isfriend group by uid) c1,"
                    "(select find3.u2,count(find3.u2)as u1c from isfriend a1, isfriend b1,"
                    "(select c.uid as u2 from isfriend a, isfriend b, isfriend c "
                    "where a.uid='{0}' and b.uid=a.fuid and b.fuid=c.uid and c.uid<>'{0}') find3 "
                    "where a1.uid=find3.u2 and b1.uid=a1.fuid and b1.fuid='{0}' group by find3.u2) c2 "
-                   "where c1.u1=c2.u2 order by c2.u1c/c1.u1c1 DESC".format(uid))
+                   "where c1.u1=c2.u2 and not exists (select * from isfriend where uid='{0}' and fuid=c1.u1)"
+                   " order by c2.u1c/c1.u1c1 DESC".format(uid))
     return cursor.fetchall()
 
 def suggestPhotos(uid):
@@ -587,4 +584,3 @@ if __name__ == "__main__":
     # this is invoked when in the shell  you run
     # $ python app.py
     app.run(port=5000, debug=True)
-
