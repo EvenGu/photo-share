@@ -229,7 +229,7 @@ def findu(uid):
     users=cursor.fetchall()
     recfriends=getPeopleFromList(suggestFriends(uid))
     recphotos=getPhotoFromList(suggestPhotos(uid))
-    print(getUserFname())
+    print(suggestFriends(uid))
     print(users)
     return render_template('MyProfile.html', uname=getUserFname(),uid=uid,albums=albums,
                            profname=profname, profid=profid,friends=friends,users=users,
@@ -259,10 +259,6 @@ def album(aid):
         else : pnum=pnum[0]
         return render_template('Album.html',name=aid,auth=auth,photos=photos,
                                aname=aname,uname=fname,uid=ucurrent,pnum=pnum,cname=getUserFname())
-#    if request.method=='POST':
-
-
-
 #photo page
 @app.route('/photo/<pid>', methods=['GET','POST'])
 def photo(pid):
@@ -281,14 +277,14 @@ def photo(pid):
         photo=cursor.fetchone()
         cursor.execute("select aname from Albums a,photos p where p.pid='{0}' and a.aid=p.aid".format(pid))
         aname=cursor.fetchone()[0]
-        cursor.execute("select u.fname,u.uid from users u,photos p,albums a where p.pid='{0}' and u.uid=a.uid and a.aid=p.aid".format(pid))
+        cursor.execute("select u.fname,u.uid from users u,photos p,albums a "
+                       "where p.pid='{0}' and u.uid=a.uid and a.aid=p.aid".format(pid))
         owner=cursor.fetchone()
         oid=owner[1]
         oname=owner[0]
         return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
                                liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=int(getCurrentUserId())
                                ,uname=uname,oname=oname,tags=tags,oid=int(oid))
-
 
 # begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
@@ -409,7 +405,8 @@ def AddTags(pid):
 @app.route("/createalbum/<uid>",methods=['POST'])
 def AddAlbum(uid):
     an=request.values.get('createalbum')
-    if an is None: aname="undefined"
+    print('a',an)
+    if an=='': aname="untitled"
     else: aname=an
     cursor=conn.cursor()
     cursor.execute("insert into albums(uid,aname) values ('{0}','{1}')".format(uid,aname))
@@ -513,7 +510,8 @@ def suggestFriends(uid):
                    "(select c.uid as u2 from isfriend a, isfriend b, isfriend c "
                    "where a.uid='{0}' and b.uid=a.fuid and b.fuid=c.uid and c.uid<>'{0}') find3 "
                    "where a1.uid=find3.u2 and b1.uid=a1.fuid and b1.fuid='{0}' group by find3.u2) c2 "
-                   "where c1.u1=c2.u2 order by c2.u1c/c1.u1c1 DESC".format(uid))
+                   "where c1.u1=c2.u2 and not exists (select * from isfriend where uid='{0}' and fuid=c1.u1)"
+                   " order by c2.u1c/c1.u1c1 DESC".format(uid))
     return cursor.fetchall()
 
 def suggestPhotos(uid):
@@ -587,4 +585,3 @@ if __name__ == "__main__":
     # this is invoked when in the shell  you run
     # $ python app.py
     app.run(port=5000, debug=True)
-
