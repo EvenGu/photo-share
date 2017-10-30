@@ -241,7 +241,8 @@ def album(aid):
     if request.method=='GET':
         ucurrent=getCurrentUserId()
         cursor=conn.cursor()
-        cursor.execute("select * from albums where aid='{0}' and uid='{0}'".format(aid,ucurrent))
+        print(aid,ucurrent)
+        cursor.execute("select * from albums where aid='{0}' and uid='{1}'".format(aid,ucurrent))
         a=cursor.fetchone()
         if a == None:
             auth=False
@@ -405,7 +406,6 @@ def AddTags(pid):
 @app.route("/createalbum/<uid>",methods=['POST'])
 def AddAlbum(uid):
     an=request.values.get('createalbum')
-    print('a',an)
     if an=='': aname="untitled"
     else: aname=an
     cursor=conn.cursor()
@@ -429,8 +429,6 @@ def AddComment(pid):
 def MakeFriends(uid):
     cursor=conn.cursor()
     ucurrent=getCurrentUserId()
-    print(uid,ucurrent)
-    print(getUsersFriend(uid,ucurrent))
     if getUsersFriend(uid, ucurrent):
         cursor.execute("delete from isfriend where uid='{0}' and fuid='{1}'".format(uid, ucurrent))
         cursor.execute("delete from isfriend where uid='{0}' and fuid='{1}'".format(ucurrent, uid))
@@ -448,9 +446,7 @@ def delalbum(aid):
     uid=getCurrentUserId()
     cursor.execute("select * from albums where aid='{0}' and uid='{1}'".format(aid,uid))
     c=cursor.fetchone()
-    print (c)
     if c is not None:
-        print(aid)
         cursor.execute("delete from albums where aid='{0}'".format(aid))
         conn.commit()
         return flask.redirect(flask.url_for('findu',uid=uid))
@@ -573,10 +569,7 @@ def getPeopleFromList(list):
 # default page
 @app.route("/", methods=['GET','POST'])
 def hello():
-    print (flask_login.current_user.get_id())
     id=getCurrentUserId()
-    print (id)
-
     return render_template('Hello.html', message='Welcome to PhotoShare',
                            uid=id,uname=getUserFname())
 
