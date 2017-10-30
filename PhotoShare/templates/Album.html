@@ -49,8 +49,9 @@ Album displays all the containing photos and the owner
 
     <div>
         <table>
+            {% for photobatch in photos %}
             <tr>
-                {% for photo in photos %}
+                {% for photo in photobatch|batch(4) %}
                 <td style="padding-left: 50px">
                     <a href="/photo/{{photo[0]}}">
                         <h3>{{photo[1]}}</h3>
@@ -60,9 +61,11 @@ Album displays all the containing photos and the owner
                 </td>
                 {% endfor %}
             </tr>
+            {% endfor %}
         </table>
     </div>
 
+<!---
     <script>
 
     var cellsInRow = 4;
@@ -98,7 +101,7 @@ Album displays all the containing photos and the owner
     window.onload=drawTable();
 
     </script>
-
+--->
 
 </section>
 </body>
