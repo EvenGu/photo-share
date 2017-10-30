@@ -369,7 +369,7 @@ def search():
                     retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
                     print(retPhotos)
             photolist=getPhotoFromList(retPhotos)
-            return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId(),type=type,key=key)
+            return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId(),type=type,key='"'+key+'"')
 
         elif (type == "C"):
             type="comments";
@@ -377,16 +377,16 @@ def search():
             retPhotos = cursor.fetchall()
             print(retPhotos)
             photolist=getPhotoFromList(retPhotos)
-            return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(),type=type,key=key)
+            return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(),type=type,key='"'+key+'"')
 
 
         elif(type=="U"):
             type = "users";
-            cursor.execute("select * from users where fname like '{0}' OR lname like '{0}'".format('%'+key+'%'))
+            cursor.execute("select * from users where uid<>-1 and (fname like '{0}' OR lname like '{0}')".format('%'+key+'%'))
             retUsers = cursor.fetchall()
             print(retUsers)
             return render_template('searchUser.html', users=retUsers, uname=getUserFname(),
-                                   uid=getCurrentUserId(),key=key,type=type)
+                                   uid=getCurrentUserId(),key='"'+key+'"',type=type)
     
 
 #add tags
