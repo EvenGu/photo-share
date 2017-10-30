@@ -373,7 +373,7 @@ def search():
 
         elif (type == "C"):
             type="comments";
-            cursor.execute("select * from comments where text like '{0}'".format('%'+key+'%'))
+            cursor.execute("select pid from comments where text like '{0}'".format('%'+key+'%'))
             retPhotos = cursor.fetchall()
             print(retPhotos)
             photolist=getPhotoFromList(retPhotos)
