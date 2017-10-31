@@ -105,7 +105,6 @@ as well as the containing album and the owner
 
     <div class="field-wrap" style="text-align: left; padding-top: 5%">
 	{% if comments %}
-
 		{% for comment in comments %}
             <div class="field-wrap" style="text-align:left">
 			{% if comment[4]!=-1 %}
@@ -125,9 +124,8 @@ as well as the containing album and the owner
                 <h6><a href="{{url_for('delcom',cid=comment[0])}}">delete this comment</a></h6>
                 {% endif %}
 			{% endif %}
-			</li>
+            </div>
 		{% endfor %}
-        </ul>
 	{% endif %}
     </div>
 
