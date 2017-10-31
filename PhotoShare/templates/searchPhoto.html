@@ -41,26 +41,35 @@ Displays all the containing photos and the owner
           <h1>Hello {{uname}}</h1>
         {% endif %}
         <h2>You searched <span style="color:darkred">{{ key }}</span> in <span style="color:darkblue">{{ type }}</span></h2>
-        <h3>Here is your search result</h3>
-        </div>
-      </div>
-      <div class="row">
-	      <div class="field-wrap">
-              <ul>
-                  <li>{% for photo in photos %}
-                      <a href="/photo/{{photo[0]}}">
-                          <h3>{{photo[1]}}</h3>
-                          <img src="../static/upload/{{photo[2]}}" alt=""><br/>
-                      </a>
-                  {% endfor %}</li>
-              </ul>
-          </div>
         </div>
       </div>
     </div>
   </div>
-</section>
 
+  <div class="jumbotron text-center" style="background-color: transparent">
+    <div class="container">
+      <div class="row">
+      <h3>Here is your search result</h3>
+        <table align="center">
+            {% for photobatch in photos|batch(4) %}
+            <tr>
+                {% for photo in photobatch %}
+                <td style="padding-left: 10%;">
+                    <a href="/photo/{{photo[0]}}">
+                        <h3>{{photo[1]}}</h3>
+                        <img src="../static/upload/{{photo[2]}}" alt="" style="width:180px; height:150px"><br/>
+                    </a>
+				    <a href="/deletep/{{photo[0]}}">Delete photo</a>
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 </body>
 
