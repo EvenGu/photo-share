@@ -68,45 +68,63 @@ as well as the containing album and the owner
       </div>
     </div>
 
-    <div class="col-xs-6">
+    <div class="col-xs-5" style="margin-left: 5%">
 	<h3>Tags</h3>
-    <div class="table-bordered">
-		{% for tag in tags %}
-            <button class="btn-sm">{{tag[1]}}</button>
+    <table>
+		{% for tagbatch in tags|batch(5) %}
+        <tr>
+            {% for tag in tagbatch %}
+            <td>
+                <button class="btn-sm">{{tag[1]}}</button>
+            </td>
+            {% endfor %}
+        </tr>
 		{% endfor %}
-    </div>
+    </table>
+
+    <div class="field-wrap" style="text-align: left; padding-top: 5%">
     {% if uid==oid %}
         <form class="Tags" method="POST" action="/Ctag/{{ photo[0] }}">
         <input type="text" name="crtTag" placeholder="Create a New Tag"/>
         <button type="submit" name="crtTag" value="Submit">Submit</button>
-    </form>
+        </form>
     {% endif %}
+    </div>
 
     <hr>
 
-    <h3>Comments</h3>
+    <h3 style="margin-top: 10%">Comments</h3>
     {% if uid!=oid %}
         <form class="Comments" method="POST" action="/comment/{{ photo[0] }}">
-            <input type="text" class="commBox" name="addComment" placeholder="Leave Your Comment"/>
+            <textarea cols="60" rows="5" name="addComment" placeholder="Leave Your Comment"></textarea>
+            <br>
             <button type="submit" name="addCmm" value="Submit">Submit</button>
         </form>
     {% endif %}
 
-	{% if comments != '' %}
-        <ul>
+    <div class="field-wrap" style="text-align: left; padding-top: 5%">
+	{% if comments %}
+
 		{% for comment in comments %}
-            <li id="comments">
+            <div class="field-wrap" style="text-align:left">
 			{% if comment[4]!=-1 %}
-				<a href="{{url_for('findu',uid=comment[4])}}">{{comment[5]}}</a>:<br>{{comment[2]}}
+                <h5 style="color: darkred"><a href="{{url_for('findu',uid=comment[4])}}">{{comment[5]}}</a>:</h5>
+                <p>{{comment[2]}}</p>
                 {% if comment[4]==uid %}
                 <a href="{{url_for('delcom',cid=comment[0])}}">delete your comment</a>
-                    {% endif %}
+                {% elif comment[4]==oid %}
+                <a href="{{url_for('delcom',cid=comment[0])}}">delete this comment</a>
+                {% endif %}
 			{% else %}
-				guest:<br>{{comment[2]}}
+				<h5 style="color: darkred">guest:</h5>
+                <p>{{comment[2]}}</p>
+                {% if comment[4]==oid %}
+                <a href="{{url_for('delcom',cid=comment[0])}}">delete this comment</a>
+                {% endif %}
 			{% endif %}
-			</li>
+			</div>
 		{% endfor %}
-        </ul>
+
 	{% endif %}
     </div>
 
