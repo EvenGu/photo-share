@@ -77,7 +77,9 @@ as well as the containing album and the owner
         <tr>
             {% for tag in tagbatch %}
             <td>
-                <button class="btn-sm">{{tag[1]}}</button>
+                <form class="Tags" method="POST" action="/searcht/{{ tag[1]}}">
+                <button class="btn-sm" >{{tag[1]}}</button>
+                </form>
             </td>
             {% endfor %}
         </tr>

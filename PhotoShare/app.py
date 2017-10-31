@@ -428,11 +428,10 @@ def search():
 @app.route("/searcht/<tag>", methods=['POST'])
 def searchTag(tag):
     cursor.execute("select distinct pid from Tags where tname='{0}'".format(tag))
-    photolist=getPhotoFromList(cursor.fetchone())
-    return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId(),type=type,key='"'+tag+'"')
-
-
-
+    a=cursor.fetchall()
+    print (a)
+    photolist=getPhotoFromList(a)
+    return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId(),type="tags",key='"'+tag+'"')
 
 #add tags
 @app.route("/Ctag/<pid>",methods=['POST'])
