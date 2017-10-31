@@ -367,7 +367,7 @@ def search():
                 type="tags";
                 retPhotos=[]
                 if key is not None :
-                    tags = key.split(",")
+                    tags = key.split(" ")
                     for tag in tags:
                         print(tag)
                         cursor.execute("select distinct pid from Tags where tname='{0}'".format(tag))
@@ -397,7 +397,7 @@ def search():
                 type = "tags";
                 retPhotos = []
                 if key is not None:
-                    tags = key.split(",")
+                    tags = key.split(" ")
                     for tag in tags:
                         print(tag)
                         cursor.execute("select distinct pid from Tags t,photos p,albums a"
@@ -438,7 +438,7 @@ def searchTag(tag):
 def AddTags(pid):
     cursor=conn.cursor()
     key=request.form['crtTag']
-    tags = key.split(",")
+    tags = key.split(" ")
     for tag in tags:
         cursor.execute("select * from Tags where tname='{0}'".format(tag))
         if cursor.fetchone() is None:
@@ -547,7 +547,6 @@ def likechange(pid):
         conn.commit()
     return flask.redirect(flask.url_for('photo', pid=pid))
 
-
 def suggestFriends(uid):
     cursor=conn.cursor()
     cursor.execute("select c1.u1 from"
@@ -573,24 +572,7 @@ def suggestPhotos(uid):
                    "not exists( select * from photos p,albums al where p.pid=p1 and p.aid=al.aid and al.uid='{0}')"
                    "order by p1,cp2/cp1 desc".format(uid))
     return cursor.fetchall()
-'''
-#contribution function
-def contribution():
-    cursor=conn.cursor()
-    cursor.execute("create view contribution as select up,cc,cp from"
-                   "(select users.uid as up, count(pid) as cp from photos, users, albums "
-                   "where albums.aid=photos.aid and users.uid=albums.uid "
-                   "group by users.uid) a,"
-                   "(select uid as uc, count(cid) as cc from comments "
-                   "group by uid) b "
-                   "where uc=up "
-                   "order by cc+cp desc")
-    return "done"
 
-def popularTag():
-    cursor=conn.cursor()
-    cursor.execute()
-'''
 
 @app.route('/global')
 def popular():
