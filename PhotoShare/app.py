@@ -375,7 +375,7 @@ def search():
                         print(retPhotos)
                 photolist=getPhotoFromList(retPhotos)
                 return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId()
-                                       ,uname=getUserFname(),type=type,key='"'+key+'"')
+                                       ,uname=getUserFname(),type=type,key='"'+key+'"',message="Here is your search result")
 
             elif (type == "C"):
                 type="comments";
@@ -384,7 +384,7 @@ def search():
                 print(retPhotos)
                 photolist=getPhotoFromList(retPhotos)
                 return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(),
-                                       uname=getUserFname(),type=type,key='"'+key+'"')
+                                       uname=getUserFname(),type=type,key='"'+key+'"',message="Here is your search result")
 
 
             elif(type=="U"):
@@ -393,7 +393,7 @@ def search():
                 retUsers = cursor.fetchall()
                 print(retUsers)
                 return render_template('searchUser.html', users=retUsers, uname=getUserFname(),
-                                       uid=getCurrentUserId(),key='"'+key+'"',type=type)
+                                       uid=getCurrentUserId(),key='"'+key+'"',type=type,message="Here is your search result")
         else:
             if (type == "T"):
                 type = "tags";
@@ -409,7 +409,7 @@ def search():
                         print(retPhotos)
                 photolist = getPhotoFromList(retPhotos)
                 return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(), type=type,
-                                       key='"' + key + '"',uname=getUserFname())
+                                       key='"' + key + '"',uname=getUserFname(),message="Here is your search result")
 
             elif (type == "C"):
                 type = "comments";
@@ -421,11 +421,11 @@ def search():
                 print(retPhotos)
                 photolist = getPhotoFromList(retPhotos)
                 return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(), type=type,
-                                       key='"' + key + '"',uname=getUserFname())
+                                       key='"' + key + '"',uname=getUserFname(),message="Here is your search result")
 
             elif (type == "U"):
-                return render_template('Hello.html', message='Search Ivalid',
-                                       uid=getCurrentUserId(), uname=getUserFname())
+                return render_template('searchPhoto.html',message='search invalid',
+                                       key='"' + key + '"',uname=getUserFname(),uid=getCurrentUserId(),type='users')
 
 # search by click tag
 @app.route("/searcht/<tag>", methods=['POST'])
