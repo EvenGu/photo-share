@@ -476,10 +476,12 @@ def delcom(cid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
     cursor.execute("select * from comments where cid='{0}' and uid='{1}'".format(cid,uid))
-    a=cursor.fetchone()[0]is not None
-    cursor.execute("select * from comments c,photos p where c.cid='{0}' c.pid=p.pid"
+    a=cursor.fetchone()is not None
+    print(a)
+    cursor.execute("select * from comments c,photos p where c.cid='{0}' and c.pid=p.pid "
                    "and p.aid in (select aid from albums where uid='{1}')".format(cid, uid))
-    b=cursor.fetchone()[0]is not None
+    b=cursor.fetchone()is not None
+    print(b)
     if a|b:
         cursor.execute("select pid from comments where cid='{0}'".format(cid))
         pid=cursor.fetchone()[0]

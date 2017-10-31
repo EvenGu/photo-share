@@ -116,6 +116,9 @@ as well as the containing album and the owner
                 {% endif %}
 			{% else %}
 				guest:<br>{{comment[2]}}
+                {% if uid==oid %}
+                <a href="{{url_for('delcom',cid=comment[0])}}">delete this comment</a>
+                {% endif %}
 			{% endif %}
 			</li>
 		{% endfor %}
