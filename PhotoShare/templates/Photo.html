@@ -71,7 +71,7 @@ as well as the containing album and the owner
 
     <div class="col-xs-5" style="margin-left: 5%">
 	<h3>Tags</h3>
-    <table>
+    <table align="left">
 		{% for tagbatch in tags|batch(5) %}
         <tr>
             {% for tag in tagbatch %}
@@ -91,7 +91,7 @@ as well as the containing album and the owner
         </form>
     {% endif %}
 
-    <hr>
+    <br><hr>
 
     <h3 style="margin-top: 10%">Comments</h3>
     {% if uid!=oid %}

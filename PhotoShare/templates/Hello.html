@@ -65,7 +65,10 @@
                 </div>
         		<button type="search" class="btn btn-primary btn-sm">Search</button>
                 {% if uid != -1 %}
-                    <button type="search" class="btn btn-primary btn-sm">Search My Photos</button>
+                    <div class="field-wrap" style="margin-bottom: 0px">
+                    <label for="mine">my photos only</label>
+                    <input type="checkbox" class="search-type" name="mine">
+                    </div>
                 {% endif %}
      		</form>	
       	</div>      	
