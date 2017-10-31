@@ -71,6 +71,7 @@ as well as the containing album and the owner
 
     <div class="col-xs-5" style="margin-left: 5%">
 	<h3>Tags</h3>
+    <div class="field-wrap" style="text-align: left; padding-top: 5%">
     <table align="left">
 		{% for tagbatch in tags|batch(5) %}
         <tr>
@@ -82,7 +83,7 @@ as well as the containing album and the owner
         </tr>
 		{% endfor %}
     </table>
-
+    </div>
     <div class="field-wrap" style="text-align: left; padding-top: 5%">
     {% if uid==oid %}
         <form class="Tags" method="POST" action="/Ctag/{{ photo[0] }}">
@@ -108,17 +109,20 @@ as well as the containing album and the owner
 		{% for comment in comments %}
             <div class="field-wrap" style="text-align:left">
 			{% if comment[4]!=-1 %}
-                <h5 style="color: darkred"><a href="{{url_for('findu',uid=comment[4])}}">{{comment[5]}}</a>:</h5>
-                <p>{{comment[2]}}</p>
+                <h5 style="color: darkred"><a href="{{url_for('findu',uid=comment[4])}}">{{comment[5]}}</a>
+                <span style="font-style: italic; color: darkgrey"> {{ comment[1] }}</span>:</h5>
+                <h6>{{comment[2]}}</h6>
                 {% if comment[4]==uid %}
-                <a href="{{url_for('delcom',cid=comment[0])}}">delete your comment</a>
+                <h6><a href="{{url_for('delcom',cid=comment[0])}}">delete your comment</a></h6>
                 {% elif uid==oid %}
-                <a href="{{url_for('delcom',cid=comment[0])}}">delete this comment</a>
+                <h6><a href="{{url_for('delcom',cid=comment[0])}}">delete this comment</a></h6>
                 {% endif %}
 			{% else %}
-				guest:<br>{{comment[2]}}
+                <h5 style="color: darkred">guest
+                <span style="font-style: italic; color: darkgrey"> {{ comment[1] }}</span>:</h5>
+                <h6>{{comment[2]}}</h6>
                 {% if uid==oid %}
-                <a href="{{url_for('delcom',cid=comment[0])}}">delete this comment</a>
+                <h6><a href="{{url_for('delcom',cid=comment[0])}}">delete this comment</a></h6>
                 {% endif %}
 			{% endif %}
 			</li>
