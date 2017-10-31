@@ -66,6 +66,22 @@ Global displays Users ordered DESC by their contribution
   </div>
 </section>
 
+<!--- popular tags --->
+<section>
+  <div class="container">
+      <div class="field-wrap" style=" text-align: center">
+        <h3>most popular tags</h3>
+            <ul>
+            {% for tag in tags %}
+                <td>
+                    <button class="btn-sm">{{tag[0]}}</button>
+                </td>
+		    {% endfor %}
+            </ul>
+      </div>
+  </div>
+</section>
+
 </body>
 </html>
 

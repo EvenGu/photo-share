@@ -93,8 +93,6 @@ create view contribution as select up,fname,cc,cp,cc+cp from Users,
    where uc=up and uc<>-1 and uc=uid
    order by cc+cp desc;
 
-
-
 create view tagcount as
 SELECT tname,count(tname) as ct
    from Tags
