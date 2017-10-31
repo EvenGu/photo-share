@@ -374,7 +374,8 @@ def search():
                         retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
                         print(retPhotos)
                 photolist=getPhotoFromList(retPhotos)
-                return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId(),type=type,key='"'+key+'"')
+                return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId()
+                                       ,uname=getUserFname(),type=type,key='"'+key+'"')
 
             elif (type == "C"):
                 type="comments";
@@ -382,7 +383,8 @@ def search():
                 retPhotos = cursor.fetchall()
                 print(retPhotos)
                 photolist=getPhotoFromList(retPhotos)
-                return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(),type=type,key='"'+key+'"')
+                return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(),
+                                       uname=getUserFname(),type=type,key='"'+key+'"')
 
 
             elif(type=="U"):
@@ -407,7 +409,7 @@ def search():
                         print(retPhotos)
                 photolist = getPhotoFromList(retPhotos)
                 return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(), type=type,
-                                       key='"' + key + '"')
+                                       key='"' + key + '"',uname=getUserFname())
 
             elif (type == "C"):
                 type = "comments";
@@ -419,10 +421,10 @@ def search():
                 print(retPhotos)
                 photolist = getPhotoFromList(retPhotos)
                 return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(), type=type,
-                                       key='"' + key + '"')
+                                       key='"' + key + '"',uname=getUserFname())
 
             elif (type == "U"):
-                return "unvalid!"
+                return "invalid!"
 
 # search by click tag
 @app.route("/searcht/<tag>", methods=['POST'])
