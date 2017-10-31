@@ -557,7 +557,7 @@ def popular():
     print ('a',popularu)
     cursor.execute("select * from tagcount")
     populart=cursor.fetchall()
-    return render_template("Global.html",uid=getCurrentUserId(),uname=getUserFname(),actusers=popularu)
+    return render_template("Global.html",uid=getCurrentUserId(),uname=getUserFname(),actusers=popularu,tags=populart)
 
 
 def getFriendsList(uid):
