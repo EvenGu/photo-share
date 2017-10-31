@@ -39,7 +39,7 @@
 \begin{document}
 \maketitle
 \section{The ER-Diagram}				
-\includegraphics[width=6in]{pa1.png} 
+\includegraphics[width=6in]{pa1.eps} 
 
 \section{The Schema}
 \begin{lstlisting}[frame=none]		 	% Start the code-block SQL
@@ -129,23 +129,30 @@ CREATE TABLE likePhoto(
    	   ON DELETE CASCADE
    );
 
-create view contribution as select up,fname,cc,cp,cc+cp from Users,
-   (select uid as up, ifnull(count(pid),0) as cp from
-      (select u.uid,p.pid from photos p RIGHT JOIN albums a ON a.aid = p.aid right join users u on u.uid=a.uid) b
-      GROUP BY uid) a1,
-   (select uid as uc,ifnull(count(cid),0) as cc from
-      (select u.uid,c.cid from comments c RIGHT JOIN users u ON c.uid = u.uid) b group by uid) b1
-   where uc=up and uc<>-1 and uc=uid
-   order by cc+cp desc;
+CREATE VIEW contribution AS AS 
+SELECT up,fname,cc,cp,cc+cp FROM Users,
+	(SELECT uid AS up, IFNULL(COUNT(pid),0) AS cp FROM
+		(SELECT u.uid,p.pid FROM photos p 
+		RIGHT JOIN albums a ON a.aid = p.aid 
+		RIGHT JOIN users u ON u.uid=a.uid) b
+	GROUP BY uid) a1,
+	(SELECT uid AS uc, IFNULL(cid),0) AS cc FROM
+		(SELECT u.uid,c.cid FROM comments c 
+		RIGHT JOIN users u ON c.uid = u.uid) b 
+	GROUP BY uid) b1
+WHERE uc=up AND uc<>-1 AND uc=uid
+ORDER BY cc+cp DESC;
+/* for viewing the users' contribution*/
 
-create view tagcount as
-SELECT tname,count(tname) as ct
-   from Tags
-   group by tname
-   ORDER BY ct desc;
+CREATE VIEW tagcount AS
+SELECT tname, COUNT(tname) AS ct
+FROM Tags
+GROUP BY tname
+ORDER BY ct DESC;
+/*for viewing the photos that tagged by a single tag*/
 
-
-INSERT INTO Users(uid,fname,lname,password) VALUES ('-1','guest','guest','password');
+INSERT INTO Users(uid,fname,lname,password) 
+VALUES ('-1','guest','guest','password');
 /* for unregistered users */
 
 \end{lstlisting}
@@ -154,5 +161,66 @@ INSERT INTO Users(uid,fname,lname,password) VALUES ('-1','guest','guest','passwo
 \section{The Constrains}
 The entity set \textbf{Album} has a key constraint in the relationship set \textbf{hasAlbum}.\\
 The entity set \textbf{Photos} has a key constraint in the relationship set \textbf{havePhoto}.
+
+\section{Achieved Function}
+
+All the pages:\\[0.1cm]
+1.Access to view the Popular page.\\
+2.Access to go back Home page.\\
+When logged out\\[0.1cm]
+1.Access to register.\\
+2.Access to Login.\\
+When logged in\\[0.1cm]
+1.Access to log out.\\
+2.Access to go to user's main page.\\[0.3cm]
+Home page:\\[0.1cm]
+Allowed to search photo by tag/comment or search user by name(first or last). If you are logged in, you are allowed to choose to Search your own photos using the same two methods.\\[0.3cm]
+User's main page:\\[0.1cm]
+1.Same searching functions as the Home page.\\
+2.Shows the owner's Albums and you can access by click.\\
+3.Shows the owner's Friends and you can access by click.\\
+If you are the Owner\\[0.1cm]
+1.Access to delete the Album.\\
+2.Show the users you may like.(recommending your friends' friends)\\
+3.Show the photos you may like.(recommending by tags you own for your photos)\\
+If you are not the Owner\\[0.1cm]
+Access to add/cancel the owner as your friend\\[0.3cm]
+Album page:\\[0.1cm]
+Show the photos in the Album.\\
+If your are the Owner\\[0.1cm]
+Access to upload photos to the Album or delete the photos.\\[0.3cm]
+Photo page:\\[0.1cm]
+1.Show the photo, the owner of the photo, the album the photo belongs to and it's caption.\\
+2.Show how many people like the photo.\\
+3.Show the tags of the photo. When tags are clicked, show the search result of photos with the tag you clicked\\
+4.Show others' Comments and access to leave comment.\\
+If logged in\\[0.1cm]
+1.Access to like the photo, and cancel your like after a second click.\\
+2.Access to delete the comment you leave.\\
+If it's your photo\\[0.1cm]
+1.Access to add tags.\\
+2.You are not permitted to leave comments but you can delete the comments of your photo.\\[0.3cm]
+Search result page:\\[0.1cm]
+Show the search result.\\[0.3cm]
+Popular page:\\[0.1cm]
+1.Show the active Users with the number of their comments, photos and contributions.\\
+2.Show the most popular tags.\\ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}  

@@ -57,7 +57,9 @@ Album displays all the containing photos and the owner
                         <h3>{{photo[1]}}</h3>
                         <img src="../static/upload/{{photo[2]}}" alt="" style="width:180px; height:150px"><br/>
                     </a>
-				    <a href="/deletep/{{photo[0]}}">Delete photo</a>
+				    {% if auth  %}
+                        <a href="/deletep/{{photo[0]}}">Delete photo</a>
+                    {% endif %}
                 </td>
                 {% endfor %}
             </tr>

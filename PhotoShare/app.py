@@ -371,7 +371,7 @@ def search():
                     for tag in tags:
                         print(tag)
                         cursor.execute("select distinct pid from Tags where tname='{0}'".format(tag))
-                        retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
+                        retPhotos = tuple(set(cursor.fetchall()).intersection(set(retPhotos)))
                         print(retPhotos)
                 photolist=getPhotoFromList(retPhotos)
                 return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId()
