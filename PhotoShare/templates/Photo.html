@@ -99,8 +99,10 @@ as well as the containing album and the owner
 			{% if comment[4]!=-1 %}
 				<a href="{{url_for('findu',uid=comment[4])}}">{{comment[5]}}</a>:<br>{{comment[2]}}
                 {% if comment[4]==uid %}
-                <a href="{{url_for('delcom',cid=comment[0])}}">delete your comment</a>
-                    {% endif %}
+                    <a href="{{url_for('delcom',cid=comment[0])}}">delete your comment</a>
+                {% elif comment[4]==oid %}
+                    <a href="{{url_for('delcom',cid=comment[0])}}">delete this comment</a>
+                {% endif %}
 			{% else %}
 				guest:<br>{{comment[2]}}
 			{% endif %}

@@ -46,13 +46,15 @@ Global displays Users ordered DESC by their contribution
 <!--- active Useres --->
 <section>
   <div class="container">
-      <div class="field-wrap" style="text-align: right">
+      <div class="field-wrap" style=" text-align: center">
         <h3>Active Users</h3>
             <ul>
             {% for user in actusers %}
                 <li>
                 <a href="{{url_for('findu',uid=user[0])}}">{{user[1]}}</a>
-                <p>Contribution: {{ score }}</p>
+                    <p>Comments:{{ user[2] }}</p>
+                    <p>Photos:{{ user[3] }}</p>
+                    <p>Contribution: {{ user[4] }}</p>
                 </li>
 		    {% endfor %}
             </ul>

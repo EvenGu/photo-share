@@ -542,6 +542,16 @@ def popularTag():
     cursor.execute()
 '''
 
+@app.route('/global')
+def popular():
+    cursor=conn.cursor()
+    cursor.execute("select * from contribution")
+    popularu =cursor.fetchall()
+    print ('a',popularu)
+    cursor.execute("select * from tagcount")
+    populart=cursor.fetchall()
+    return render_template("Global.html",uid=getCurrentUserId(),uname=getUserFname(),actusers=popularu)
+
 
 def getFriendsList(uid):
     cursor = conn.cursor()
