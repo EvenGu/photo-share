@@ -57,7 +57,7 @@ Global displays Users ordered DESC by their contribution
                     <h4><a href="{{url_for('findu',uid=user[0])}}">{{user[1]}}</a></h4>
                     <p>Comments:{{ user[2] }}</p>
                     <p>Photos:{{ user[3] }}</p>
-                    <p>Contribution: {{ user[4] }}</p>
+                    <h4>Contribution: {{ user[4] }}</h4>
                   </td>
               {% endfor %}
               </tr>

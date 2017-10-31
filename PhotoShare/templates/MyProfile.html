@@ -36,7 +36,7 @@ and recommendations(photo, user)
   <div class="jumbotron text-center">
     <div class="container">
       <div class="row">
-        <div class="col-md12">
+        <div class="field-wrap">
             <h3>{% if profname %} <span style="color:darkred">{{ profname }}</span>'s Mainpage{% endif %}</h3>
             {% if uid!=-1 and uid!=profid %}
                 <form class="makefriends" method="GET" action="/friend/{{ profid }}">
@@ -51,11 +51,7 @@ and recommendations(photo, user)
             {% endif %}
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-12 text-center">
-            <h3>{% if uname %} Hello <span style="color: #843534">{{ uname }}</span> {% endif %}</h3>
-        </div>
-      </div>
+
       <!---search bar--->
       <div class="row">
       	<div class="col-lg-12 text-center">
@@ -88,7 +84,7 @@ and recommendations(photo, user)
 <section>
 <div class="jumbotron" style="background-color: transparent; padding-top:0px; min-height: 320px">
     <div class="container">
-    <div class="col-xs-7 text-center">
+    <div class="col-xs-6 text-center">
         <!---Album--------->
         <div class="field-wrap">
         <h4><span style="color:darkred;">{{ profname }}</span>'s Albums</h4>
@@ -106,7 +102,7 @@ and recommendations(photo, user)
         <!---myAlbums--------->
         <div class="row text-center" style="height: 200px;overflow-y: scroll">
             {% if albums %}
-		    <ul>
+		    <ul style="padding: 0px;">
 			{% for album in albums %}
 				<h3><a href="/album/{{album[0]}}">{{album[1]}}</a></h3>
 				{% if profid==uid %}
@@ -119,13 +115,13 @@ and recommendations(photo, user)
         </div>
     </div>
 
-    <div class="col-xs-5 text-left">
+    <div class="col-xs-6 text-left">
         <!---my friends list--->
         <div class="field-wrap">
             <h4><span style="color:darkred;">{{ profname }}</span>'s Friends</h4>
         </div>
         <div class="field-wrap" style="height: 200px;overflow-y: scroll">
-            <ul>
+            <ul style="padding: 0px;">
                 <li>{% for user in users %}
                     <a href="/profile/{{ user[0] }}">
                         <h3>{{user[1]}} {{ user[2] }}</h3>

@@ -250,16 +250,17 @@ def album(aid):
             auth=True
         cursor.execute("select * from photos where aid='{0}'".format(aid))
         photos=cursor.fetchall()
-        cursor.execute("select fname,aname from albums, users where users.uid=albums.uid and aid='{0}'".format(aid))
+        cursor.execute("select fname,aname,albums.uid from albums, users where users.uid=albums.uid and aid='{0}'".format(aid))
         name=cursor.fetchone()
         fname=name[0]
         aname=name[1]
+        oid=int(name[2])
         cursor.execute("select count(pid) from photos where aid='{0}' GROUP BY aid".format(aid))
         pnum=cursor.fetchone()
         if pnum is None: pnum=0
         else : pnum=pnum[0]
-        return render_template('Album.html',name=aid,auth=auth,photos=photos,
-                               aname=aname,uname=fname,uid=ucurrent,pnum=pnum,cname=getUserFname())
+        return render_template('Album.html',name=aid,auth=auth,photos=photos,oid=oid,
+                               aname=aname,uname=fname,uid=int(ucurrent),pnum=pnum,cname=getUserFname())
 #photo page
 @app.route('/photo/<pid>', methods=['GET','POST'])
 def photo(pid):
@@ -325,8 +326,7 @@ def upload_file(aid):
         else:
             print("not image")
             return render_template('upload.html',uname=uname,uid=uid,message="Upload Failed: not an image",name=aid)
-            #return render_template('Album.html', uname=uname, album=getAlbumPhotos(aid), uid=uid,
-            #                   photos=getAlbumPhotos(aid), message="Upload Failed: not an Image")
+
     # The method is GET so we return a  HTML form to upload the a photo.
     else:
         return render_template('Upload.html', uname=uname, uid=uid,message="Please upload your photo",name=aid)

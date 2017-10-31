@@ -50,12 +50,15 @@ as well as the containing album and the owner
   <div class="container">
     <div class="col-xs-6">
       <div class="field-wrap" style="text-align: right">
-        <img style="width: 80%" src="../static/upload/{{photo[2]}}" alt=""/><br/>
-        <h5>
+         <div style="width:100%; min-height:200px;vertical-align: middle; overflow: hidden">
+             <img src="../static/upload/{{photo[2]}}" alt="" width="100%">
+         </div>
+
+         <h5>
             Caption: <span style="color: #843534;margin-right: 10%">{{photo[1]}}</span>
-            Owner: <a href="{{url_for('findu',uid=uid)}}"><span style="margin-right: 10%">{{ oname }}</span></a>
+            Owner: <a href="{{url_for('findu',uid=oid)}}"><span style="margin-right: 10%">{{ oname }}</span></a>
             Album: <a href="{{url_for('album',aid=photo[3])}}">{{ aname }}</a>
-        </h5>
+         </h5>
 
         <form class="like-unlike" method="GET" action="/like/{{ photo[0] }}">
             {% if like %}

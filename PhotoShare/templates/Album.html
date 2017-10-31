@@ -35,7 +35,7 @@ Album displays all the containing photos and the owner
     <div class="jumbotron text-center">
         <div class="container">
             <div class="field-wrap">
-    	        <h3>{{uname}}'s Album:</h3>
+    	        <h3><a href="{{url_for('findu',uid=oid)}}">{{ uname }}</a>'s Album:</h3>
 		        <h2>{{aname}}</h2>
             </div>
             <div class="col-xs-12 text-center">
@@ -55,9 +55,13 @@ Album displays all the containing photos and the owner
                 <td style="padding-left: 10%;">
                     <a href="/photo/{{photo[0]}}">
                         <h3>{{photo[1]}}</h3>
-                        <img src="../static/upload/{{photo[2]}}" alt="" style="width:180px; height:150px"><br/>
+                        <div style="width:180px;height:150px;vertical-align: middle; overflow: hidden">
+                        <img src="../static/upload/{{photo[2]}}" alt="" style="width:180px; height:auto;">
+                        </div>
                     </a>
+                    {% if oid == uid %}
 				    <a href="/deletep/{{photo[0]}}">Delete photo</a>
+                    {% endif %}
                 </td>
                 {% endfor %}
             </tr>
