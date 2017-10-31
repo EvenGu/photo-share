@@ -46,16 +46,22 @@ Global displays Users ordered DESC by their contribution
 <!--- active Useres --->
 <section>
   <div class="container">
-      <div class="field-wrap" style=" text-align: center">
-        <h3>Active Users</h3>
-            {% for user in actusers %}
-            <div class="field-wrap">
-                <h4><a href="{{url_for('findu',uid=user[0])}}">{{user[1]}}</a></h4>
-                <p>Comments:{{ user[2] }}</p>
-                <p>Photos:{{ user[3] }}</p>
-                <p>Contribution: {{ user[4] }}</p>
-            </div>
-		    {% endfor %}
+      <div class="field-wrap">
+          <h3>Active Users</h3>
+          <table align="center">
+          {% for userbatch in actusers|batch(3) %}
+              <tr>
+              {% for user in userbatch %}
+                  <td>
+                    <h4><a href="{{url_for('findu',uid=user[0])}}">{{user[1]}}</a></h4>
+                    <p>Comments:{{ user[2] }}</p>
+                    <p>Photos:{{ user[3] }}</p>
+                    <p>Contribution: {{ user[4] }}</p>
+                  </td>
+              {% endfor %}
+              </tr>
+          {% endfor %}
+          </table>
       </div>
   </div>
 </section>
@@ -78,3 +84,4 @@ Global displays Users ordered DESC by their contribution
 
 </body>
 </html>
+
