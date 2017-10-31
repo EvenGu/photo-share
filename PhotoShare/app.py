@@ -359,35 +359,70 @@ def search():
         type = request.form['Type']
         print(key, type)
         cursor=conn.cursor()
-        if (type=="T"):
-            type="tags";
-            retPhotos=[]
-            if key is not None :
-                tags = key.split(",")
-                for tag in tags:
-                    print(tag)
-                    cursor.execute("select distinct pid from Tags where tname='{0}'".format(tag))
-                    retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
-                    print(retPhotos)
-            photolist=getPhotoFromList(retPhotos)
-            return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId(),type=type,key='"'+key+'"')
+        print(request.values.get('mine'))
 
-        elif (type == "C"):
-            type="comments";
-            cursor.execute("select distinct pid from comments where text like '{0}'".format('%'+key+'%'))
-            retPhotos = cursor.fetchall()
-            print(retPhotos)
-            photolist=getPhotoFromList(retPhotos)
-            return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(),type=type,key='"'+key+'"')
+        if (request.values.get('mine') is None):
+            print('?')
+            if (type=="T"):
+                type="tags";
+                retPhotos=[]
+                if key is not None :
+                    tags = key.split(",")
+                    for tag in tags:
+                        print(tag)
+                        cursor.execute("select distinct pid from Tags where tname='{0}'".format(tag))
+                        retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
+                        print(retPhotos)
+                photolist=getPhotoFromList(retPhotos)
+                return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId(),type=type,key='"'+key+'"')
+
+            elif (type == "C"):
+                type="comments";
+                cursor.execute("select distinct pid from comments where text like '{0}'".format('%'+key+'%'))
+                retPhotos = cursor.fetchall()
+                print(retPhotos)
+                photolist=getPhotoFromList(retPhotos)
+                return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(),type=type,key='"'+key+'"')
 
 
-        elif(type=="U"):
-            type = "users";
-            cursor.execute("select * from users where uid<>-1 and (fname like '{0}' OR lname like '{0}')".format('%'+key+'%'))
-            retUsers = cursor.fetchall()
-            print(retUsers)
-            return render_template('searchUser.html', users=retUsers, uname=getUserFname(),
-                                   uid=getCurrentUserId(),key='"'+key+'"',type=type)
+            elif(type=="U"):
+                type = "users";
+                cursor.execute("select * from users where uid<>-1 and (fname like '{0}' OR lname like '{0}')".format('%'+key+'%'))
+                retUsers = cursor.fetchall()
+                print(retUsers)
+                return render_template('searchUser.html', users=retUsers, uname=getUserFname(),
+                                       uid=getCurrentUserId(),key='"'+key+'"',type=type)
+        else:
+            if (type == "T"):
+                type = "tags";
+                retPhotos = []
+                if key is not None:
+                    tags = key.split(",")
+                    for tag in tags:
+                        print(tag)
+                        cursor.execute("select distinct pid from Tags t,photos p,albums a"
+                                       " where tname='{0}' and c.pid=p.pid and p.aid=a.aid and a.uid='{1}'"
+                                       .format(tag, getCurrentUserId()))
+                        retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
+                        print(retPhotos)
+                photolist = getPhotoFromList(retPhotos)
+                return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(), type=type,
+                                       key='"' + key + '"')
+
+            elif (type == "C"):
+                type = "comments";
+                cursor.execute("select distinct c.pid from comments c,photos p,albums a "
+                               "where text like '{0}' "
+                               "and c.pid=p.pid and p.aid=a.aid and a.uid='{1}'".format('%' + key + '%',
+                                                                                        getCurrentUserId()))
+                retPhotos = cursor.fetchall()
+                print(retPhotos)
+                photolist = getPhotoFromList(retPhotos)
+                return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(), type=type,
+                                       key='"' + key + '"')
+
+            elif (type == "U"):
+                return "unvalid!"
 
 # search function
 @app.route("/searchy", methods=['POST'])
@@ -423,7 +458,7 @@ def searchy():
             print(retPhotos)
             photolist = getPhotoFromList(retPhotos)
             return render_template('searchPhoto.html', photos=photolist, uid=getCurrentUserId(), type=type,
-                                   key='"' + key + '"', y=True)
+                                   key='"' + key + '"')
 
         elif (type == "U"):
             return "unvalid!"
