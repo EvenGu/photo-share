@@ -402,7 +402,7 @@ def search():
                     tags = key.split(" ")
                     for tag in tags:
                         print(tag)
-                        cursor.execute("select distinct pid from Tags t,photos p,albums a"
+                        cursor.execute("select distinct p.pid from Tags t,photos p,albums a"
                                        " where tname='{0}' and c.pid=p.pid and p.aid=a.aid and a.uid='{1}'"
                                        .format(tag, getCurrentUserId()))
                         retPhotos = tuple(set(cursor.fetchall()).union(set(retPhotos)))
