@@ -3034,18 +3034,9 @@ form.like-unlike {
     padding-left: 8px;
   }
 
-.commBox,
-usr-comment {
-  height: 30px;
-  background-color: inherit;
-  border-style: none;
-  border-bottom: 1px solid rgba(0, 0, 255, 0.42);
-}
-
 .fa-plus-circle {
   font-size: x-large;
 }
-
 
 /*-----------show photo----------*/
 #photoTable table {

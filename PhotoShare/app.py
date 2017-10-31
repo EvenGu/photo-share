@@ -283,6 +283,7 @@ def photo(pid):
         owner=cursor.fetchone()
         oid=owner[1]
         oname=owner[0]
+        print(photo)
         return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
                                liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=int(getCurrentUserId())
                                ,uname=uname,oname=oname,tags=tags,oid=int(oid))
@@ -475,14 +476,18 @@ def delcom(cid):
     cursor=conn.cursor()
     uid = getCurrentUserId()
     cursor.execute("select * from comments where cid='{0}' and uid='{1}'".format(cid,uid))
-    if cursor.fetchone()[0]is not None:
+    a=cursor.fetchone()[0]is not None
+    cursor.execute("select * from comments c,photos p where c.cid='{0}' c.pid=p.pid"
+                   "and p.aid in (select aid from albums where uid='{1}')".format(cid, uid))
+    b=cursor.fetchone()[0]is not None
+    if a|b:
         cursor.execute("select pid from comments where cid='{0}'".format(cid))
         pid=cursor.fetchone()[0]
         cursor.execute("delete from comments where cid='{0}'".format(cid))
         conn.commit()
         return flask.redirect(flask.url_for('photo', pid=pid))
     else:
-        return "not your comment"
+        return "not your comment or photo"
 
 @app.route('/like/<pid>',methods=['GET'])
 @flask_login.login_required
