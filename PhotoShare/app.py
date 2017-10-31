@@ -424,7 +424,8 @@ def search():
                                        key='"' + key + '"',uname=getUserFname())
 
             elif (type == "U"):
-                return "invalid!"
+                return render_template('Hello.html', message='Search Ivalid',
+                                       uid=getCurrentUserId(), uname=getUserFname())
 
 # search by click tag
 @app.route("/searcht/<tag>", methods=['POST'])
