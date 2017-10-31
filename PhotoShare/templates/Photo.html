@@ -58,17 +58,20 @@ as well as the containing album and the owner
             Caption: <span style="color: #843534;margin-right: 10%">{{photo[1]}}</span>
             Owner: <a href="{{url_for('findu',uid=oid)}}"><span style="margin-right: 10%">{{ oname }}</span></a>
             Album: <a href="{{url_for('album',aid=photo[3])}}">{{ aname }}</a>
-         </h5>
-
-        <form class="like-unlike" method="GET" action="/like/{{ photo[0] }}">
-            {% if like %}
-                <button id="like-unlike" type="submit"><img style="width:20%;height:20%" src="../static/thumb-up-active.png"></button>
-                <span style="font-weight: 900">{{ liken }}</span>
-            {% else %}
-                <button id="like-unlike" type="submit"><img style="width:20%;height:20%" src="../static/thumb-up.png"></button>
-                <span style="font-weight: 400">{{ liken }}</span>
-            {% endif %}
-        </form>
+        </h5>
+        {% if uid!=-1 %}
+            <form class="like-unlike" method="GET" action="/like/{{ photo[0] }}">
+                {% if like %}
+                    <button id="like-unlike" type="submit"><img style="width:20%;height:20%" src="../static/thumb-up-active.png"></button>
+                    <span style="font-weight: 900">{{ liken }}</span>
+                {% else %}
+                    <button id="like-unlike" type="submit"><img style="width:20%;height:20%" src="../static/thumb-up.png"></button>
+                    <span style="font-weight: 400">{{ liken }}</span>
+                {% endif %}
+            </form>
+        {% else %}
+            <span style="font-weight: 400">{{ liken }} people likes</span>
+        {% endif %}
       </div>
     </div>
 
