@@ -285,6 +285,9 @@ def photo(pid):
         oid=owner[1]
         oname=owner[0]
         print(photo)
+        cursor.execute("select uid from likephoto where pid='{0}'".format(pid))
+        likeu=getPeopleFromList(cursor.fetchall())
+        print(likeu)
         return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
                                liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=int(getCurrentUserId())
                                ,uname=uname,oname=oname,tags=tags,oid=int(oid))
@@ -369,7 +372,7 @@ def search():
                 if key is not None :
                     tags = key.split(" ")
                     for tag in tags:
-                        print(tag)
+                        print('t',tag)
                         cursor.execute("select distinct pid from Tags where tname='{0}'".format(tag))
                         retPhotos = tuple(set(cursor.fetchall()).intersection(set(retPhotos)))
                         print(retPhotos)
