@@ -69,11 +69,17 @@ as well as the containing album and the owner
                     <span style="font-weight: 400">{{ liken }}</span>
                 {% endif %}
             </form>
-        {% else %}
+        {% endif %}
             <span style="font-weight: 400">{{ liken }} people likes</span>
             <h5>people also liked this photo:</h5>
-            <div class="row">{{ likeu }}</div>
-        {% endif %}
+            <div class="row">
+                {% for l in likeu %}
+                    <a href="/profile/{{ l[0] }}">
+                        <h3>{{l[1]}} {{ l[2] }}</h3>
+                    </a>
+                {% endfor %}
+            </div>
+
       </div>
     </div>
 
