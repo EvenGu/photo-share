@@ -290,7 +290,7 @@ def photo(pid):
         print(likeu)
         return render_template('Photo.html', name=pid, message="Here's photo",photo=photo,aname=aname,
                                liken=pl,like=getUsersLike(ucurrent,pid),comments=comm,uid=int(getCurrentUserId())
-                               ,uname=uname,oname=oname,tags=tags,oid=int(oid))
+                               ,uname=uname,oname=oname,tags=tags,oid=int(oid),likeu=likeu)
 
 # begin photo uploading code
 # photos uploaded using base64 encoding so they can be directly embeded in HTML
@@ -369,6 +369,7 @@ def search():
             if (type=="T"):
                 type="tags";
                 retPhotos=[]
+                print("k",key)
                 if key is not None :
                     tags = key.split(" ")
                     for tag in tags:
@@ -376,6 +377,11 @@ def search():
                         cursor.execute("select distinct pid from Tags where tname='{0}'".format(tag))
                         retPhotos = tuple(set(cursor.fetchall()).intersection(set(retPhotos)))
                         print(retPhotos)
+                elif key=='':
+                    print('test')
+                    cursor.execute("select pid from photos")
+                    retPhotos=cursor.fetchall()
+                    print(retPhotos)
                 photolist=getPhotoFromList(retPhotos)
                 return render_template('searchPhoto.html', photos=photolist,uid=getCurrentUserId()
                                        ,uname=getUserFname(),type=type,key='"'+key+'"',message="Here is your search result")
