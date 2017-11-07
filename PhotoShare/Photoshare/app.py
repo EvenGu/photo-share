@@ -590,7 +590,7 @@ def popular():
     populart=cursor.fetchall()
     cursor.execute("select * from photos")
     allph =cursor.fetchall()
-    cursor.execute("select aname from albums")
+    cursor.execute("select * from albums")
     allalb = cursor.fetchall()
     return render_template("Global.html",uid=getCurrentUserId(),uname=getUserFname(),actusers=popularu,tags=populart,
                            photos=allph, albums=allalb)

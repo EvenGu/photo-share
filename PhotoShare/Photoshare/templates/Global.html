@@ -95,7 +95,7 @@ Global displays Users ordered DESC by their contribution
             <tr>
             {% for album in albumbatch %}
               <td style="padding: 5% 5%;">
-                {{ album }}
+                {{ album[1] }}
               </td>
             {% endfor %}
             </tr>
@@ -109,7 +109,7 @@ Global displays Users ordered DESC by their contribution
       <div class="field-wrap">
           <h3>All Photos</h3>
           <table align="center" border="0.5px solid grey">
-		  {% for photobatch in photo|batch(10) %}
+		  {% for photobatch in photos|batch(10) %}
             <tr>
             {% for photo in photobatch %}
                 <td style="padding-left: 10%;">
